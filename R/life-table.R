@@ -6,6 +6,7 @@
 #' @param x x
 #' @param q_x q_x
 #'
+#' @export
 #' @examples
 #' my_table <- data.frame("x" = 0:9,
 #'                        "q_x" = seq(0.05, 0.14, by = 0.01)

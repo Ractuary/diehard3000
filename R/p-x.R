@@ -1,6 +1,6 @@
-#' e_x
+#' p_x
 #' 
-#' calculates the kurtate future life expectancy
+#' probability of survival for person at birthday x
 #' 
 #' @param life_table object of class life_table
 #' @param x x
@@ -13,22 +13,16 @@
 #'                       )
 #'            
 #' my_table <- life_table(my_table, x = "x", q_x = "q_x")
-#' e_x(my_table, x = 3)
-e_x <- function(life_table, x, t = NULL) {
+#' p_x(my_table, x = 3, t = 5) # probability of x = 3 surviving 5 years
+p_x <- function(life_table, x, t = 1) {
   # check x is length 1
   stopifnot(length(x) == 1)
+  stopifnot(t > 0)
   
   # remove all x rows less than x argument
   life_table <- life_table[life_table$x >= x, ]
-  
-  # set t if not specified
-  if (is.null(t)) {
-    t <- nrow(life_table)
-  } else {
-    # stop if life_table not large enough; t exceeds rows in table
-    stopifnot(nrow(life_table) >= t)
-  }
+  stopifnot(nrow(life_table) >= t)
   
   # calculate kurtate life expectancy
-  sum(cumprod(1 - life_table$q_x[1:t]))
+  prod(1 - life_table$q_x[1:t])
 }
