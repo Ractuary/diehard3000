@@ -3,6 +3,15 @@ Type: Package
 Title: Model mortality using actuarial life table
 Version: 0.0.0.9000
 Date: 2015-05-05
-Authora@R: person("Andy", "Merlino", email = "merlinoa88@gmail.com", role = c("aut", "cre"))
-Description: Model mortality using actuarial life table  
+Authora@R: person("Andy", "Merlino", email = "merlinoa88@gmail.com", role =
+    c("aut", "cre"))
+Description: Model mortality using actuarial life table
 License: GPL-2
+Collate:
+    'LifeTable.R'
+    'ActuarialTable.R'
+    'apv.R'
+    'lifetable.R'
+    'p-x.R'
+    'q-x.R'
+    'utils.R'
