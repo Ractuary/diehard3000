@@ -19,7 +19,7 @@ check_ActuarialTable <- function(object) {
 #' An S4 class to represent an actuarial table
 #' 
 #' @include LifeTable.R
-#' @slot i a length one or length n numeric vector of interest rates
+#' @slot i a length n numeric vector of interest rates
 #' 
 #' @name ActuarialTable-class
 #' @rdname ActuarialTable-class
@@ -27,7 +27,7 @@ check_ActuarialTable <- function(object) {
 ActuarialTable <- setClass("ActuarialTable",
   contains = "LifeTable",
   slots = list(i = "numeric"),
-  prototype = prototype(i = 0.04),
+  prototype = prototype(i = rep(0.04, 10)),
   validity = check_ActuarialTable
 )
 
