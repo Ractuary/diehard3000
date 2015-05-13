@@ -10,8 +10,8 @@ License: GPL-2
 Collate:
     'LifeTable.R'
     'ActuarialTable.R'
-    'apv.R'
-    'lifetable.R'
+    'lifetable-package.R'
+    'mean.R'
     'p-x.R'
     'q-x.R'
     'utils.R'

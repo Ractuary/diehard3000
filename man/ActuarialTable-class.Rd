@@ -11,6 +11,6 @@ An S4 class to represent an actuarial table
 \section{Slots}{
 
 \describe{
-\item{\code{i}}{a length one or length n numeric vector of interest rates}
+\item{\code{i}}{a length n numeric vector of interest rates}
 }}
 
