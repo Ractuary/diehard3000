@@ -1,19 +1,19 @@
-#' mean
+#' expected
 #' 
 #' calculates the actuarial present value of an individual at
 #' birthday \code{x}.
 #' 
 #' @export
-setGeneric("mean", 
+setGeneric("expected", 
            valueClass = "numeric",
            function(object, t_ = NULL, m_ = 0) {
-             standardGeneric("mean")
+             standardGeneric("expected")
            }
 )
 
  
 
-#' mean
+#' expected
 #' 
 #' expected number of complete years for \code{T_x} to survive
 #' 
@@ -23,8 +23,8 @@ setGeneric("mean",
 #' 
 #' @export
 #' @examples
-#' mean(new("T_x"), t_ = 3)
-setMethod("mean", signature("T_x"), function(object, t_ = NULL, m_ = 0) {
+#' expected(new("T_x"), t_ = 3)
+setMethod("expected", signature("T_x"), function(object, t_ = NULL, m_ = 0) {
   # isolate all q_x >= T_x@x_ 
   q_x <- object@q_x[object@x >= object@x_]
   
@@ -42,7 +42,7 @@ setMethod("mean", signature("T_x"), function(object, t_ = NULL, m_ = 0) {
   sum(cumprod(1 - q_x[(1 + m_):(t_ + m_)]))
 })
 
-#' mean
+#' expected
 #' 
 #' expected number of complete years for \code{Z_x} to survive discounted for interest
 #' 
@@ -52,8 +52,8 @@ setMethod("mean", signature("T_x"), function(object, t_ = NULL, m_ = 0) {
 #' 
 #' @export
 #' @examples
-#' mean(new("Z_x"), t_ = 3)
-setMethod("mean", signature("Z_x"), function(object, t_ = NULL, m_ = 0) {
+#' expected(new("Z_x"), t_ = 3)
+setMethod("expected", signature("Z_x"), function(object, t_ = NULL, m_ = 0) {
   # isolate all q_x >= T_x@x_ 
   q_x <- object@q_x[object@x >= object@x_]
   i <- object@i[object@x >= object@x_]
