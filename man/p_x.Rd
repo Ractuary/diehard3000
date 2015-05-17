@@ -4,24 +4,9 @@
 \alias{p_x}
 \title{p_x}
 \usage{
-p_x(life_table, x, t = 1)
-}
-\arguments{
-\item{life_table}{object of class life_table}
-
-\item{x}{x}
-
-\item{t}{t}
+p_x(object, x_, t_ = NULL)
 }
 \description{
-probability of survival for person at birthday x
-}
-\examples{
-my_table <- data.frame("x" = 0:9,
-                       "q_x" = seq(0.05, 0.14, by = 0.01)
-                      )
-
-my_table <- life_table(my_table, x = "x", q_x = "q_x")
-p_x(my_table, x = 3, t = 5) # probability of x = 3 surviving 5 years
+probability of survival for person at birthday \code{x}
 }
 

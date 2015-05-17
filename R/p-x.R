@@ -1,28 +1,35 @@
 #' p_x
 #' 
+#' probability of survival for person at birthday \code{x}
+#' 
+#' @export
+setGeneric("p_x", 
+           valueClass = "numeric",
+           function(object, x_, t_ = NULL) {
+             standardGeneric("p_x")
+           }
+)
+
+#' p_x
+#' 
 #' probability of survival for person at birthday x
 #' 
-#' @param life_table object of class life_table
-#' @param x x
-#' @param t t
+#' @param object object of class LifeTable
+#' @param x_ x
+#' @param t_ t
 #' 
 #' @export
 #' @examples
-#' my_table <- data.frame("x" = 0:9,
-#'                        "q_x" = seq(0.05, 0.14, by = 0.01)
-#'                       )
-#'            
-#' my_table <- life_table(my_table, x = "x", q_x = "q_x")
-#' p_x(my_table, x = 3, t = 5) # probability of x = 3 surviving 5 years
-p_x <- function(life_table, x, t = 1) {
+#' p_x(new("LifeTable"), x_ = 3, t_ = 5) # probability of x = 3 surviving 5 years
+setMethod("p_x", signature("LifeTable"), function(object, x_, t_ = 1) {
   # check x is length 1
-  stopifnot(length(x) == 1)
-  stopifnot(t > 0)
+  stopifnot(length(x_) == 1)
+  stopifnot(t_ > 0)
   
-  # remove all x rows less than x argument
-  life_table <- life_table[life_table$x >= x, ]
-  stopifnot(nrow(life_table) >= t)
+  # remove all q_x rows less than x argument
+  q_x <- object@q_x[object@x >= x_]
+  stopifnot(length(q_x) >= t_)
   
   # calculate kurtate life expectancy
-  prod(1 - life_table$q_x[1:t])
-}
+  prod(1 - q_x[1:t_])
+})
