@@ -5,7 +5,7 @@
 #' @export
 setGeneric("p_x", 
            valueClass = "numeric",
-           function(object, x_, t_ = NULL) {
+           function(object, x_, t_ = 1) {
              standardGeneric("p_x")
            }
 )

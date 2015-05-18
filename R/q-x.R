@@ -1,39 +1,46 @@
 #' q_x
 #' 
+#' probability of death for a person at birthday birthday \code{x}
+#' in the following t years
+#' 
+#' @export
+setGeneric("q_x", 
+           valueClass = "numeric",
+           function(object, x_, t_ = 1, m_ = 0) {
+             standardGeneric("q_x")
+           }
+)
+
+#' q_x
+#' 
 #' probability of death for person at birthday x
 #' 
 #' @param life_table object of class life_table
-#' @param x x
-#' @param t t
-#' @param m m
+#' @param x_ x
+#' @param t_ t
+#' @param m_ m
 #' 
 #' @export
 #' @examples
-#' my_table <- data.frame("x" = 0:9,
-#'                        "q_x" = seq(0.05, 0.14, by = 0.01)
-#'                       )
-#'            
-#' my_table <- life_table(my_table, x = "x", q_x = "q_x")
-#' q_x(my_table, x = 3, t = 5) # probability of x = 3 surviving 5 years
-#' q_x(my_table, x = 2, t = 4, m = 1) # probability of x = 2 surviving 1 year and 
-#' # dieing in the following 4 years
-q_x <- function(life_table, x, t = 1, m = 0) {
+#' q_x(new("LifeTable"), x = 3, t = 5) # probability of x = 3 surviving 5 years
+#' q_x(new("LifeTable"), x = 2, t = 4, m = 1) # probability of x = 2 surviving 1 year and 
+setMethod("q_x", signature("LifeTable"), function(object, x_, t_ = 1, m_ = 0) {
   # chack arguments
-  stopifnot(m >= 0)
+  stopifnot(m_ >= 0)
   # find prob of survival for m years
-  if (m > 0) {
-    p <- p_x(life_table = life_table,
-             x = x,
-             t = m
+  if (m_ > 0) {
+    p <- p_x(object = object,
+             x_ = x_,
+             t_ = m_
              )
-    x <- x + m
+    x_ <- x_ + m_
   } else {
     p <- 1
   }
   
-  q <- 1 - p_x(life_table = life_table,
-               x = x,
-               t = t
+  q <- 1 - p_x(object = object,
+               x_ = x_,
+               t_ = t_
                )
   p * q
-}
+})
