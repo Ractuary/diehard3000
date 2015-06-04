@@ -53,8 +53,10 @@ setMethod("expected", signature("T_x"), function(object, t_ = NULL, m_ = 0) {
 #' 
 #' @export
 #' @examples
-#' expected(new("Z_x"), t_ = 3)
-#' expected(new("Z_x"), t_ = 3, m_ = 1)
+#' # 3 year term insurance with a payable amount or 4 
+#' expected(Z_x(payable = 4), t_ = 3) 
+#' # 3 year term insurance effective in 1 year
+#' expected(Z_x(), t_ = 3, m_ = 1)
 setMethod("expected", signature("Z_x"), function(object, t_ = NULL, m_ = 0) {
   # isolate all q_x >= T_x@x_ 
   q_x <- object@q_x[object@x >= object@x_]
@@ -82,7 +84,8 @@ setMethod("expected", signature("Z_x"), function(object, t_ = NULL, m_ = 0) {
   
   # calculate the present value of Z_x
   z <- tp_x * discount * q_x[(m_ + 1):(t_ + m_)]
-  sum(z)
+  z <- sum(z)
+  z * object@payable
 })
 
 #' expected

@@ -10,6 +10,7 @@ License: GPL-2
 Collate:
     'LifeTable.R'
     'ActuarialTable.R'
+    'data.R'
     'expected.R'
     'lifetable-package.R'
     'p-x.R'

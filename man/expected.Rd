@@ -4,7 +4,7 @@
 \alias{expected}
 \title{expected}
 \usage{
-expected(object, t_ = NULL, m_ = 0)
+expected(object, t_ = NULL, m_ = 0, ...)
 }
 \description{
 calculates the actuarial present value of an individual at

@@ -15,9 +15,13 @@
 \item{m_}{m}
 }
 \description{
-expected number of complete years for \code{Z_x} to survive discounted for interest
+expected present value of an insurance payment \code{Z_x}.  \code{Z_x}
+is discounted for interest and mortality.
 }
 \examples{
-expected(new("Z_x"), t_ = 3)
+# 3 year term insurance with a payable amount or 4
+expected(Z_x(payable = 4), t_ = 3)
+# 3 year term insurance effective in 1 year
+expected(Z_x(), t_ = 3, m_ = 1)
 }
 
