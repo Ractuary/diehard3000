@@ -34,7 +34,8 @@ ActuarialTable <- setClass("ActuarialTable",
 
 #' Z_x
 #' 
-#' An S4 class to represent a life contingent random variable
+#' The present value random variable for a life contingent 
+#' insurance payment payable at the end of the year of death
 #' 
 #' @include ActuarialTable.R
 #' @slot x_ x value for individual
@@ -48,3 +49,22 @@ Z_x <- setClass("Z_x",
          prototype = prototype(x_ = 0),
          validity = function(object) identical(length(object@x_), 1L)
        )
+
+
+#' Y_x
+#'
+#' present value random variable for life contingent
+#' annuity payments
+#'
+#' @include ActuarialTable.R
+#' @slot x_ x value for individual
+#' 
+#' @name Y_x-class
+#' @rdname Y_x-class
+#' @exportClass Y_x
+Y_x <- setClass("Y_x",
+         contains = "ActuarialTable",
+         slots = list(x_ = "numeric"),
+         prototype = prototype(x_ = 0),
+         validity = function(object) identical(length(object@x_), 1L)
+)
