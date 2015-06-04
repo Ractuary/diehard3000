@@ -3,8 +3,8 @@
 #' function to check validity of LifeTable S4 class constructor
 check_ActuarialTable <- function(object) {
   errors <- character()
-  if (length(object@x) != length(object@i) || length(object@i) == 1) { 
-    errors <- c(errors, "Error! i must have length 1 length equal to x")
+  if (length(object@x) != length(object@i)) { 
+    errors <- c(errors, "Error! i must have length equal to length x")
   }
   
   if (identical(length(errors), 0)) {
