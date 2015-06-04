@@ -6,7 +6,8 @@
 \alias{Z_x-class}
 \title{Z_x}
 \description{
-An S4 class to represent a life contingent random variable
+The present value random variable for a life contingent
+insurance payment payable at the end of the year of death
 }
 \section{Slots}{
 
