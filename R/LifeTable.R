@@ -6,7 +6,7 @@ check_LifeTable <- function(object) {
   if (length(object@x) != length(object@q_x)) { 
     errors <- c(errors, "Error! x and q_x are not the same length")
   }
-  if (any(object@x) | any(object@q_x) < 0) {
+  if (any(object@x < 0) || any(object@q_x < 0)) {
     errors <- c(errors, "Error! all elements of x and q_x must be >= 0")
   }
   
@@ -27,7 +27,7 @@ check_LifeTable <- function(object) {
 #' 
 #' @name LifeTable-class
 #' @rdname LifeTable-class
-#' @exportClass LifeTable
+#' @export LifeTable
 LifeTable <- setClass("LifeTable",
   slots = list(x = "numeric", q_x = "numeric"),
   prototype = prototype(x = 0:9, 
@@ -44,7 +44,7 @@ LifeTable <- setClass("LifeTable",
 #' 
 #' @name T_x-class
 #' @rdname T_x-class
-#' @exportClass T_x
+#' @export T_x
 T_x <- setClass("T_x",
                 contains = "LifeTable",
                 slots = list(x_ = "numeric"),
