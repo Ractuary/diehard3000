@@ -6,7 +6,7 @@
 #' @export
 setGeneric("expected", 
            valueClass = "numeric",
-           function(object, t_ = NULL, m_ = 0) {
+           function(object, t_ = NULL, m_ = 0, ...) {
              standardGeneric("expected")
            }
 )
@@ -44,7 +44,8 @@ setMethod("expected", signature("T_x"), function(object, t_ = NULL, m_ = 0) {
 
 #' expected
 #' 
-#' expected number of complete years for \code{Z_x} to survive discounted for interest
+#' expected present value of an insurance payment \code{Z_x}.  \code{Z_x}
+#' is discounted for interest and mortality. 
 #' 
 #' @param object object of class Z_x
 #' @param t_ t
@@ -53,6 +54,7 @@ setMethod("expected", signature("T_x"), function(object, t_ = NULL, m_ = 0) {
 #' @export
 #' @examples
 #' expected(new("Z_x"), t_ = 3)
+#' expected(new("Z_x"), t_ = 3, m_ = 1)
 setMethod("expected", signature("Z_x"), function(object, t_ = NULL, m_ = 0) {
   # isolate all q_x >= T_x@x_ 
   q_x <- object@q_x[object@x >= object@x_]
@@ -68,13 +70,36 @@ setMethod("expected", signature("Z_x"), function(object, t_ = NULL, m_ = 0) {
     stopifnot(length(q_x) >= m_ + t_)
   }
   
+  # isolate applicable interest discount
   x_trend <- 1 + object@i
   x_discount <- 1 / x_trend
   discount <- cumprod(x_discount[1:(m_ + t_)])
   discount <- discount[(m_ + 1):(m_ + t_)]
-  tp_x <- cumprod(1 - q_x[(m_ + 1):(t_ + m_)])
-  tp_x_discount <- tp_x * discount
   
-  # calculate curtate life expectancy
-  sum(tp_x_discount)
+  # isolate applicatbe mortality discount
+  tp_x <- c(1, cumprod(1 - q_x[1:(t_ + m_ - 1)]))
+  tp_x <- tp_x[(m_ + 1):(t_ + m_)]
+  
+  # calculate the present value of Z_x
+  z <- tp_x * discount * q_x[(m_ + 1):(t_ + m_)]
+  sum(z)
+})
+
+#' expected
+#' 
+#' expected value of \code{Y_x}
+#' 
+#' @param object object of class Z_x
+#' @param t_ t
+#' @param m_ m
+#' @param payable character string indicating the time the annuity
+#' payments are made.  Can either be "beg" or "end".  Default value
+#' set to "end".
+#' 
+#' @export
+#' @examples
+#' expected(new("Y_x"), t_ = 3)
+setMethod("expected", signature("Y_x"), function(object, t_ = NULL, m_ = 0, payable = "end") {
+  # need to think about this
+  # might want to remove Y_x class and calculte expected Y_x in Z_x expected()
 })
