@@ -44,3 +44,25 @@ validate_m_ <- function(object, x_, t_, m_) {
   stopifnot(m_ >= 0)
   stopifnot(m_ + x_ + t_ < max(object@x))
 }
+
+#' tp_x8q_x
+#' 
+#' returns the probability of death in each x for a percon age x_ 
+
+tp_x8q_x <- function(object, t_) {
+  # isolate all q_x >= T_x@x_ 
+  q_x <- trim_table(object, slot_ = "q_x", x_ = object@x_, t_ = t_)
+
+  # prob of surviving to each x
+  tp_x <- sapply(seq_along(q_x), function(i) p_x(object = object, x = object@x_, t_ = i))
+
+  # prob of dieing in each year given single age x_
+  tp_x8q_x <- list(vector, length(q_x))
+  tp_x8q_x[1] <- q_x[1]
+  for (j in 2:length(q_x)) {
+    tp_x8q_x[j] <- tp_x[j - 1] * q_x[j]
+  }
+
+  tp_x8q_x <- unlist(tp_x8q_x)
+  c(tp_x8q_x, 1 - sum(tp_x8q_x))
+}
