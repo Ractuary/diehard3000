@@ -6,7 +6,7 @@
 #' @export
 setGeneric("rdeath", 
            #valueClass = "numeric",
-           function(object, t_ , n) {
+           function(object, t_ = (max(object@x) - object@x_), n) {
              standardGeneric("rdeath")
            }
 )
@@ -25,17 +25,22 @@ setGeneric("rdeath",
 #' 
 #' @export
 #' @examples
-#' rdeath(object = Z_x(), t_ = 3, n = 5)
-setMethod("rdeath", signature("Z_x"), function(object, t_ = (max(object@x) - object@x_), n) {
+#' rdeath(object = Z_x(), n = 5)
+setMethod("rdeath", signature("Z_x"), function(object, t_ , n) {
   # find the probability of death in each x for a person age x_
   tp_x8q_x <- tp_x8q_x(object, t_ = t_)
   
   # run the simulation
   deaths <- rmultinom(n = n, size = 1, prob = tp_x8q_x)
+  deaths <- deaths[-nrow(deaths), ]
   deaths[deaths == 1] <- object@benefit
+    
+  i <- trim_table(object, slot_ = "i", x_ = object@x_, t_ = t_)
+  discount <- discount(i)
+  out <- apply(deaths, 2, function(j) j * discount)
   
   x <- trim_table(object, slot_ = "x", x_ = object@x, t_ = t_)
-  data.frame(x =  c(x, x[length(x)] + 1),
-             t = c(1:(length(x)), NA),
-             deaths = deaths)
+  data.frame(x =  x,
+             t = length(x),
+             deaths = out)
 })
