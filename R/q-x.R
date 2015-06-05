@@ -4,7 +4,7 @@
 #' in the following t years
 #' 
 #' @export
-setGeneric("q_x", 
+setGeneric("q_x",
            valueClass = "numeric",
            function(object, x_, t_ = 1, m_ = 0) {
              standardGeneric("q_x")
