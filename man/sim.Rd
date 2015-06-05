@@ -4,7 +4,7 @@
 \alias{sim}
 \title{sim}
 \usage{
-sim(object, t_ = NULL)
+sim(n, object, t_ = NULL)
 }
 \description{
 simulates \code{T_x} (curtate years until death) in accordance

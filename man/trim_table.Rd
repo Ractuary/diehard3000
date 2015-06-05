@@ -4,13 +4,13 @@
 \alias{trim_table}
 \title{trim_table}
 \usage{
-trim_table(table, table_slot, x_ = object[1], t_ = object[length(object)],
+trim_table(object, slot_, x_ = object[1], t_ = object[length(object)],
   m_ = 0)
 }
 \arguments{
-\item{table}{LifeTable}
+\item{object}{LifeTable}
 
-\item{table_slot}{slot to be trimmed}
+\item{slot_}{slot to be trimmed}
 
 \item{x_}{}
 
@@ -23,6 +23,7 @@ removes all values that are unnecessary for the
 specific calculation from the mortaility table column
 }
 \examples{
-trim_table(table = LifeTable(), table_slot = "q_x", x_ = 2, t_ = 3)
+object <- LifeTable()
+trim_table(object, slot_ = "q_x", x_ = 2, t_ = 3)
 }
 

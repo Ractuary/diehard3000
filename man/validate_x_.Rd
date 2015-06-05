@@ -4,7 +4,7 @@
 \alias{validate_x_}
 \title{validate_x_}
 \usage{
-validate_x_(x_)
+validate_x_(object, x_)
 }
 \description{
 validate_x_

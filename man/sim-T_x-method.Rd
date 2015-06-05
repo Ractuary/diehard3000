@@ -5,9 +5,11 @@
 \alias{sim,T_x-method}
 \title{sim}
 \usage{
-\S4method{sim}{T_x}(object, t_ = NULL)
+\S4method{sim}{T_x}(n, object, t_ = (max(object@x) - object@x_))
 }
 \arguments{
+\item{n}{number of observations}
+
 \item{object}{object of class T_x}
 
 \item{t_}{t}
@@ -18,6 +20,6 @@ simulation is in accordance with the multinomial distribution described
 by the life table.
 }
 \examples{
-sim(T_x(), t_ = 3)
+sim(n = 1000, object = T_x(), t_ = 3)
 }
 
