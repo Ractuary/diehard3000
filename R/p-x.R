@@ -22,14 +22,12 @@ setGeneric("p_x",
 #' @examples
 #' p_x(LifeTable(), x_ = 3, t_ = 5) # probability of x = 3 surviving 5 years
 setMethod("p_x", signature("LifeTable"), function(object, t_ = 1, x_ = min(object@x)) {
-  # check x is length 1
-  stopifnot(length(x_) == 1)
-  stopifnot(t_ > 0)
+  validate_x_(object, x_)
+  validate_t_(object, x_, t_)
   
   # remove all q_x rows less than x argument
-  q_x <- object@q_x[object@x >= x_]
-  stopifnot(length(q_x) >= t_)
+  q_x <- trim_table(object, slot_ = "q_x", x_ = x_, t_ = t_)
   
   # calculate curtate life expectancy
-  prod(1 - q_x[1:t_])
+  prod(1 - q_x)
 })
