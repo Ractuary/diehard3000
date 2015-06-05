@@ -13,5 +13,7 @@ annuity payments
 
 \describe{
 \item{\code{x_}}{x value for individual}
+
+\item{\code{benefit}}{the annuity benefit}
 }}
 

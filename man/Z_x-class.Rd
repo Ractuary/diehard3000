@@ -14,6 +14,6 @@ insurance payment payable at the end of the year of death
 \describe{
 \item{\code{x_}}{x value for individual}
 
-\item{\code{payable}}{the amount payable at the end of the year of death}
+\item{\code{benefit}}{the amount payable at the end of the year of death}
 }}
 
