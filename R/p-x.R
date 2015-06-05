@@ -5,7 +5,7 @@
 #' @export
 setGeneric("p_x", 
            valueClass = "numeric",
-           function(object, x_, t_ = 1) {
+           function(object, t_ = 1, ...) {
              standardGeneric("p_x")
            }
 )
@@ -20,8 +20,8 @@ setGeneric("p_x",
 #' 
 #' @export
 #' @examples
-#' p_x(new("LifeTable"), x_ = 3, t_ = 5) # probability of x = 3 surviving 5 years
-setMethod("p_x", signature("LifeTable"), function(object, x_, t_ = 1) {
+#' p_x(LifeTable(), x_ = 3, t_ = 5) # probability of x = 3 surviving 5 years
+setMethod("p_x", signature("LifeTable"), function(object, t_ = 1, x_ = min(object@x)) {
   # check x is length 1
   stopifnot(length(x_) == 1)
   stopifnot(t_ > 0)
@@ -30,6 +30,6 @@ setMethod("p_x", signature("LifeTable"), function(object, x_, t_ = 1) {
   q_x <- object@q_x[object@x >= x_]
   stopifnot(length(q_x) >= t_)
   
-  # calculate kurtate life expectancy
+  # calculate curtate life expectancy
   prod(1 - q_x[1:t_])
 })
