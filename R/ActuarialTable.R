@@ -39,7 +39,7 @@ ActuarialTable <- setClass("ActuarialTable",
 #' 
 #' @include ActuarialTable.R
 #' @slot x_ x value for individual
-#' @slot payable the amount payable at the end of the year of death
+#' @slot benefit the amount payable at the end of the year of death
 #' 
 #' @name Z_x-class
 #' @rdname Z_x-class
@@ -47,8 +47,8 @@ ActuarialTable <- setClass("ActuarialTable",
 Z_x <- setClass("Z_x",
          contains = "ActuarialTable",
          slots = list(x_ = "numeric",
-                      payable = "numeric"),
-         prototype = prototype(x_ = 0, payable = 1),
+                      benefit = "numeric"),
+         prototype = prototype(x_ = 2, benefit = 10),
          validity = function(object) identical(length(object@x_), 1L)
        )
 
@@ -60,6 +60,7 @@ Z_x <- setClass("Z_x",
 #'
 #' @include ActuarialTable.R
 #' @slot x_ x value for individual
+#' @slot benefit the annuity benefit
 #' 
 #' @name Y_x-class
 #' @rdname Y_x-class
@@ -67,8 +68,8 @@ Z_x <- setClass("Z_x",
 Y_x <- setClass("Y_x",
          contains = "ActuarialTable",
          slots = list(x_ = "numeric",
-                      payable = "numeric"),
+                      benefit = "numeric"),
          prototype = prototype(x_ = 0,
-                               payable = 1),
+                               benefit = 1),
          validity = function(object) identical(length(object@x_), 1L)
 )
