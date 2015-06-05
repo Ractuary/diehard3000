@@ -36,13 +36,13 @@ validate_x_ <- function(object, x_) {
 #' validate_t_
 validate_t_ <- function(object, x_, t_) {
   stopifnot(t_ > 0)
-  stopifnot(x_ + t_ < max(object@x))
+  stopifnot(x_ + t_ <= max(object@x))
 }
 
 #' validate_m_
 validate_m_ <- function(object, x_, t_, m_) {
   stopifnot(m_ >= 0)
-  stopifnot(m_ + x_ + t_ < max(object@x))
+  stopifnot(m_ + x_ + t_ <= max(object@x))
 }
 
 #' tp_x8q_x
@@ -64,4 +64,11 @@ tp_x8q_x <- function(object, t_) {
 
   tp_x8q_x <- unlist(tp_x8q_x)
   c(tp_x8q_x, 1 - sum(tp_x8q_x))
+}
+
+#' find interest discount rate
+discount <- function(i) {
+  x_trend <- 1 + i
+  x_discount <- 1 / x_trend
+  cumprod(x_discount)
 }

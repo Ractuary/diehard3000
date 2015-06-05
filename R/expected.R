@@ -61,16 +61,14 @@ setMethod("expected", signature("Z_x"), function(object, t_ = max(object@x) - ob
   q_x <- trim_table(object, slot_ = "q_x", x_ = object@x_, t_ = m_ + t_)
   i <- trim_table(object, slot_ = "i", x_ = object@x_, t_ = m_ + t_)
   
-  index <- (m_ + 1):(m_ + t_)
   # isolate applicable interest discount
-  x_trend <- 1 + i
-  x_discount <- 1 / x_trend
-  discount <- cumprod(x_discount)
+  discount <- discount(i = i)
   
   # isolate applicatbe mortality discount
   tp_x <- c(1, cumprod(1 - q_x[-length(q_x)]))
   
   # calculate the present value of Z_x
+  index <- (m_ + 1):(m_ + t_)
   out <- tp_x[index] * discount[index] * q_x[index]
   out <- sum(out)
   out * object@benefit
