@@ -5,8 +5,8 @@
 #' 
 #' @export
 setGeneric("sim", 
-           valueClass = "numeric",
-           function(object, t_ = NULL) {
+           #valueClass = "numeric",
+           function(object, t_ = NULL, n) {
              standardGeneric("sim")
            }
 )
@@ -21,27 +21,20 @@ setGeneric("sim",
 #' 
 #' @param object object of class T_x
 #' @param t_ t
+#' @param n number of observations
 #' 
 #' @export
 #' @examples
-#' sim(T_x(), t_ = 3)
-setMethod("sim", signature("T_x"), function(object, t_ = NULL) {
-  # isolate all q_x >= T_x@x_ 
-  q_x <- object@q_x[object@x >= object@x_]
-  # remove q_x > t_
-  if (!is.null(t_)) {
-    q_x <- q_x[1:t_]  
-  }
+#' sim(object = T_x(), t_ = 3, n = 1000)
+setMethod("sim", signature("T_x"), function(object, t_ = (max(object@x) - object@x_), n) {
+  # find the probability of death in each x for a person age x_
+  tp_x8q_x <- tp_x8q_x(object, t_ = t_)
   
-  # TODO: add tpx values.  Trying to come up with
-  # one tpx that can be used anywhere
-  #tpx <- vapply(x_:) 
-  mqx <- list(vector, length(q_x))
-  mqx[1] <- q_x[1]
-  for (j in 2:length(q_x)) {
-    mqx[j] <- tpx[j - 1] * q_x[j]
-  }
-  unlist(mqx)
-  
+  # run the simulation
+  deaths <- as.vector(rmultinom(n = 1, size = n, prob = tp_x8q_x))
+  x <- trim_table(object, slot_ = "x", x_ = object@x, t_ = t_)
+  data.frame(x =  c(x, x[length(x)] + 1),
+             t = 0:(length(deaths) - 1),
+             deaths = deaths)
 })
 
