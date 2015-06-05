@@ -4,7 +4,7 @@
 \alias{rdeath}
 \title{rdeath}
 \usage{
-rdeath(object, t_, n)
+rdeath(object, t_ = (max(object@x) - object@x_), n)
 }
 \description{
 simulates \code{T_x} (curtate year of death) in accordance

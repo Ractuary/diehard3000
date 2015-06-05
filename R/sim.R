@@ -26,6 +26,7 @@ setGeneric("rdeath",
 #' @export
 #' @examples
 #' rdeath(object = Z_x(), n = 5)
+#' rdeath(object = Z_x(), n = 5, t_ = 4)
 setMethod("rdeath", signature("Z_x"), function(object, t_ , n) {
   # find the probability of death in each x for a person age x_
   tp_x8q_x <- tp_x8q_x(object, t_ = t_)

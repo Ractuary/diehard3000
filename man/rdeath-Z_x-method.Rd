@@ -20,6 +20,7 @@ simulation is in accordance with the multinomial distribution described
 by the LifeTable object.
 }
 \examples{
-rdeath(object = Z_x(), t_ = 3, n = 5)
+rdeath(object = Z_x(), n = 5)
+rdeath(object = Z_x(), n = 5, t_ = 4)
 }
 
