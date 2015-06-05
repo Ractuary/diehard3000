@@ -34,20 +34,3 @@ LifeTable <- setClass("LifeTable",
                         q_x = seq(0.05, 0.14, by = 0.01)),
   validity = check_LifeTable
 )
-
-#' T_x
-#' 
-#' An S4 class to represent a life contingent random variable
-#' 
-#' @include LifeTable.R
-#' @slot x_ x value for individual
-#' 
-#' @name T_x-class
-#' @rdname T_x-class
-#' @export T_x
-T_x <- setClass("T_x",
-                contains = "LifeTable",
-                slots = list(x_ = "numeric"),
-                prototype = prototype(x_ = 0),
-                validity = function(object) identical(length(object@x_), 1L)
-)
