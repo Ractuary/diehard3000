@@ -5,19 +5,19 @@
 \alias{p_x,LifeTable-method}
 \title{p_x}
 \usage{
-\S4method{p_x}{LifeTable}(object, x_, t_ = 1)
+\S4method{p_x}{LifeTable}(object, t_ = 1, x_ = min(object@x))
 }
 \arguments{
 \item{object}{object of class LifeTable}
 
-\item{x_}{x}
-
 \item{t_}{t}
+
+\item{x_}{x}
 }
 \description{
 probability of survival for person at birthday x
 }
 \examples{
-p_x(new("LifeTable"), x_ = 3, t_ = 5) # probability of x = 3 surviving 5 years
+p_x(LifeTable(), x_ = 3, t_ = 5) # probability of x = 3 surviving 5 years
 }
 

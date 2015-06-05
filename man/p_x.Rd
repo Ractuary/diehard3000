@@ -4,7 +4,7 @@
 \alias{p_x}
 \title{p_x}
 \usage{
-p_x(object, x_, t_ = 1)
+p_x(object, t_ = 1, ...)
 }
 \description{
 probability of survival for person at birthday \code{x}

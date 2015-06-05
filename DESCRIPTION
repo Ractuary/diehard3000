@@ -16,3 +16,5 @@ Collate:
     'lifetable-package.R'
     'p-x.R'
     'q-x.R'
+    'sim.R'
+    'utils.R'
