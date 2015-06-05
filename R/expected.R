@@ -23,7 +23,7 @@ setGeneric("expected",
 #' 
 #' @export
 #' @examples
-#' expected(new("T_x"), t_ = 3)
+#' expected(T_x(), t_ = 3)
 setMethod("expected", signature("T_x"), function(object, t_ = NULL, m_ = 0) {
   # isolate all q_x >= T_x@x_ 
   q_x <- object@q_x[object@x >= object@x_]

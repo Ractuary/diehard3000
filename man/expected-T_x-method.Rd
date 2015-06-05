@@ -18,6 +18,6 @@
 expected number of complete years for \code{T_x} to survive
 }
 \examples{
-expected(new("T_x"), t_ = 3)
+expected(T_x(), t_ = 3)
 }
 
