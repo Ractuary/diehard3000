@@ -26,7 +26,7 @@ setGeneric("rdeath",
 #' @export
 #' @examples
 #' rdeath(object = Z_x(), n = 5)
-#' rdeath(object = Z_x(), n = 5, t_ = 4)
+#' rdeath(object = Z_x(x_ = 2), n = 5, t_ = 4)
 setMethod("rdeath", signature("Z_x"), function(object, t_ , n) {
   # find the probability of death in each x for a person age x_
   tp_x8q_x <- tp_x8q_x(object, t_ = t_)
@@ -40,8 +40,8 @@ setMethod("rdeath", signature("Z_x"), function(object, t_ , n) {
   discount <- discount(i)
   out <- apply(deaths, 2, function(j) j * discount)
   
-  x <- trim_table(object, slot_ = "x", x_ = object@x, t_ = t_)
+  x <- trim_table(object, slot_ = "x", x_ = object@x_, t_ = t_)
   data.frame(x =  x,
-             t = length(x),
+             t = 1:length(x),
              deaths = out)
 })
