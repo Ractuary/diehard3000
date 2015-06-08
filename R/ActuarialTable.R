@@ -66,10 +66,8 @@ Z_x <- setClass("Z_x",
 #' @rdname Y_x-class
 #' @export Y_x
 Y_x <- setClass("Y_x",
-         contains = "ActuarialTable",
-         slots = list(x_ = "numeric",
-                      benefit = "numeric"),
-         prototype = prototype(x_ = 0,
-                               benefit = 1),
-         validity = function(object) identical(length(object@x_), 1L)
+         contains = "Z_x",
+         slots = list(annuity = "numeric"),
+         prototype = prototype(annuity = 1),
+         validity = function(object) identical(length(object@annuity), 1L)
 )
