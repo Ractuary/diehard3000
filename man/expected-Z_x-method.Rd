@@ -5,7 +5,7 @@
 \alias{expected,Z_x-method}
 \title{expected}
 \usage{
-\S4method{expected}{Z_x}(object, t_ = max(object@x) - object@x_, m_ = 0)
+\S4method{expected}{Z_x}(object)
 }
 \arguments{
 \item{object}{object of class Z_x}
@@ -19,9 +19,9 @@ expected present value of an insurance payment \code{Z_x}.  \code{Z_x}
 is discounted for interest and mortality.
 }
 \examples{
-# 3 year term insurance with a payable amount or 4
-expected(Z_x(), t_ = 3)
+# 3 year term insurance with benefit of 4
+expected(Z_x(t_ = 3, benefit = 4))
 # 3 year term insurance effective in 1 year
-expected(Z_x(benefit = 1, x_ = 0), t_ = 3, m_ = 1)
+expected(Z_x(benefit = 1, x_ = 0, m_ = 1, t_ = 3))
 }
 

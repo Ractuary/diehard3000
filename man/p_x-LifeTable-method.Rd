@@ -10,9 +10,9 @@
 \arguments{
 \item{object}{object of class LifeTable}
 
-\item{t_}{t}
+\item{t_}{t_}
 
-\item{x_}{x}
+\item{x_}{x_}
 }
 \description{
 probability of survival for person at birthday x

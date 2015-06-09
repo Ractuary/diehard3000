@@ -11,6 +11,8 @@ LazyData: true
 Collate:
     'LifeTable.R'
     'ActuarialTable.R'
+    'Z_x.R'
+    'Y_x.R'
     'data.R'
     'expected.R'
     'lifetable-package.R'

@@ -5,12 +5,10 @@
 \alias{rdeath,Z_x-method}
 \title{rdeath}
 \usage{
-\S4method{rdeath}{Z_x}(object, t_ = (max(object@x) - object@x_), n)
+\S4method{rdeath}{Z_x}(object, n)
 }
 \arguments{
 \item{object}{object of class Z_x}
-
-\item{t_}{t}
 
 \item{n}{number of observations}
 }
@@ -20,7 +18,7 @@ simulation is in accordance with the multinomial distribution described
 by the LifeTable object.
 }
 \examples{
-rdeath(object = Z_x(), n = 5)
-rdeath(object = Z_x(), n = 5, t_ = 4)
+rdeath(object = Z_x(t_ = 4), n = 5)
+rdeath(object = Z_x(x_ = 2, t_ = 3), n = 5)
 }
 

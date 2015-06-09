@@ -4,7 +4,7 @@
 \alias{tp_x8q_x}
 \title{tp_x8q_x}
 \usage{
-tp_x8q_x(object, t_)
+tp_x8q_x(object)
 }
 \description{
 returns the probability of death in each x for a percon age x_

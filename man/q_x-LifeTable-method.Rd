@@ -8,11 +8,11 @@
 \S4method{q_x}{LifeTable}(object, x_, t_ = 1, m_ = 0)
 }
 \arguments{
-\item{x_}{x}
+\item{x_}{x_}
 
-\item{t_}{t}
+\item{t_}{t_}
 
-\item{m_}{m}
+\item{m_}{m_}
 
 \item{life_table}{object of class life_table}
 }
