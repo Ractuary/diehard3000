@@ -36,12 +36,18 @@ setMethod("rdeath", signature("Z_x"), function(object, n) {
   deaths[deaths == 1] <- object@benefit
   deaths <- as.data.frame(deaths)
     
+  # discount the simulation
   i <- trim_table(object, slot_ = "i", x_ = object@x_, t_ = object@t_)
   discount <- discount(i)
-  out <- lapply(deaths, function(j) j * discount)
+  out <- as.data.frame(lapply(deaths, function(j) j * discount))
   
+  # return simulation output
   x <- trim_table(object, slot_ = "x", x_ = object@x_, t_ = object@t_)
-  data.frame(x =  x,
-             t = 1:length(x),
-             deaths = out)
+  t <- 1:length(x)
+  list(x =  x,
+       t = t,
+       death_table = deaths,
+       death_t = as.data.frame(lapply(deaths, function(j) ifelse(sum(j) > 0, t[j > 0], NA))),
+       pv = as.data.frame(lapply(out, sum)),
+       probs = data.frame(t = c(t, paste0(">", max(t))), prob_death = tp_x8q_x))
 })
