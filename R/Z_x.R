@@ -19,13 +19,16 @@ check_Z_x <- function(object) {
   if (object@t_ <= 0) {
     errors <- c(errors, "Error! t_ must be >= 0")
   }
-  if (object@x_ + object@t_ > max(object@x)) {
-    errors <- c(errors, "Error! x_ + t_ > max(x)")
+  if (object@x_ + object@t_ > (max(object@x) + 1L)) {
+    errors <- c(errors, "Error! x_ + t_ > (max(x) + 1)")
   }
   
   #' validate_m_
   if (object@m_ < 0) {
-    errors <- c(errors, "Error!, x_ + t_ + m_ > max(x)")
+    errors <- c(errors, "Error! m_ must be >= 0")
+  }
+  if (object@x_ + object@t_ + object@m_ > (max(object@x) + 1L)) {
+    errors <- c(errors, "Error! x_ + t_ + m_ > (max(x) + 1)")
   }
 
   if (identical(length(errors), 0)) {
