@@ -20,27 +20,27 @@ setGeneric("rdeath",
 #' by the LifeTable object.
 #' 
 #' @param object object of class Z_x
-#' @param t_ t
 #' @param n number of observations
 #' 
 #' @export
 #' @examples
-#' rdeath(object = Z_x(), n = 5)
-#' rdeath(object = Z_x(x_ = 2), n = 5, t_ = 4)
-setMethod("rdeath", signature("Z_x"), function(object, t_ , n) {
+#' rdeath(object = Z_x(t_ = 4), n = 5)
+#' rdeath(object = Z_x(x_ = 2, t_ = 3), n = 5)
+setMethod("rdeath", signature("Z_x"), function(object, n) {
   # find the probability of death in each x for a person age x_
-  tp_x8q_x <- tp_x8q_x(object, t_ = t_)
+  tp_x8q_x <- tp_x8q_x(object)
   
   # run the simulation
   deaths <- rmultinom(n = n, size = 1, prob = tp_x8q_x)
-  deaths <- deaths[-nrow(deaths), ]
+  deaths <- deaths[-nrow(deaths), , drop = FALSE]
   deaths[deaths == 1] <- object@benefit
+  deaths <- as.data.frame(deaths)
     
-  i <- trim_table(object, slot_ = "i", x_ = object@x_, t_ = t_)
+  i <- trim_table(object, slot_ = "i", x_ = object@x_, t_ = object@t_)
   discount <- discount(i)
-  out <- apply(deaths, 2, function(j) j * discount)
+  out <- lapply(deaths, function(j) j * discount)
   
-  x <- trim_table(object, slot_ = "x", x_ = object@x_, t_ = t_)
+  x <- trim_table(object, slot_ = "x", x_ = object@x_, t_ = object@t_)
   data.frame(x =  x,
              t = 1:length(x),
              deaths = out)
