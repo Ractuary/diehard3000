@@ -16,16 +16,15 @@ setGeneric("q_x",
 #' probability of death for person at birthday x
 #' 
 #' @param life_table object of class life_table
-#' @param x_ x
-#' @param t_ t
-#' @param m_ m
+#' @param x_ x_
+#' @param t_ t_
+#' @param m_ m_
 #' 
 #' @export
 #' @examples
 #' q_x(new("LifeTable"), x = 3, t = 5) # probability of x = 3 surviving 5 years
 #' q_x(new("LifeTable"), x = 2, t = 4, m = 1) # probability of x = 2 surviving 1 year and 
 setMethod("q_x", signature("LifeTable"), function(object, x_, t_ = 1, m_ = 0) {
-  validate_m_(object, x_, t_, m_)
   
   # find prob of survival for m years
   if (m_ > 0) {
