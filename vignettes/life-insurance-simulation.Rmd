@@ -1,0 +1,91 @@
+---
+title: "Life Insurance Simulation"
+author: "Andy Merlino"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+We provide whole life insurance.  
+
+How much money do we need to set aside today to have a certain probability that we can payout the entire life insurance  benefit to all insurees?
+
+```{r load_stuff}
+library(lifetable)
+library(knitr)
+
+options(scipen=999) # turn off scientific notation
+```
+
+Let's create some life insurance policies to insure.
+
+```{r create_policies, results = "asis"}
+policies <- data.frame(id = c("A001", "A002", "A003", "A004", "A005", "A006"),
+                       gender = c("male", "female", "female", "male", "male", "female"),
+                       age = c(40, 51, 70, 45, 65, 35),
+                       death_benefit = c(200000, 500000, 100000, 500000, 1000000, 2000000))
+
+knitr::kable(policies)
+```
+
+As you can see, we have male and female insurees of varying ages.  They also have varying death benefits.
+
+We are going to create an object of class *lifetable::Z_x* to represent each one of our insurees.  Each of these *lifetable::Z_x* objects is defined by an actual life table.  We will use the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).  I named this life table *qx_table* and it comes with the package.
+
+```{r life_tables}
+# select interest rate
+rate <- 0.04
+# select number of times to run simulation
+n <- 1000
+
+# create male life table from qx_data (provided with the package)
+qx_male <- lifetable::LifeTable(x = qx_data$x, q_x = qx_data$male_qx)
+qx_male <- lifetable::ActuarialTable(i = rep(rate, times = length(qx_male@x)), qx_male)
+
+# create female life table from qx_data (provided with the package)
+qx_female <- lifetable::LifeTable(x = qx_data$x, q_x = qx_data$female_qx)
+qx_female <- lifetable::ActuarialTable(i = rep(rate, times = length(qx_female@x)), qx_female)
+```
+
+We simulate each individual's death in accordance with the multinomial distribution paramaterized by the probabilties from either the male or female qx table.  We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent and identically distributed.  We discount the death benefit, assuming a `r rate * 100` % interest rate, for the number of years the insuree survives.  All death benefits are paid at the end of the year of death.
+
+```{r}
+# use lifetable package to define each policy as a Z_x object
+hold <- list()
+for (j in 1:nrow(policies)) {
+  hold[[j]] <- if (policies$gender[j] == "male") {
+    lifetable::Z_x(x_ = policies$age[j], 
+                    t_ = max(qx_male@x) - policies$age[j],
+                    benefit = policies$death_benefit[j], 
+                    qx_male)
+  } else {
+    lifetable::Z_x(x_ = policies$age[j], 
+                    t_ = max(qx_female@x) - policies$age[j],
+                    benefit = policies$death_benefit[j], 
+                    qx_female)
+  }
+}
+```
+
+Now that we have assigned each individual to a *lifetable::Z_x* object we can run the simulation.  The time and present value of a *lifetable::Z_x* object can be simulated with the *lifetable:rdeath* method. 
+
+```{r, result = "asis"}
+# run simulation on each insuree
+# we are only interested in the present value of the simulation here
+out <- lapply(hold, function(k) lifetable::rdeath(k, n = n)$pv)
+out <- matrix(unlist(out), ncol = n, byrow = TRUE)
+total <- apply(out, 2, sum)
+quantiles <- quantile(total, seq(0.70, 0.95, by = 0.05))
+sim_mean <- mean(total)
+
+# make it look decent for printing
+out <- data.frame("Risk Level" = c("mean", names(quantiles)),
+                 "Value" = format(c(sim_mean, quantiles), big.mark = ","))
+knitr::kable(out, row.names = FALSE)
+```
+
+For additional information on how the simulation is run please see the lifetable::rdeath function.
