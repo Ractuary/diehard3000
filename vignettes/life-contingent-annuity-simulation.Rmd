@@ -1,0 +1,95 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+We provide life contingent annuities!
+
+How much money do we need to set aside today to have a certain probability that we can make all anuity payments to all insurees?
+
+```{r load_stuff}
+library(insuree)
+library(knitr) # for tables
+
+options(scipen=999) # turn off scientific notation
+```
+
+Let's create some life contingent annuity policies.
+
+```{r create_policies, results = "asis"}
+policies <- data.frame(id = c("A001", "A002", "A003", "A004", "A005", "A006"),
+                       gender = c("male", "female", "female", "male", "male", "female"),
+                       age = c(40, 51, 70, 45, 65, 35),
+                       annual_annuity = c(20000, 50000, 10000, 50000, 100000, 200000))
+
+knitr::kable(policies)
+```
+
+As you can see, we have male and female insurees of varying ages.  They also have varying annual annuity benefits.
+
+We are going to create an object of class `insuree::Insuree` to represent each one of our insurees.  Each of these `insuree::Insuree` objects is defined by an actuarial life table.  We will use the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).  I named this life table `qx_table` and it comes with the package.
+
+```{r life_tables}
+# select interest rate
+rate <- 0.04
+# select number of times to run simulation
+n <- 1000
+
+# create male life table from qx_data (provided with the package)
+qx_male <- insuree::LifeTable(x = qx_data$x, q_x = qx_data$male_qx)
+qx_male <- insuree::ActuarialTable(i = rep(rate, times = length(qx_male@x)), qx_male)
+
+# create female life table from qx_data (provided with the package)
+qx_female <- insuree::LifeTable(x = qx_data$x, q_x = qx_data$female_qx)
+qx_female <- insuree::ActuarialTable(i = rep(rate, times = length(qx_female@x)), qx_female)
+```
+
+We simulate each individual's death in accordance with the multinomial distribution paramaterized by the probabilties from either the male or female qx table.  We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent and identically distributed.  We discount the death benefit, assuming a `r rate * 100` % interest rate, for the number of years the insuree survives.  All death benefits are paid at the end of the year of death.
+
+First lets assign each insuree to a `insuree::Insuree` object.
+
+```{r}
+# use lifetable package to define each policy as a Insuree object
+max_m <- max(qx_male@x)
+max_f <- max(qx_female@x)
+
+hold <- list()
+for (j in 1:nrow(policies)) {
+  hold[[j]] <- if (policies$gender[j] == "male") {
+    insuree::Insuree(x_ = policies$age[j], 
+                     t_ = max_m - policies$age[j],
+                     benefit = rep(policies$annual_annuity[j], max_m - policies$age[j]), 
+                     qx_male)
+  } else {
+    insuree::Insuree(x_ = policies$age[j], 
+                     t_ = max_f - policies$age[j],
+                     benefit = rep(policies$annual_annuity[j], max_f - policies$age[j]), 
+                     qx_female)
+  }
+}
+```
+
+Now that we have assigned each individual to a `insuree::Insuree` object we can run the simulation.  The present value of an `insuree::Insuree` object can be simulated with the `insuree:rpv` method. 
+
+```{r, result = "asis"}
+# run simulation on each insuree
+# we are only interested in the present value of the simulation here
+out <- lapply(hold, function(k) insuree::rpv(k, n = n, benefit_type = "annuity"))
+out <- matrix(unlist(out), ncol = n, byrow = TRUE)
+total <- apply(out, 2, sum)
+quantiles <- quantile(total, seq(0.70, 0.95, by = 0.05))
+sim_mean <- mean(total)
+
+# make it look decent for printing
+out <- data.frame("Risk Level" = c("mean", names(quantiles)),
+                 "Value" = format(c(sim_mean, quantiles), big.mark = ","))
+knitr::kable(out, row.names = FALSE)
+```
+
+For additional information on how the simulation is run please see the `insuree::rdeath` function.
