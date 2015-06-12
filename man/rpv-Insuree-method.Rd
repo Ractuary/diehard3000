@@ -12,13 +12,13 @@
 
 \item{n}{number of observations}
 
-\item{benefit_type}{character string of either "life" or annuity}
+\item{benefit_type}{character string of either "life" or "annuity"}
 }
 \description{
 rpv
 }
 \examples{
-rdeath(object = Insuree(m_ = 2), n = 5)
-rdeath(object = Insuree(x_ = 2, t_ = 3), n = 5)
+rpv(object = Insuree(m_ = 0), n = 5, benefit_type = "annuity")
+rpv(object = Insuree(x_ = 2, t_ = 3), n = 5)
 }
 

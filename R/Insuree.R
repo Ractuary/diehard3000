@@ -1,4 +1,4 @@
-#' check_Z_x
+#' check_Insuree
 #' 
 #' function to check validity of Insuree S4 class constructor
 check_Insuree <- function(object) {

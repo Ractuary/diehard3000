@@ -9,7 +9,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
 We provide whole life insurance.  
 
 How much money do we need to set aside today to have a certain probability that we can payout the entire life insurance  benefit to all insurees?
@@ -34,7 +33,7 @@ knitr::kable(policies)
 
 As you can see, we have male and female insurees of varying ages.  They also have varying death benefits.
 
-We are going to create an object of class *lifetable::Insuree* to represent each one of our insurees.  Each of these *lifetable::Insuree* objects is defined by an actual life table.  We will use the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).  I named this life table *qx_table* and it comes with the package.
+We are going to create an object of class `lifetable::Insuree` to represent each one of our insurees.  Each of these `lifetable::Insuree` objects is defined by an actual life table.  We will use the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).  I named this life table `qx_table` and it comes with the package.
 
 ```{r life_tables}
 # select interest rate
@@ -53,7 +52,7 @@ qx_female <- lifetable::ActuarialTable(i = rep(rate, times = length(qx_female@x)
 
 We simulate each individual's death in accordance with the multinomial distribution paramaterized by the probabilties from either the male or female qx table.  We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent and identically distributed.  We discount the death benefit, assuming a `r rate * 100` % interest rate, for the number of years the insuree survives.  All death benefits are paid at the end of the year of death.
 
-First lets assign each insuree to a *lifetable::Insuree* object.
+First lets assign each insuree to a `lifetable::Insuree` object.
 
 ```{r}
 # use lifetable package to define each policy as a Insuree object
@@ -76,7 +75,7 @@ for (j in 1:nrow(policies)) {
 }
 ```
 
-Now that we have assigned each individual to a *lifetable::Insuree* object we can run the simulation.  The present value of an *lifetable::Insuree* object can be simulated with the *lifetable:rpv* method. 
+Now that we have assigned each individual to a `lifetable::Insuree` object we can run the simulation.  The present value of an `lifetable::Insuree` object can be simulated with the `lifetable:rpv` method. 
 
 ```{r, result = "asis"}
 # run simulation on each insuree
@@ -93,4 +92,4 @@ out <- data.frame("Risk Level" = c("mean", names(quantiles)),
 knitr::kable(out, row.names = FALSE)
 ```
 
-For additional information on how the simulation is run please see the *lifetable::rdeath* function.
+For additional information on how the simulation is run please see the `lifetable::rdeath` function.

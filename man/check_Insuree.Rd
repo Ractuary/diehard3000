@@ -2,7 +2,7 @@
 % Please edit documentation in R/Insuree.R
 \name{check_Insuree}
 \alias{check_Insuree}
-\title{check_Z_x}
+\title{check_Insuree}
 \usage{
 check_Insuree(object)
 }

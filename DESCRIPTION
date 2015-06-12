@@ -1,11 +1,12 @@
-Package: lifetable
+Package: insuree
 Type: Package
-Title: Model mortality using actuarial life table
+Title: Simulate life contingent insurance policies using actuarial life tables
 Version: 0.0.0.9000
 Date: 2015-05-05
 Authora@R: person("Andy", "Merlino", email = "merlinoa88@gmail.com", role =
     c("aut", "cre"))
-Description: Model mortality using actuarial life table
+Description: Simulate life contingent insurance policies using actuarial life
+    tables
 License: GPL-2
 LazyData: true
 Collate:
@@ -14,12 +15,9 @@ Collate:
     'Insuree.R'
     'data.R'
     'expected.R'
-    'lifetable-package.R'
+    'insuree-package.R'
     'p-x.R'
     'q-x.R'
     'rpv.R'
     'sim.R'
     'utils.R'
-Suggests:
-    knitr
-VignetteBuilder: knitr
