@@ -23,7 +23,6 @@ removes all values that are unnecessary for the
 specific calculation from the mortaility table column
 }
 \examples{
-object <- LifeTable()
-trim_table(object, slot_ = "q_x", x_ = 2, t_ = 3)
+trim_table(LifeTable(), slot_ = "q_x", x_ = 2, t_ = 3, m_ = 2)
 }
 
