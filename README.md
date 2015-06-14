@@ -10,8 +10,8 @@ The simulation will use the probabilities of death from an actuarial lifetable (
 
 ```R
 # install package
-devtools::install_github("lifetable", build_vignettes = TRUE)
+devtools::install_github("merlinoa/insuree", build_vignettes = TRUE)
 
 # read the vignette to get started
-browseVignettes("lifetable")
+browseVignettes("insuree")
 ```
