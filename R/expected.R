@@ -23,11 +23,14 @@ setGeneric("expected",
 #' 
 #' @export
 #' @examples
-#' expected(LifeTable(), x_ = 0, t_ = 3)
+#' expected(LifeTable(), x_ = 2, t_ = 3)
 setMethod("expected", signature("LifeTable"), function(object, 
                                                        x_ = object@x[1], 
-                                                       t_ = max(object@x) - object@x[1], 
+                                                       t_ = NULL, 
                                                        m_ = 0) {
+  if (is.null(t_)) {
+    t_ <- max(object@x) - x_
+  }
   
   q_x <- trim_table(object, slot_ = "q_x", x_ = x_, t_ = t_, m_ = m_)
  
