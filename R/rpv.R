@@ -28,19 +28,25 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   
   stopifnot(benefit_type %in% c("life", "annuity"))
   # simulate deaths
-  pv <- rdeath(object, n = n)[["death_table"]]
+  deaths <- rdeath(object, n = n)
+  pv <- deaths[["death_table"]]
   
   # convert 1s to 0s if annuity
   if (identical(benefit_type, "annuity")) {
-    pv[pv == 1] <- NA
-    pv[pv == 0] <- 1
-    pv[is.na(pv)] <- 0
+    # set insuree time of death to t_ + m_ if insuree did not die
+    tod <- deaths[["death_t"]]
+    tod[is.na(tod)] <- object@t_ + object@m_
+    
+    # change death_table to 1s for years insuree survives
+    for (j in seq_along(tod)) {
+      pv[1:tod[j], j] <- 1
+    }
   }
   
   # if death in defferal period (i.e. x_ to x_ + m_)
   # set present value of benefit to 0
   if (object@m_ > 0) {
-    pv[1:object@m_,] <- 0
+    pv[1:object@m_, ] <- 0
     
   }
   
@@ -49,5 +55,6 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   i <- trim_table(object, slot_ = "i", x_ = object@x_, t_ = object@t_ + object@m_)
   discount <- discount(i)
   pv <- apply(pv, 2, function(j) j * discount)
-  apply(pv, 2, sum)
+  list(deaths,
+       pv = apply(pv, 2, sum))
 })
