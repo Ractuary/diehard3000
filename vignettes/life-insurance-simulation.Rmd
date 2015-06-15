@@ -80,7 +80,7 @@ Now that we have assigned each individual to a `insuree::Insuree` object we can 
 ```{r, result = "asis"}
 # run simulation on each insuree
 # we are only interested in the present value of the simulation here
-out <- lapply(hold, function(k) insuree::rpv(k, n = n))
+out <- lapply(hold, function(k) insuree::rpv(k, n = n)$pv)
 out <- matrix(unlist(out), ncol = n, byrow = TRUE)
 total <- apply(out, 2, sum)
 quantiles <- quantile(total, seq(0.70, 0.95, by = 0.05))
