@@ -17,7 +17,6 @@ Collate:
     'expected.R'
     'insuree-package.R'
     'p-x.R'
-    'q-x.R'
     'rpv.R'
     'sim.R'
     'utils.R'

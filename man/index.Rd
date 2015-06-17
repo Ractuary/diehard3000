@@ -4,22 +4,22 @@
 \alias{index}
 \title{index}
 \usage{
-index(object, slot_, x_, t_ = 1)
+index(object, x_, t_ = 1)
 }
 \arguments{
 \item{object}{LifeTable}
 
-\item{slot_}{slot to be trimmed}
-
 \item{x_}{}
 
 \item{t_}{t_ + m_}
+
+\item{slot_}{slot to be trimmed}
 }
 \description{
 removes all values that are unnecessary for the
 specific calculation from the mortaility table column
 }
 \examples{
-trim_table(LifeTable(), slot_ = "q_x", x_ = 2, t_ = 3, m_ = 2)
+index(LifeTable(), x_ = 2, t_ = 3)
 }
 
