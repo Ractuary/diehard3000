@@ -9,14 +9,17 @@ check_Insuree <- function(object) {
                 1L)) { 
     errors <- c(errors, "Error! x_, t_, and m_ must all be of length 1")
   }
-  #benefit
-  if (length(object@benefit) != object@t_) {
+  # benefit
+  # there must be a benefit value for each x in which the term insurance
+  # is active.  We use the ceiling function to the right to account for
+  # partial years
+  if (length(object@benefit) != ceiling(object@t_ + ifelse(object@x_ %% 1 == 0, 0, 1 - object@x_ %% 1))) {
     errors <- c(errors, "Error! benefit must have length equal to t_")
   }
   
   # validate x_
-  if (length(object@x_ %in% object@x) != 1) {
-    errors <- c(errors, "Error! x_ must be in x of ActuarialTable")
+  if (object@x_ <= min(object@x) || object@x_ >= (max(object@x) + 1)) {
+    errors <- c(errors, "Error! x_ must be in range of x on ActuarialTable")
   }
   
   # validate t_
