@@ -7,7 +7,7 @@
 rdeath(object, t_ = (max(object@x) - object@x_), n)
 }
 \description{
-simulates \code{T_x} (curtate year of death) in accordance
+simulates \code{Insuree} time of death in accordance
 with the multinomial distribution provided by the life table.
 }
 

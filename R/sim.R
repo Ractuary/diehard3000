@@ -1,6 +1,6 @@
 #' rdeath
 #' 
-#' simulates \code{T_x} (curtate year of death) in accordance
+#' simulates \code{Insuree} time of death in accordance
 #' with the multinomial distribution provided by the life table.
 #' 
 #' @export
