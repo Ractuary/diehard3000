@@ -1,4 +1,4 @@
-#' trim_table
+#' index
 #' 
 #' removes all values that are unnecessary for the
 #' specific calculation from the mortaility table column
@@ -6,26 +6,70 @@
 #' @param object LifeTable
 #' @param slot_ slot to be trimmed
 #' @param x_
-#' @param t_
-#' @param m_
+#' @param t_ t_ + m_
 #' 
 #' @export
 #' @examples 
-#' trim_table(LifeTable(), slot_ = "q_x", x_ = 2, t_ = 3, m_ = 2)
-trim_table <- function(object,
-                       slot_,
-                       x_ = object@x[1], 
-                       t_ = 1,
-                       m_ = 0) {
-  trim <- slot(object, slot_)
-  trim <- trim[object@x >= floor(x_)]
-  trim <- trim[1:ceiling((x_ %% 1) + t_ + m_)]
-  if (m_ > 0) {
-    trim <- trim[-(1:floor(m_))]
+#' index(LifeTable(), x_ = 2, t_ = 3)
+index <- function(object, x_, t_ = 1) {
+  if ((x_ %% 1) + t_ >= 1) {
+    index <- which(object@x == floor(x_)):which(object@x == (ceiling(x_ + t_) - 1))
+  } else {
+    index <- which(object@x == floor(x_[1]))
   }
-  trim
+  index
 }
 
+#' "["
+#' 
+#' Helper function for subsetting ActuarialTables
+#' I want to use this to replace the trim_table() function
+#' 
+#' Need to expand so that it works for LifeTable before removing trim_table
+#' Also need to add 
+#' 
+#' @param x object of class ActuarialTable
+#' @param i x_
+#' @param j t_
+#' 
+#' @examples 
+#' test <- LifeTable()
+#' test[2.5, 3]
+setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
+          function(x, i, j, ..., drop=TRUE)
+          { 
+            stopifnot(identical(length(i), length(j), 1))
+            object <- x
+            
+            # find index of relevant x values
+            index <- index(object, x_ = i, t_ = j)
+            
+            # identify partials
+            partial_x <- i %% 1
+            partial_t <- (i + j) %% 1
+            # find table
+            # should work for partial years
+            x <- object@x[index]
+            q_x <- object@q_x[index]
+          
+            # if i and j represent integer times
+            if (partial_x == 0 && partial_t == 0) {  
+              LifeTable(x = x,
+                        q_x = q_x
+              )
+            } else {
+              if (partial_t == 0) {
+                LifeTable(x = c(i, x[-1]),
+                          q_x = c(1 - p_x(object, x_ = i, t_ = 1 - i%%1), q_x[-1])
+                )
+              } else {
+                LifeTable(x = c(i, x[-1]),
+                          q_x = c(1 - p_x(object, x_ = i, t_ = 1 - i%%1), q_x[-c(1, length(index))], 
+                                  1- p_x(object, x_ = floor(i + j), t_ = partial_t))
+                )
+              }
+            }  
+          })
 
 
 #' tp_x8q_x
@@ -40,8 +84,8 @@ trim_table <- function(object,
 #' tp_x8q_x(Insuree(x_ = 2.4, t_ = 3))
 tp_x8q_x <- function(object) {
   # isolate all q_x >= x_ 
-  q_x <- trim_table(object, slot_ = "q_x", x_ = object@x_, t_ = object@t_ + object@m_)
-  
+  trim <- object[object@x_, object@t_ + object@m_]
+  q_x <- trim@q_x
   # isolate t_ values to use to find tp_x values
   # should work even for x_, t_, and m_ are non integer numeric values
   t_s <- 1 - ((object@m_ + object@x_) %% 1)
@@ -72,8 +116,9 @@ tp_x8q_x <- function(object) {
   }
 
   out <- unlist(tp_x8q_x)
-  list(t = c(t_s, NA),
-      probs = c(out, 1 - sum(out))
+  list(x = trim@x,
+       t = c(t_s, NA),
+       probs = c(out, 1 - sum(out))
   )
 }
 

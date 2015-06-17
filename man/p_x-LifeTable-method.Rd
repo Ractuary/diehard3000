@@ -18,6 +18,6 @@
 probability of survival for person at birthday x
 }
 \examples{
-p_x(LifeTable(), x_ = 2.5, t_ = .5) # probability of x = 3 surviving 5 years
+p_x(LifeTable(), x_ = 2.5, t_ = 2) # probability of x = 3 surviving 5 years
 }
 

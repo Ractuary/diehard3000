@@ -14,5 +14,6 @@ returns the probability of death in each x for a percon age x_
 }
 \examples{
 tp_x8q_x(Insuree(x_ = 2, t_ = 3))
+tp_x8q_x(Insuree(x_ = 2.4, t_ = 3))
 }
 

@@ -20,12 +20,12 @@ setGeneric("p_x",
 #' 
 #' @export
 #' @examples
-#' p_x(LifeTable(), x_ = 2.5, t_ = .5) # probability of x = 3 surviving 5 years
+#' p_x(LifeTable(), x_ = 2.5, t_ = 2) # probability of x = 3 surviving 5 years
 setMethod("p_x", signature("LifeTable"), function(object, t_ = 1, x_ = min(object@x)) {
   stopifnot(length(t_) == 1)
   stopifnot(length(x_) == 1)
   # remove all q_x rows less than x argument
-  q_x <- trim_table(object, slot_ = "q_x", x_ = x_, t_ = t_)
+  q_x <- object@q_x[index(object, x_ = x_, t_ = t_)]
   
   # calculation for partial q_x[1] if x_ is not an integer
   # assumes uniform mortality over course of year
