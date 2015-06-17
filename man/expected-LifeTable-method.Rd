@@ -5,8 +5,8 @@
 \alias{expected,LifeTable-method}
 \title{expected}
 \usage{
-\S4method{expected}{LifeTable}(object, x_ = object@x[1], t_ = max(object@x)
-  - object@x[1], m_ = 0)
+\S4method{expected}{LifeTable}(object, x_ = object@x[1], t_ = NULL,
+  m_ = 0)
 }
 \arguments{
 \item{object}{object of class T_x}
@@ -19,6 +19,6 @@
 expected number of complete years for \code{T_x} to survive
 }
 \examples{
-expected(LifeTable(), x_ = 0, t_ = 3)
+expected(LifeTable(), x_ = 2, t_ = 3)
 }
 

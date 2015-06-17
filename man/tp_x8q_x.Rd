@@ -6,7 +6,13 @@
 \usage{
 tp_x8q_x(object)
 }
+\arguments{
+\item{object}{Insuree object}
+}
 \description{
 returns the probability of death in each x for a percon age x_
+}
+\examples{
+tp_x8q_x(Insuree(x_ = 2, t_ = 3))
 }
 

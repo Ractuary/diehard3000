@@ -35,7 +35,8 @@ setMethod("rdeath", signature("Insuree"), function(object, n) {
   deaths <- deaths[-nrow(deaths), , drop = FALSE]
   
   # return simulation output
-  list(death_table = deaths,
+  list(Insuree = object,
+       death_table = deaths,
        death_t = apply(deaths, 2, function(l) ifelse(sum(l) > 0, tp_x8q_x$t[l > 0], NA)),
        probs_death = tp_x8q_x$probs,
        prob_benefit = sum(tp_x8q_x$probs[(object@m_ + 1):(object@m_ + object@t_)]))

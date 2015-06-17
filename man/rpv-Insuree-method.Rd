@@ -19,6 +19,6 @@ rpv
 }
 \examples{
 rpv(object = Insuree(m_ = 0), n = 5, benefit_type = "annuity")
-rpv(object = Insuree(x_ = 2, t_ = 3), n = 5)
+rpv(object = Insuree(x_ = 2.5, t_ = 3), n = 5)
 }
 

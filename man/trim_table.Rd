@@ -4,8 +4,7 @@
 \alias{trim_table}
 \title{trim_table}
 \usage{
-trim_table(object, slot_, x_ = object[1], t_ = object[length(object)],
-  m_ = 0)
+trim_table(object, slot_, x_ = object@x[1], t_ = 1, m_ = 0)
 }
 \arguments{
 \item{object}{LifeTable}
