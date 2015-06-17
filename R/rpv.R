@@ -23,7 +23,7 @@ setGeneric("rpv",
 #' @export
 #' @examples
 #' rpv(object = Insuree(m_ = 0), n = 5, benefit_type = "annuity")
-#' rpv(object = Insuree(x_ = 2.5, t_ = 3), n = 5)
+#' rpv(object = Insuree(x_ = 2, t_ = 3), n = 5)
 setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life") {
   
   stopifnot(benefit_type %in% c("life", "annuity"))
@@ -52,7 +52,9 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   
   pv[(object@m_ + 1):nrow(pv), ] <- pv[(object@m_ + 1):nrow(pv), ] * object@benefit
   
-  i <- trim_table(object, slot_ = "i", x_ = object@x_, t_ = object@t_ + object@m_)
+  # TODO: create seperate discount function that takes care of this,
+  # and takes partial years into account 
+  i <- object@i[index(object, x_ = object@x_, t_ = object@t_)]
   discount <- discount(i)
   pv <- apply(pv, 2, function(j) j * discount)
   list(deaths,
