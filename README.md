@@ -1,3 +1,7 @@
+# insuree
+
+[![Travis-CI Build Status](https://travis-ci.org/merlinoa/insuree.svg?branch=master)](https://travis-ci.org/merlinoa/insuree)
+
 # Goals
 
 1. Simulate confidence levels for the present value of death benefits for a group of insurees each with differing life insurance policy terms, age, and benefit amounts.
