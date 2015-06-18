@@ -46,8 +46,7 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   # if death in defferal period (i.e. x_ to x_ + m_)
   # set present value of benefit to 0
   if (object@m_ > 0) {
-    pv[1:object@m_, ] <- 0
-    
+    pv[1:celing(object@x_ %% 1 + object@m_), ] <- 0
   }
   
   pv[(object@m_ + 1):nrow(pv), ] <- pv[(object@m_ + 1):nrow(pv), ] * object@benefit
