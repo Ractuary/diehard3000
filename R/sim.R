@@ -39,5 +39,6 @@ setMethod("rdeath", signature("Insuree"), function(object, n) {
        death_table = deaths,
        death_t = apply(deaths, 2, function(l) ifelse(sum(l) > 0, tp_x8q_x$t[l > 0], NA)),
        probs_death = tp_x8q_x$probs,
-       prob_benefit = sum(tp_x8q_x$probs[(object@m_ + 1):(object@m_ + object@t_)]))
+       t = tp_x8q_x$t,
+       x = tp_x8q_x$x)
 })

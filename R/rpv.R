@@ -51,10 +51,13 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   
   pv[(object@m_ + 1):nrow(pv), ] <- pv[(object@m_ + 1):nrow(pv), ] * object@benefit
   
-  # TODO: create seperate discount function that takes care of this,
-  # and takes partial years into account 
-  i <- object@i[index(object, x_ = object@x_, t_ = object@t_)]
-  discount <- discount(i)
+  # discount for interest 
+  i <- object@i[index(object, x_ = object@x_, t_ = object@t_ + object@m_)]
+  
+  # finds length of each interval
+  duration <- c(deaths$x[-1], deaths$x[1] + deaths$t[length(deaths$x)]) - deaths$x
+  # returns vector of discount factors
+  discount <- discount(i, duration = duration)
   pv <- apply(pv, 2, function(j) j * discount)
   list(deaths,
        pv = apply(pv, 2, sum))

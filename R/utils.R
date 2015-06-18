@@ -123,8 +123,20 @@ tp_x8q_x <- function(object) {
 }
 
 #' find interest discount rate
-discount <- function(i) {
+#' 
+#' @param i vector for interest rates
+#' @param duration vector of length == length(i) for time of each period
+#' 
+#' @examples
+#' i <- c(0.04, 0.05, 0.03)
+#' duration <- c(0.5, 1, 0.5)
+#' 
+#' discount(i = i, duration = duration)
+discount <- function(i, duration = NULL) {
   x_trend <- 1 + i
   x_discount <- 1 / x_trend
+  if (!is.null(duration)) {
+    x_discount <- (x_discount)^(duration)
+  }
   cumprod(x_discount)
 }
