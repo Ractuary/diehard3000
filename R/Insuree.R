@@ -13,7 +13,7 @@ check_Insuree <- function(object) {
   # there must be a benefit value for each x in which the term insurance
   # is active.  We use the ceiling function to the right to account for
   # partial years
-  if (length(object@benefit) != ceiling(object@t_ + ifelse(object@x_ %% 1 == 0, 0, 1 - object@x_ %% 1))) {
+  if (length(object@benefit) != (ceiling(object@t_ + object@x_) - floor(object@x_))) {
     errors <- c(errors, "Error! benefit must have length equal to t_")
   }
   
