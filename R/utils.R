@@ -92,8 +92,8 @@ tp_x8q_x <- function(object) {
   t_s <- seq(t_s, t_s + object@t_ + object@m_, by = 1)
   
   # if t_ is non integer
-  if ((object@t_ %% 1) != 0) {
-    t_s <- c(t_s, t_s[length(t_s) + (t_ %% 1)])
+  if (((object@t_ + object@x_ + object@m_) %% 1) != 0) {
+    t_s <- c(t_s, t_s[length(t_s) + ((object@x_ + object@t_ + object@m_) %% 1)])
   }
   
   q_x[1] <- 1 - p_x(object, x_ = object@x_, t_ = t_s[1])
