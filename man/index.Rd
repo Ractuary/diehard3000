@@ -21,5 +21,6 @@ specific calculation from the mortaility table column
 }
 \examples{
 index(LifeTable(), x_ = 2, t_ = 3)
+index(LifeTable(), x_ = 2.4, t_ = 3)
 }
 

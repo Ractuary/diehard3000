@@ -4,9 +4,20 @@
 \alias{discount}
 \title{find interest discount rate}
 \usage{
-discount(i)
+discount(i, duration = NULL)
+}
+\arguments{
+\item{i}{vector for interest rates}
+
+\item{duration}{vector of length == length(i) for time of each period}
 }
 \description{
 find interest discount rate
+}
+\examples{
+i <- c(0.04, 0.05, 0.03)
+duration <- c(0.5, 1, 0.5)
+
+discount(i = i, duration = duration)
 }
 

@@ -24,6 +24,8 @@ Also need to add
 }
 \examples{
 test <- LifeTable()
-test[2.5, 3]
+test[2.5, 0]
+test[2.5, 3.5]
+test[2, 3]
 }
 
