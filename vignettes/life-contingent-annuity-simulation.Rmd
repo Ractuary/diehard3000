@@ -42,12 +42,18 @@ rate <- 0.04
 n <- 1000
 
 # create male life table from qx_data (provided with the package)
-qx_male <- insuree::LifeTable(x = qx_data$x, q_x = qx_data$male_qx)
-qx_male <- insuree::ActuarialTable(i = rep(rate, times = length(qx_male@x)), qx_male)
+qx_male <- insuree::LifeTable(x = qx_data$x,
+                              t = rep(1, times = length(qx_data$x)),
+                              q_x = qx_data$male_qx)
+qx_male <- insuree::ActuarialTable(i = rep(rate, times = length(qx_male@x)),
+                                   qx_male)
 
 # create female life table from qx_data (provided with the package)
-qx_female <- insuree::LifeTable(x = qx_data$x, q_x = qx_data$female_qx)
-qx_female <- insuree::ActuarialTable(i = rep(rate, times = length(qx_female@x)), qx_female)
+qx_female <- insuree::LifeTable(x = qx_data$x,
+                                t = rep(1, times = length(qx_data$x)),
+                                q_x = qx_data$female_qx)
+qx_female <- insuree::ActuarialTable(i = rep(rate, times = length(qx_female@x)), 
+                                     qx_female)
 ```
 
 We simulate each individual's death in accordance with the multinomial distribution paramaterized by the insuree's age and corresponding probabilties from either the male or female qx table.  We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent and identically distributed.  We discount the annuity payments, assuming a `r rate * 100` % interest rate, for the number of years the insuree survives.  All annuity benefits are paid at the end of the year.
