@@ -23,11 +23,7 @@ index <- function(object, x_, t_ = 1) {
 
 #' "["
 #' 
-#' Helper function for subsetting ActuarialTables
-#' I want to use this to replace the trim_table() function
-#' 
-#' Need to expand so that it works for LifeTable before removing trim_table
-#' Also need to add 
+#' Helper function for subsetting LifeTables
 #' 
 #' @param x object of class ActuarialTable
 #' @param i x_
@@ -126,19 +122,34 @@ tp_x8q_x <- function(object) {
 
 #' find interest discount rate
 #' 
-#' @param i vector for interest rates
-#' @param duration vector of length == length(i) for time of each period
+#' @param object object of class ActuarialTable
+#' @param x_ age x at current time
+#' @param t_ interval over which to apply discount
+#' @param payment_time time in x_ to x_ + t interval when the
+#' payment is to be made.  Should be supplied as a number between
+#' 0 and 1.  0 for the beginning of the interval.  1 for the end of the 
+#' interval, and values between 0 and 1 for times between the beginning
+#' and the end of the interval.
 #' 
+#' @export
 #' @examples
-#' i <- c(0.04, 0.05, 0.03)
-#' duration <- c(0.5, 1, 0.5)
 #' 
-#' discount(i = i, duration = duration)
-discount <- function(i, duration = NULL) {
+#' discount(object = ActuarialTable(), x_ = 2.5, t_ = 4, m_ = 0.5)
+discount <- function(object, 
+                     x_, 
+                     t_, 
+                     m_,
+                     payment_time = 0.5) {
+  trim_m_ <- object[x_, m_]
+  trim_t_ <- object[x_ + m_, m_ + t_]
+  lt <- LifeTable(x = c(trim_m_@x, trim_t_@x),
+                  t = c(trim_m_@t, trim_t_@t),
+                  q_x = c(trim_m_@q_x, trim_t_@q_x)
+  )
+  i <- c(object@i[index(object, x_ = x_, t_ = m_)], object@i[index(object, x_ = x_ + m_, t_ = t_)])
   x_trend <- 1 + i
-  x_discount <- 1 / x_trend
-  if (!is.null(duration)) {
-    x_discount <- (x_discount)^(duration)
-  }
-  cumprod(x_discount)
+  t_s <- cumsum(lt@t)
+  # for payment time
+  t_s <- t_s - (1-payment_time) * lt@t
+  (1 / x_trend)^(t_s)
 }
