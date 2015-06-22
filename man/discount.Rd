@@ -4,20 +4,25 @@
 \alias{discount}
 \title{find interest discount rate}
 \usage{
-discount(i, duration = NULL)
+discount(object, x_, t_, m_, payment_time = 0.5)
 }
 \arguments{
-\item{i}{vector for interest rates}
+\item{object}{object of class ActuarialTable}
 
-\item{duration}{vector of length == length(i) for time of each period}
+\item{x_}{age x at current time}
+
+\item{t_}{interval over which to apply discount}
+
+\item{payment_time}{time in x_ to x_ + t interval when the
+payment is to be made.  Should be supplied as a number between
+0 and 1.  0 for the beginning of the interval.  1 for the end of the
+interval, and values between 0 and 1 for times between the beginning
+and the end of the interval.}
 }
 \description{
 find interest discount rate
 }
 \examples{
-i <- c(0.04, 0.05, 0.03)
-duration <- c(0.5, 1, 0.5)
-
-discount(i = i, duration = duration)
+discount(object = ActuarialTable(), x_ = 2.5, t_ = 4, m_ = 0.5)
 }
 

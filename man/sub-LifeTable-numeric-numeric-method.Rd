@@ -15,12 +15,7 @@
 \item{j}{t_}
 }
 \description{
-Helper function for subsetting ActuarialTables
-I want to use this to replace the trim_table() function
-}
-\details{
-Need to expand so that it works for LifeTable before removing trim_table
-Also need to add
+Helper function for subsetting LifeTables
 }
 \examples{
 test <- LifeTable()

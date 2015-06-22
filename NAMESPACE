@@ -3,6 +3,7 @@
 export(ActuarialTable)
 export(Insuree)
 export(LifeTable)
+export(discount)
 export(expected)
 export(index)
 export(p_x)
