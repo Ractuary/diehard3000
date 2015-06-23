@@ -47,17 +47,12 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   # set present value of benefit to 0
   if (object@m_ > 0) {
     pv[1:ceiling((object@x_ %% 1) + object@m_), ] <- 0
+    pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] <- 
+      pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] * object@benefit
+  } else {
+    pv <- pv * object@benefit
   }
   
-  # find undiscounted benefit amounts
-  # TODO: make this more simple
-  if (object@x_ %% 1 + object@m_ %% 1 > 1) {
-    pv[ceiling(object@m_ + 2):nrow(pv), ] <- 
-      pv[ceiling(object@m_ + 2):nrow(pv), ] * object@benefit
-  } else {
-    pv[ceiling(object@m_ + 1):nrow(pv), ] <- 
-      pv[ceiling(object@m_ + 1):nrow(pv), ] * object@benefit
-  }
   # returns vector of discount factors
   discount <- discount(object, x_ = object@x_, t_ = object@t_, m_ = object@m_)
   pv <- apply(pv, 2, function(j) j * discount)
