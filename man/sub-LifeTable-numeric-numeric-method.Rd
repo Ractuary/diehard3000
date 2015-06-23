@@ -22,5 +22,8 @@ test <- LifeTable()
 test[2.5, 0]
 test[2.5, 3.5]
 test[2, 3]
+test[2.4, 3.2]
+test[2.4, 3.1]
+test[2.2, 0.1]
 }
 

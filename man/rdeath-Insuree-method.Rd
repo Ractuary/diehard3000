@@ -19,6 +19,7 @@ by the LifeTable object.
 }
 \examples{
 rdeath(object = Insuree(m_ = 2), n = 5)
-rdeath(object = Insuree(x_ = 2, t_ = 3), n = 5)
+rdeath(object = Insuree(x_ = 2.4, t_ = 3, m_ = 0.5, benefit = c(1, 1, 1, 1)), n = 5)
+rdeath(object = Insuree(x_ = 3, m_ = 0.2, t_ = 3, benefit = c(1, 1, 1, 1)), n = 5)
 }
 

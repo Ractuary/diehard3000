@@ -21,7 +21,7 @@ setGeneric("rpv",
 #' @export
 #' @examples
 #' rpv(object = Insuree(m_ = .5, benefit = c(1,1, 1, 1)), n = 5, benefit_type = "annuity")
-#' rpv(object = Insuree(x_ = 2, t_ = 3, benefit = c(1, 1, 1, 1), m_ = 0.5), n = 5)
+#' rpv(object = Insuree(x_ = 2, t_ = 3, benefit = c(1, 1, 1, 1), m_ = 0.3), n = 5)
 setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life") {
   
   stopifnot(benefit_type %in% c("life", "annuity"))
@@ -44,7 +44,7 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   # if death in defferal period (i.e. x_ to x_ + m_)
   # set present value of benefit to 0
   if (object@m_ > 0) {
-    pv[1:ceiling(object@x_ %% 1 + object@m_), ] <- 0
+    pv[1:ceiling((object@x_ %% 1) + object@m_), ] <- 0
   }
   
   # find undiscounted benefit amounts
@@ -52,7 +52,7 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
     pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] * object@benefit
   
   # returns vector of discount factors
-  discount <- discount(object, x_ = , object@x_, t_ = object@t_, m_ = object@m_)
+  discount <- discount(object, x_ = object@x_, t_ = object@t_, m_ = object@m_)
   pv <- apply(pv, 2, function(j) j * discount)
   list(deaths,
        discount = discount,

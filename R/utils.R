@@ -35,6 +35,9 @@ index <- function(object, x_, t_ = 1) {
 #' test[2.5, 0]
 #' test[2.5, 3.5]
 #' test[2, 3]
+#' test[2.4, 3.2]
+#' test[2.4, 3.1]
+#' test[2.2, 0.1]
 setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
           function(x, i, j, ..., drop=TRUE)
           { 
@@ -93,11 +96,12 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
 #' @export
 #' @examples
 #' tp_x8q_x(Insuree(x_ = 2, t_ = 3))
-#' tp_x8q_x(Insuree(x_ = 2.4, t_ = 3, benefit = c(1, 1, 1, 1)))
+#' tp_x8q_x(Insuree(x_ = 2.4, t_ = 3, benefit = c(1, 1, 1, 1), m_ = 0.5))
+#' tp_x8q_x(Insuree(x_ = 3, m_ = 0.2, t_ = 3, benefit = c(1, 1, 1, 1)))
 tp_x8q_x <- function(object) {
   # isolate all q_x >= x_ 
   trim_m_ <- object[object@x_, object@m_]
-  trim_t_ <- object[object@x_ + object@m_, object@m_ + object@t_]
+  trim_t_ <- object[object@x_ + object@m_, object@t_]
   lt <- LifeTable(x = c(trim_m_@x, trim_t_@x),
                   t = c(trim_m_@t, trim_t_@t),
                   q_x = c(trim_m_@q_x, trim_t_@q_x)
