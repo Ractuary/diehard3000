@@ -145,7 +145,7 @@ discount <- function(object,
                      m_,
                      payment_time = 0.5) {
   trim_m_ <- object[x_, m_]
-  trim_t_ <- object[x_ + m_, m_ + t_]
+  trim_t_ <- object[x_ + m_, t_]
   lt <- LifeTable(x = c(trim_m_@x, trim_t_@x),
                   t = c(trim_m_@t, trim_t_@t),
                   q_x = c(trim_m_@q_x, trim_t_@q_x)
