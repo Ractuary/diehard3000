@@ -20,5 +20,7 @@ rpv
 \examples{
 rpv(object = Insuree(m_ = .5, benefit = c(1,1, 1, 1)), n = 5, benefit_type = "annuity")
 rpv(object = Insuree(x_ = 2, t_ = 3, benefit = c(1, 1, 1, 1), m_ = 0.3), n = 5)
+rpv(object = Insuree(x_ = 2.2, t_ = 3.4, benefit = c(1, 1, 1, 1), m_ = 0.3), n = 5)
+rpv(object = Insuree(x_ = 2.48, t_ = 3.57, benefit = c(1, 1, 1, 1, 1), m_ = 0), n = 5)
 }
 

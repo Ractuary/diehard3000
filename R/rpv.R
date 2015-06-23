@@ -23,6 +23,7 @@ setGeneric("rpv",
 #' rpv(object = Insuree(m_ = .5, benefit = c(1,1, 1, 1)), n = 5, benefit_type = "annuity")
 #' rpv(object = Insuree(x_ = 2, t_ = 3, benefit = c(1, 1, 1, 1), m_ = 0.3), n = 5)
 #' rpv(object = Insuree(x_ = 2.2, t_ = 3.4, benefit = c(1, 1, 1, 1), m_ = 0.3), n = 5)
+#' rpv(object = Insuree(x_ = 2.48, t_ = 3.57, benefit = c(1, 1, 1, 1, 1), m_ = 0), n = 5)
 setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life") {
   
   stopifnot(benefit_type %in% c("life", "annuity"))
@@ -49,9 +50,14 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   }
   
   # find undiscounted benefit amounts
-  pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] <- 
-    pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] * object@benefit
-  
+  # TODO: make this more simple
+  if (object@x_ %% 1 + object@m_ %% 1 > 1) {
+    pv[ceiling(object@m_ + 2):nrow(pv), ] <- 
+      pv[ceiling(object@m_ + 2):nrow(pv), ] * object@benefit
+  } else {
+    pv[ceiling(object@m_ + 1):nrow(pv), ] <- 
+      pv[ceiling(object@m_ + 1):nrow(pv), ] * object@benefit
+  }
   # returns vector of discount factors
   discount <- discount(object, x_ = object@x_, t_ = object@t_, m_ = object@m_)
   pv <- apply(pv, 2, function(j) j * discount)
