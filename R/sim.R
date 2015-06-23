@@ -35,10 +35,11 @@ setMethod("rdeath", signature("Insuree"), function(object, n) {
   deaths <- rmultinom(n = n, size = 1, prob = tp_x8q_x$probs)
   deaths <- deaths[-nrow(deaths), , drop = FALSE]
   
+  t_s <- cumsum(tp_x8q_x$t)
   # return simulation output
   list(Insuree = object,
        death_table = deaths,
-       death_t = apply(deaths, 2, function(l) ifelse(sum(l) > 0, tp_x8q_x$t[l > 0], NA)),
+       death_t = apply(deaths, 2, function(l) ifelse(sum(l) > 0, t_s[l > 0], NA)),
        probs_death = tp_x8q_x$probs,
        t = tp_x8q_x$t,
        x = tp_x8q_x$x)
