@@ -24,5 +24,6 @@ find interest discount rate
 }
 \examples{
 discount(object = ActuarialTable(), x_ = 2.5, t_ = 4, m_ = 0.5)
+discount(object = ActuarialTable(), x_ = 2.48, t_ = 4.57, m_ = 0)
 }
 

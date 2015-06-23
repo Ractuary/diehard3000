@@ -12,7 +12,10 @@
 #' @examples 
 #' index(LifeTable(), x_ = 2, t_ = 3)
 #' index(LifeTable(), x_ = 2.4, t_ = 3)
+#' index(LifeTable(), x_ = 2.4, t_ = 0)
 index <- function(object, x_, t_ = 1) {
+  if (t_ == 0) return(c())
+  
   if ((x_ %% 1) + t_ >= 1) {
     index <- which(object@x == floor(x_)):which(object@x == (ceiling(x_ + t_) - 1))
   } else {
@@ -139,6 +142,7 @@ tp_x8q_x <- function(object) {
 #' @examples
 #' 
 #' discount(object = ActuarialTable(), x_ = 2.5, t_ = 4, m_ = 0.5)
+#' discount(object = ActuarialTable(), x_ = 2.48, t_ = 4.57, m_ = 0)
 discount <- function(object, 
                      x_, 
                      t_, 
