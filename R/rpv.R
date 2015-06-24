@@ -14,6 +14,9 @@ setGeneric("rpv",
 
 #' rpv
 #' 
+#' Simulates the present value of life insurance or life contingent
+#' annuity payments for one Insuree object
+#' 
 #' @param object object of class Insuree
 #' @param n number of observations
 #' @param benefit_type character string of either "life" or "annuity"
@@ -46,7 +49,9 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   # if death in defferal period (i.e. x_ to x_ + m_)
   # set present value of benefit to 0
   if (object@m_ > 0) {
+    # set all deaths in deferral period equal to 0
     pv[1:ceiling((object@x_ %% 1) + object@m_), ] <- 0
+    # set all deaths in term period equal to the applicable benefit value
     pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] <- 
       pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] * object@benefit
   } else {

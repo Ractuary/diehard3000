@@ -15,7 +15,8 @@
 \item{benefit_type}{character string of either "life" or "annuity"}
 }
 \description{
-rpv
+Simulates the present value of life insurance or life contingent
+annuity payments for one Insuree object
 }
 \examples{
 rpv(object = Insuree(m_ = .5, benefit = c(1,1, 1, 1)), n = 5, benefit_type = "annuity")
