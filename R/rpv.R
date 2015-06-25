@@ -25,7 +25,7 @@ setGeneric("rpv",
 #' @examples
 #' rpv(object = Insuree(m_ = .5, benefit = c(1,1, 1, 1)), n = 5, benefit_type = "annuity")
 #' rpv(object = Insuree(x_ = 2, t_ = 3, benefit = c(1, 1, 1, 1), m_ = 0.3), n = 5)
-#' rpv(object = Insuree(x_ = 2.2, t_ = 3.4, benefit = c(1, 1, 1, 1), m_ = 0.3), n = 5)
+#' rpv(object = Insuree(x_ = 2.2, t_ = 3.4, benefit = c(1, 1, 1, 1), m_ = 0.3), n = 5, benefit_type = "annuity")
 #' rpv(object = Insuree(x_ = 2.48, t_ = 3.57, benefit = c(1, 1, 1, 1, 1), m_ = 0), n = 5)
 setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life") {
   
@@ -34,11 +34,13 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
   deaths <- rdeath(object, n = n)
   pv <- deaths[["death_table"]]
   
+  # returns vector of discount factors
+  discount <- discount(object, x_ = object@x_, t_ = object@t_, m_ = object@m_)
   # convert 1s to 0s if annuity
   if (identical(benefit_type, "annuity")) {
     # set insuree time of death to t_ + m_ if insuree did not die
     tod <- deaths[["death_t"]]
-    tod[is.na(tod)] <- object@t_ + object@m_
+    tod[is.na(tod)] <- ceiling(object@x_ %% 1 + object@t_ + object@m_) + 1
     
     # change death_table to 1s for years insuree survives
     for (j in seq_along(tod)) {
@@ -52,14 +54,21 @@ setMethod("rpv", signature("Insuree"), function(object, n, benefit_type = "life"
     # set all deaths in deferral period equal to 0
     pv[1:ceiling((object@x_ %% 1) + object@m_), ] <- 0
     # set all deaths in term period equal to the applicable benefit value
-    pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] <- 
-      pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] * object@benefit
+    if (benefit_type == "life") {
+      pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] <- 
+        pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] * object@benefit
+    } else {
+      # for annuities we only pay the portion of the annuity equal
+      # to the portion of the year in the term
+      pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] <- 
+        pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] * 
+        object@benefit * deaths$t[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv)]
+    }
   } else {
     pv <- pv * object@benefit
   }
   
-  # returns vector of discount factors
-  discount <- discount(object, x_ = object@x_, t_ = object@t_, m_ = object@m_)
+  
   pv <- apply(pv, 2, function(j) j * discount)
   list(deaths,
        discount = discount,
