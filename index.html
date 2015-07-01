@@ -12,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">insuree</h1>
-      <h2 class="project-tagline">Simulate mortality using actuarial life table</h2>
+      <h2 class="project-tagline">Simulate mortality using actuarial life tables</h2>
       <a href="https://github.com/merlinoa/insuree" class="btn">View on GitHub</a>
       <a href="https://github.com/merlinoa/insuree/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/merlinoa/insuree/tarball/master" class="btn">Download .tar.gz</a>
@@ -22,7 +22,7 @@
       <h3>
 <a id="problem" class="anchor" href="#problem" aria-hidden="true"><span class="octicon octicon-link"></span></a>Problem</h3>
 
-<p>Actuaries use mortality tables to estimate the mortality probabilities.  Using a mortality table, it is pretty straight forward to calculate the probability that an individual will die at a specific future time.  For example let's say we have the following mortality table:</p>
+<p>Actuaries use mortality tables to estimate mortality probabilities.  Using a mortality table, it is pretty straight forward to calculate the probability that an individual will die at a specific future time.  For example let's say we have the following mortality table:</p>
 
 <table>
 <thead>
@@ -47,9 +47,9 @@
 </tbody>
 </table>
 
-<p>In actuarial mortality tables, each integer in the x column represents the individual at birthday x.  The q_x column provides the probability of death between birthday x and birthday x + 1. (e.g. at the 1st birthday there is a 0.04 probability of dying before the 2nd birthday and a (1.0 - 0.04)*(0.03) = 0.0282 probability of dying between the second and 3rd birthdays).  </p>
+<p>Each integer in the x column represents the individual at birthday x.  The q_x column provides the probability of death between birthday x and birthday x + 1. (e.g. at the 1st birthday there is a 0.04 probability of dying before the 2nd birthday and a (1.0 - 0.04)*(0.03) = 0.0282 probability of dying between the second and 3rd birthdays).</p>
 
-<p>Calculating expected values and confidence intervals for one individual is simple enough, but when we add more and more individuals to the mix, the calculations become messy quickly.  Also we may want to use different mortality tables to represent each individual.  To further complicate things, we may want to provide different insurance benefits to each individual depending on the specific policy terms.</p>
+<p>Calculating future life expectancy and accompanying confidence intervals for one individual is simple enough, but when we add more and more individuals to the mix, the calculations become messy quickly.  Also we may want to use different mortality tables to represent each individual.  To further complicate things, we may want to provide different insurance benefits to each individual depending on the specific policy terms.</p>
 
 <h3>
 <a id="solution" class="anchor" href="#solution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Solution</h3>
