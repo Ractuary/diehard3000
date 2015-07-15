@@ -9,16 +9,19 @@
   m_ = 0)
 }
 \arguments{
-\item{object}{object of class T_x}
+\item{object}{object of class LifeTable}
 
-\item{t_}{t}
+\item{x_}{x_}
 
-\item{m_}{m}
+\item{t_}{t_}
+
+\item{m_}{m_}
 }
 \description{
-expected number of complete years for \code{T_x} to survive
+expected number of years lived during term period where term period
+is defined as the period between x_ + m_ and t_.
 }
 \examples{
-expected(LifeTable(), x_ = 2, t_ = 3)
+expected(LifeTable(), x_ = 2, t_ = 3, m_ = 0)
 }
 

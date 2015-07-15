@@ -10,7 +10,9 @@ tp_x8q_x(object)
 \item{object}{Insuree object}
 }
 \description{
-returns the probability of death in each x for a percon age x_
+returns the probability of death in each x for a percon age x_.  This function
+converts the `q_x` slot from the probability of death given the individual
+is age x to the probability of death given the individual is age x_.
 }
 \examples{
 tp_x8q_x(Insuree(x_ = 2, t_ = 3))

@@ -8,14 +8,20 @@
 \S4method{[}{LifeTable,numeric,numeric}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
-\item{x}{object of class ActuarialTable}
+\item{x}{object of class LifeTable}
 
 \item{i}{x_}
 
 \item{j}{t_}
 }
 \description{
-Helper function for subsetting LifeTables
+Helper function for subsetting LifeTable class
+}
+\details{
+The function resturns all `x` and `t` values that are applicable
+to the supplied `x_` and `t_` for the individual.  The `q_x` slot is
+adjusted for partial years where applicable based on uniform force of
+mortality.
 }
 \examples{
 test <- LifeTable()

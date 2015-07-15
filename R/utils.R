@@ -26,9 +26,14 @@ index <- function(object, x_, t_ = 1) {
 
 #' "["
 #' 
-#' Helper function for subsetting LifeTables
+#' Helper function for subsetting LifeTable class
 #' 
-#' @param x object of class ActuarialTable
+#' The function resturns all `x` and `t` values that are applicable
+#' to the supplied `x_` and `t_` for the individual.  The `q_x` slot is
+#' adjusted for partial years where applicable based on uniform force of
+#' mortality.
+#' 
+#' @param x object of class LifeTable
 #' @param i x_
 #' @param j t_
 #' 
@@ -87,12 +92,15 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
                 }
               }  
             }  
-          })
+          }
+)
 
 
 #' tp_x8q_x
 #' 
-#' returns the probability of death in each x for a percon age x_ 
+#' returns the probability of death in each x for a percon age x_.  This function
+#' converts the `q_x` slot from the probability of death given the individual
+#' is age x to the probability of death given the individual is age x_. 
 #' 
 #' @param object Insuree object
 #' 
