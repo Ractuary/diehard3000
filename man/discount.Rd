@@ -9,9 +9,11 @@ discount(object, x_, t_, m_, payment_time = 0.5)
 \arguments{
 \item{object}{object of class ActuarialTable}
 
-\item{x_}{age x at current time}
+\item{x_}{exact age at current time}
 
-\item{t_}{interval over which to apply discount}
+\item{t_}{term time}
+
+\item{m_}{deferral time}
 
 \item{payment_time}{time in x_ to x_ + t interval when the
 payment is to be made.  Should be supplied as a number between

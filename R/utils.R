@@ -142,8 +142,9 @@ tp_x8q_x <- function(object) {
 #' find interest discount rate
 #' 
 #' @param object object of class ActuarialTable
-#' @param x_ age x at current time
-#' @param t_ interval over which to apply discount
+#' @param x_ exact age at current time
+#' @param t_ term time
+#' @param m_ deferral time
 #' @param payment_time time in x_ to x_ + t interval when the
 #' payment is to be made.  Should be supplied as a number between
 #' 0 and 1.  0 for the beginning of the interval.  1 for the end of the 
