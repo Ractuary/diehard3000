@@ -15,7 +15,7 @@
 \item{j}{t_}
 }
 \description{
-Helper function for subsetting LifeTable class
+LifeTable method for subsetting
 }
 \details{
 The function resturns all `x` and `t` values that are applicable

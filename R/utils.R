@@ -1,14 +1,18 @@
 #' index
 #' 
-#' removes all values that are unnecessary for the
-#' specific calculation from the mortaility table column
+#' removes all unnecessary values from the LifeTable given the
+#' provided x_, t_, and m_.  For this specific function, t_ + m_
+#' should be provided for the t_ agrument because all information
+#' in the m_ period must be preserved.
+#' 
+#' The function does not adjust the q_x values for partial years.
+#' It only subsets all values that are relevant to x_, t_, and m_.
+#' See the `[` LifeTable method for partial year q_x values.
 #' 
 #' @param object LifeTable
-#' @param slot_ slot to be trimmed
 #' @param x_
 #' @param t_ t_ + m_
 #' 
-#' @export
 #' @examples 
 #' index(LifeTable(), x_ = 2, t_ = 3)
 #' index(LifeTable(), x_ = 2.4, t_ = 3)
@@ -26,7 +30,7 @@ index <- function(object, x_, t_ = 1) {
 
 #' "["
 #' 
-#' Helper function for subsetting LifeTable class
+#' LifeTable method for subsetting
 #' 
 #' The function resturns all `x` and `t` values that are applicable
 #' to the supplied `x_` and `t_` for the individual.  The `q_x` slot is

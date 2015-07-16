@@ -12,12 +12,17 @@ index(object, x_, t_ = 1)
 \item{x_}{}
 
 \item{t_}{t_ + m_}
-
-\item{slot_}{slot to be trimmed}
 }
 \description{
-removes all values that are unnecessary for the
-specific calculation from the mortaility table column
+removes all unnecessary values from the LifeTable given the
+provided x_, t_, and m_.  For this specific function, t_ + m_
+should be provided for the t_ agrument because all information
+in the m_ period must be preserved.
+}
+\details{
+The function does not adjust the q_x values for partial years.
+It only subsets all values that are relevant to x_, t_, and m_.
+See the `[` LifeTable method for partial year q_x values.
 }
 \examples{
 index(LifeTable(), x_ = 2, t_ = 3)
