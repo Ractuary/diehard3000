@@ -18,6 +18,7 @@ Collate:
     'insuree-package.R'
     'p-x.R'
     'rpv.R'
+    'show.R'
     'sim.R'
     'utils.R'
 Suggests:
