@@ -52,7 +52,8 @@ setMethod("show", "Insuree",
                  table = data.frame(lt,
                                     #discount = discount(object, 
                                     #                    x_ = object@x_, )
-                                    benefit = object@benefit)
+                                    benefit = c(rep(NA, ceiling(object@m_)), 
+                                                object@benefit))
                  )
             
           }
