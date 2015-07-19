@@ -22,5 +22,6 @@ Collate:
     'sim.R'
     'utils.R'
 Suggests:
-    knitr
+    knitr,
+    testthat
 VignetteBuilder: knitr
