@@ -15,7 +15,7 @@ setGeneric("expected",
 
 #' expected
 #' 
-#' expected number of years lived during term period where term period
+#' expected time lived during term period where term period
 #' is defined as the period between x_ + m_ and t_.
 #' 
 #' @param object object of class LifeTable
@@ -26,6 +26,8 @@ setGeneric("expected",
 #' @export
 #' @examples
 #' expected(LifeTable(), x_ = 2, t_ = 3, m_ = 0)
+#' expected(LifeTable(), x_ = 2, t_ = 3, m_ = 1)
+#' expected(LifeTable(), x_ = 2.5, t_ = 3, m_ = 1)
 setMethod("expected", signature("LifeTable"), function(object, 
                                                        x_ = object@x[1], 
                                                        t_ = NULL, 
@@ -38,6 +40,8 @@ setMethod("expected", signature("LifeTable"), function(object,
   # trim the LifeTable
   trim <- object[x_ + m_, t_]
   
-  # calculate life expectancy
-  sum(cumprod(1 - trim@q_x))
+  ## calculate life expectancy
+  sum(trim@t * cumprod(1 - trim@q_x)) + # individual survives the interval
+    sum(trim@t * 0.5 * trim@q_x) # individual dies during interval, death
+                                 # is assumed to be at midpoint of interval
 })

@@ -18,10 +18,12 @@
 \item{m_}{m_}
 }
 \description{
-expected number of years lived during term period where term period
+expected time lived during term period where term period
 is defined as the period between x_ + m_ and t_.
 }
 \examples{
 expected(LifeTable(), x_ = 2, t_ = 3, m_ = 0)
+expected(LifeTable(), x_ = 2, t_ = 3, m_ = 1)
+expected(LifeTable(), x_ = 2.5, t_ = 3, m_ = 1)
 }
 
