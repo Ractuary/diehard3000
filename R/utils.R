@@ -128,6 +128,28 @@ tp_x8q_x <- function(object) {
   c(tp_x8q_x, 1 - sum(tp_x8q_x))
 }
 
+#' trim_table
+#'
+#' @param object LifeTable
+#' @param x_ x_
+#' @param t_ t_
+#' @param m_ m_
+#' 
+#' @export
+#' @examples
+#' trim_table(LifeTable(), x_ = 2, t_ = 3, m_ = 1)
+trim_table <- function(object, 
+                       x_ = object@x[1], 
+                       t_ = NULL, 
+                       m_ = 0) {
+  trim_m_ <- object[x_, m_]
+  trim_t_ <- object[x_ + m_, t_]
+  LifeTable(x = c(trim_m_@x, trim_t_@x),
+            t = c(trim_m_@t, trim_t_@t),
+            q_x = c(trim_m_@q_x, trim_t_@q_x)
+  )
+}
+
 #' find interest discount rate
 #' 
 #' @param object object of class ActuarialTable
@@ -150,12 +172,7 @@ discount <- function(object,
                      t_, 
                      m_,
                      payment_time = 0.5) {
-  trim_m_ <- object[x_, m_]
-  trim_t_ <- object[x_ + m_, t_]
-  lt <- LifeTable(x = c(trim_m_@x, trim_t_@x),
-                  t = c(trim_m_@t, trim_t_@t),
-                  q_x = c(trim_m_@q_x, trim_t_@q_x)
-  )
+  lt <- trim_table(object, x_ = x_, t_ = t_, m_ = m_)
   i <- c(object@i[index(object, x_ = x_, t_ = m_)], object@i[index(object, x_ = x_ + m_, t_ = t_)])
   x_trend <- 1 + i
   t_s <- cumsum(lt@t)

@@ -29,11 +29,7 @@ setGeneric("rdeath",
 #' rdeath(object = Insuree(x_ = 3, m_ = 0.2, t_ = 3, benefit = c(1, 1, 1, 1)), n = 5)
 setMethod("rdeath", signature("Insuree"), function(object, n) {
   # find the probability of death in each x for a person age x_
-  trim_m <- object[object@x_, object@m_]
-  trim_t <- object[object@x_ + object@m_, object@t_]
-  lt <- LifeTable(x = c(trim_m@x, trim_t@x),
-                  t = c(trim_m@t, trim_t@t),
-                  q_x = c(trim_m@q_x, trim_t@q_x))
+  lt <- trim_table(object, x_ = object@x_, t_ = object@t_, m_ = object@m_)
   death_probs <- tp_x8q_x(lt)
   
   # run the simulation
