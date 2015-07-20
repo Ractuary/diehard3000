@@ -107,42 +107,25 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
 #' is age x to the probability of death given the individual is age x_. 
 #' 
 #' @param object LifeTable object
-#' @param x_
-#' @param t_
-#' @param m_
 #' 
 #' @export
 #' @examples
-#' tp_x8q_x(LifeTable(), x_ = 2, t_ = 3, m_ = 0)
-#' tp_x8q_x(LifeTable(), x_ = 2.4, t_ = 3, m_ = 0.5)
-#' tp_x8q_x(LifeTable(), x_ = 3, m_ = 0.2, t_ = 3)
-tp_x8q_x <- function(object,
-                     x_,
-                     t_ = NULL,
-                     m_ = 0) {
-  # isolate all q_x >= x_ 
-  trim_m_ <- object[x_, m_]
-  trim_t_ <- object[x_ + m_, t_]
-  lt <- LifeTable(x = c(trim_m_@x, trim_t_@x),
-                  t = c(trim_m_@t, trim_t_@t),
-                  q_x = c(trim_m_@q_x, trim_t_@q_x)
-                  )
-  
+#' tp_x8q_x(LifeTable())
+#' tp_x8q_x(LifeTable())
+#' tp_x8q_x(LifeTable())
+tp_x8q_x <- function(object) {
   # prob of surviving to each x
-  tp_x <- cumprod(1 - lt@q_x)
+  tp_x <- cumprod(1 - object@q_x)
 
-  tp_x8q_x <- lt@q_x[1]
+  tp_x8q_x <- object@q_x[1]
   
-  if (length(lt@q_x) > 1) {
-    for (j in 2:length(lt@q_x)) {
-      tp_x8q_x[j] <- tp_x[j - 1] * lt@q_x[j]
+  if (length(object@q_x) > 1) {
+    for (j in 2:length(object@q_x)) {
+      tp_x8q_x[j] <- tp_x[j - 1] * object@q_x[j]
     }
   }
 
-  list(x = lt@x,
-       t = lt@t,
-       probs = c(tp_x8q_x, 1 - sum(tp_x8q_x))
-  )
+  c(tp_x8q_x, 1 - sum(tp_x8q_x))
 }
 
 #' find interest discount rate

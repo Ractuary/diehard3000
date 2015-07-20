@@ -4,16 +4,10 @@
 \alias{tp_x8q_x}
 \title{tp_x8q_x}
 \usage{
-tp_x8q_x(object, x_, t_ = NULL, m_ = 0)
+tp_x8q_x(object)
 }
 \arguments{
 \item{object}{LifeTable object}
-
-\item{x_}{}
-
-\item{t_}{}
-
-\item{m_}{}
 }
 \description{
 returns the probability of death in each x for a percon age x_.  This function
@@ -21,8 +15,8 @@ converts the `q_x` slot from the probability of death given the individual
 is age x to the probability of death given the individual is age x_.
 }
 \examples{
-tp_x8q_x(LifeTable(), x_ = 2, t_ = 3, m_ = 0)
-tp_x8q_x(LifeTable(), x_ = 2.4, t_ = 3, m_ = 0.5)
-tp_x8q_x(LifeTable(), x_ = 3, m_ = 0.2, t_ = 3)
+tp_x8q_x(LifeTable())
+tp_x8q_x(LifeTable())
+tp_x8q_x(LifeTable())
 }
 
