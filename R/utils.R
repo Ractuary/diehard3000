@@ -106,17 +106,23 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
 #' converts the `q_x` slot from the probability of death given the individual
 #' is age x to the probability of death given the individual is age x_. 
 #' 
-#' @param object Insuree object
+#' @param object LifeTable object
+#' @param x_
+#' @param t_
+#' @param m_
 #' 
 #' @export
 #' @examples
-#' tp_x8q_x(Insuree(x_ = 2, t_ = 3))
-#' tp_x8q_x(Insuree(x_ = 2.4, t_ = 3, benefit = c(1, 1, 1, 1), m_ = 0.5))
-#' tp_x8q_x(Insuree(x_ = 3, m_ = 0.2, t_ = 3, benefit = c(1, 1, 1, 1)))
-tp_x8q_x <- function(object) {
+#' tp_x8q_x(LifeTable(), x_ = 2, t_ = 3, m_ = 0)
+#' tp_x8q_x(LifeTable(), x_ = 2.4, t_ = 3, m_ = 0.5)
+#' tp_x8q_x(LifeTable(), x_ = 3, m_ = 0.2, t_ = 3)
+tp_x8q_x <- function(object,
+                     x_,
+                     t_ = NULL,
+                     m_ = 0) {
   # isolate all q_x >= x_ 
-  trim_m_ <- object[object@x_, object@m_]
-  trim_t_ <- object[object@x_ + object@m_, object@t_]
+  trim_m_ <- object[x_, m_]
+  trim_t_ <- object[x_ + m_, t_]
   lt <- LifeTable(x = c(trim_m_@x, trim_t_@x),
                   t = c(trim_m_@t, trim_t_@t),
                   q_x = c(trim_m_@q_x, trim_t_@q_x)

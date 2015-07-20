@@ -29,7 +29,7 @@ setGeneric("rdeath",
 #' rdeath(object = Insuree(x_ = 3, m_ = 0.2, t_ = 3, benefit = c(1, 1, 1, 1)), n = 5)
 setMethod("rdeath", signature("Insuree"), function(object, n) {
   # find the probability of death in each x for a person age x_
-  tp_x8q_x <- tp_x8q_x(object)
+  tp_x8q_x <- tp_x8q_x(object, x_ = object@x_, t_ = object@t_, m_ = object@m_)
   
   # run the simulation
   deaths <- rmultinom(n = n, size = 1, prob = tp_x8q_x$probs)
