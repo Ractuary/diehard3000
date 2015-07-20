@@ -42,6 +42,6 @@ setMethod("expected", signature("LifeTable"), function(object,
   
   ## calculate life expectancy
   sum(trim@t * cumprod(1 - trim@q_x)) + # individual survives the interval
-    sum(trim@t * 0.5 * trim@q_x) # individual dies during interval, death
+    sum(trim@t * 0.5 * tp_x8q_x(object, x_ = x_, t_ = t_, m_ = m_)$probs[-(length(trim@t) + 1)]) # individual dies during interval, death
                                  # is assumed to be at midpoint of interval
 })
