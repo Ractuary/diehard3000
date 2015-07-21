@@ -46,3 +46,31 @@ setMethod("p_x", signature("LifeTable"), function(object, t_ = 1, x_ = min(objec
   
   prod(1 - q_x)
 })
+
+#' tp_x8q_x
+#' 
+#' returns the probability of death in each x for a percon age x_.  This function
+#' converts the `q_x` slot from the probability of death given the individual
+#' is age x to the probability of death given the individual is age x_. 
+#' 
+#' @param object LifeTable object
+#' 
+#' @export
+#' @examples
+#' tp_x8q_x(LifeTable())
+tp_x8q_x <- function(object) {
+  # prob of surviving to each x
+  tp_x <- cumprod(1 - object@q_x)
+  
+  # calculates probability of death in each x
+  tp_x8q_x <- object@q_x[1]
+  if (length(object@q_x) > 1) {
+    for (j in 2:length(object@q_x)) {
+      tp_x8q_x[j] <- tp_x[j - 1] * object@q_x[j]
+    }
+  }
+  
+  # return probabilities
+  # final value is probability of survival
+  c(tp_x8q_x, 1 - sum(tp_x8q_x))
+}

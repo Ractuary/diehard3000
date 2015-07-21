@@ -16,7 +16,8 @@ trim_table(object, x_ = object@x[1], t_ = NULL, m_ = 0)
 \item{m_}{m_}
 }
 \description{
-trim_table
+Helper function for creating new LifeTables given the
+x_, t_, and m_ values.
 }
 \examples{
 trim_table(LifeTable(), x_ = 2, t_ = 3, m_ = 1)

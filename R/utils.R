@@ -1,7 +1,7 @@
 #' index
 #' 
-#' removes all unnecessary values from the LifeTable given the
-#' provided x_, t_, and m_.  For this specific function, t_ + m_
+#' finds index positions for all necessary values from the LifeTable
+#' given the x_, t_, and m_.  For this specific function, t_ + m_
 #' should be provided for the t_ agrument because all information
 #' in the m_ period must be preserved.
 #' 
@@ -80,12 +80,15 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
                           q_x = q_x
                           )
               } else {
+                # find first t value
                 t_1 <- c(min(1 - (i %% 1), j))
+                # if LifeTable ends on an integer value
                 if (partial_t_ == 0) {
                   LifeTable(x = c(i, x[-1]),
                             t = c(t_1, t[-1]),
                             q_x = c(1 - p_x(object, x_ = i, t_ = t_1), q_x[-1])
                   )
+                # if LifeTable ands on a partial year  
                 } else {
                   t[length(t)] <- partial_t_
                   q_x[length(q_x)] <- 1 - p_x(object, x_ = floor(i + j), t_ = partial_t_)
@@ -100,36 +103,11 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
 )
 
 
-#' tp_x8q_x
-#' 
-#' returns the probability of death in each x for a percon age x_.  This function
-#' converts the `q_x` slot from the probability of death given the individual
-#' is age x to the probability of death given the individual is age x_. 
-#' 
-#' @param object LifeTable object
-#' 
-#' @export
-#' @examples
-#' tp_x8q_x(LifeTable())
-#' tp_x8q_x(LifeTable())
-#' tp_x8q_x(LifeTable())
-tp_x8q_x <- function(object) {
-  # prob of surviving to each x
-  tp_x <- cumprod(1 - object@q_x)
-
-  tp_x8q_x <- object@q_x[1]
-  
-  if (length(object@q_x) > 1) {
-    for (j in 2:length(object@q_x)) {
-      tp_x8q_x[j] <- tp_x[j - 1] * object@q_x[j]
-    }
-  }
-
-  c(tp_x8q_x, 1 - sum(tp_x8q_x))
-}
-
 #' trim_table
 #'
+#' Helper function for creating new LifeTables given the 
+#' x_, t_, and m_ values.
+#' 
 #' @param object LifeTable
 #' @param x_ x_
 #' @param t_ t_

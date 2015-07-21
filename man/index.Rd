@@ -14,8 +14,8 @@ index(object, x_, t_ = 1)
 \item{t_}{t_ + m_}
 }
 \description{
-removes all unnecessary values from the LifeTable given the
-provided x_, t_, and m_.  For this specific function, t_ + m_
+finds index positions for all necessary values from the LifeTable
+given the x_, t_, and m_.  For this specific function, t_ + m_
 should be provided for the t_ agrument because all information
 in the m_ period must be preserved.
 }
