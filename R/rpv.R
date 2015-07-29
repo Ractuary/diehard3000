@@ -49,6 +49,19 @@ setMethod("rpv_life", signature("Insuree"), function(object, n) {
   )
 })
 
+#' rpv_anniuty
+#' 
+#' present value of \code{rdeath} simulation for life contingent
+#' annuities
+#' 
+#' @export
+setGeneric("rpv_annuity", 
+           #valueClass = "numeric",
+           function(object, n) {
+             standardGeneric("rpv_annuity")
+           }
+)
+
 #' rpv_annuity
 #'
 #' simulate the present value of life contingent
@@ -60,24 +73,17 @@ setMethod("rpv_life", signature("Insuree"), function(object, n) {
 #' @export
 #' @examples
 #' rpv_annuity(object = Insuree(m_ = .5, benefit = c(1,1, 1, 1)), n = 5)
-#' 
-#' 
-#setMethod("rpv_life", signature("Insuree"), function(object, n) {
-#  
-#  # simulate deaths
-#  deaths <- rdeath(object, n = n)
-#  pv <- deaths[["death_table"]]
-#  # convert 1s to 0s if annuity
-#  # set insuree time of death to t_ + m_ if insuree did not die
-#  tod <- deaths[["death_t"]]
-#  tod[is.na(tod)] <- ceiling(object@x_ %% 1 + object@t_ + object@m_) + 1
-#  pv[1:ceiling((object@x_ %% 1) + object@m_), ] <- 0
-#  # change death_table to 1s for years insuree survives
-#  for (j in seq_along(tod)) {
-#    pv[1:tod[j], j] <- 1
-#  }
-#  
-#  pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] <- 
-#    pv[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv), ] * 
-#    object@benefit * deaths$t[ceiling((object@x_ %% 1) + object@m_ + 1):nrow(pv)]
-#})
+setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
+  
+  # simulate deaths
+  deaths <- rdeath(object, n = n)
+
+  tod <- deaths[["death_t"]]
+  # find all possible death and benefit intervals
+  inters <- sort(unique(c(cumsum(deaths$t), cumsum(c(object@m_, object@benefit_t)))))
+  # identify benefit amount in each interval
+  benefit_annual <- object@benefit_value[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
+  benefit_pro_rata <- c(diff(inters), NA) * benefit
+  #benefit_final <- benefit[findInterval(tod, inters)]
+  #TODO: make new life table with prorate benefits and new t and x values for discount function
+})
