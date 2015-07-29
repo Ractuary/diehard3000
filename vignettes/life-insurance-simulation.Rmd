@@ -70,12 +70,14 @@ for (j in 1:nrow(policies)) {
   hold[[j]] <- if (policies$gender[j] == "male") {
     insuree::Insuree(x_ = policies$age[j], 
                      t_ = max_m - policies$age[j],
-                     benefit = rep(policies$death_benefit[j], max_m - policies$age[j]), 
+                     benefit_t = max_m - policies$age[j],
+                     benefit_value = policies$death_benefit[j],
                      qx_male)
   } else {
-    insuree::Insuree(x_ = policies$age[j], 
+    insuree::Insuree(x_ = policies$age[j],
                      t_ = max_f - policies$age[j],
-                     benefit = rep(policies$death_benefit[j], max_f - policies$age[j]), 
+                     benefit_t = max_f - policies$age[j], 
+                     benefit_value = policies$death_benefit[j],
                      qx_female)
   }
 }
@@ -86,7 +88,7 @@ Now that we have assigned each individual to a `insuree::Insuree` object we can 
 ```{r, result = "asis"}
 # run simulation on each insuree
 # we are only interested in the present value of the simulation here
-out <- lapply(hold, function(k) insuree::rpv(k, n = n)$pv)
+out <- lapply(hold, function(k) insuree::rpv_life(k, n = n)$pv)
 out <- matrix(unlist(out), ncol = n, byrow = TRUE)
 total <- apply(out, 2, sum)
 quantiles <- quantile(total, seq(0.70, 0.95, by = 0.05))
