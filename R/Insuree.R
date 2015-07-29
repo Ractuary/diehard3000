@@ -11,10 +11,12 @@ check_Insuree <- function(object) {
   }
   # benefit
   # there must be a benefit value for each x in which the term insurance
-  # is active.  We use the ceiling function to the right to account for
-  # partial years
-  if (length(object@benefit) != (ceiling(object@t_ + object@x_ + object@m_) - floor(object@x_ + object@m_))) {
-    errors <- c(errors, "Error! benefit must have length equal to t_")
+  # is active.
+  if (sum(object@benefit_t) != object@t_) {
+    errors <- c(errors, "Error! benefit must have benefit values over entire t_")
+  }
+  if (!identical(length(object@benefit_t), length(object@benefit_value))) {
+    errors <- c(errors, "Error! benefit_t and benefit_value must be of same length")
   }
   
   # validate x_
@@ -66,10 +68,12 @@ Insuree <- setClass("Insuree",
                 slots = list(x_ = "numeric",
                              t_ = "numeric",
                              m_ = "numeric",
-                             benefit = "numeric"),
+                             benefit_t = "numeric",
+                             benefit_value = "numeric"),
                 prototype = prototype(x_ = 2,
                                       t_ = 3,
                                       m_ = 0,
-                                      benefit = c(1, 1, 1)),
+                                      benefit_t = c(1, 1, 1),
+                                      benefit_value = c(5, 4, 8)),
                 validity = check_Insuree
 )
