@@ -142,19 +142,28 @@ trim_table <- function(object,
 #' 
 #' @export
 #' @examples
-#' 
 #' discount(object = ActuarialTable(), x_ = 2.5, t_ = 4, m_ = 0.5)
 #' discount(object = ActuarialTable(), x_ = 2.48, t_ = 4.57, m_ = 0)
 discount <- function(object, 
                      x_, 
                      t_, 
                      m_,
-                     payment_time = 0.5) {
+                     payment_time = 0.5,
+                     death_time = NA) {
   lt <- trim_table(object, x_ = x_, t_ = t_, m_ = m_)
   i <- c(object@i[index(object, x_ = x_, t_ = m_)], object@i[index(object, x_ = x_ + m_, t_ = t_)])
   x_trend <- 1 + i
+  t <- lt@t
   t_s <- cumsum(lt@t)
+  # for random uniform death simulation in year of death
+  if (!is.na(death_time)) {
+    t_s <- t_s[t_s < death_time]
+    t <- t[seq_along(t_s)]
+    t <- c(t, death_time - t_s[length(t_s)])
+    t_s <- c(t_s, death_time)
+    x_trend <- x_trend[seq_along(t)]
+  }
   # for payment time
-  t_s <- t_s - (1-payment_time) * lt@t
-  (1 / x_trend)^(t_s)
+  discount_periods <- t_s - (1 - payment_time) * t
+  (1 / x_trend)^(discount_periods)
 }
