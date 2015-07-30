@@ -4,7 +4,7 @@
 \alias{discount}
 \title{find interest discount rate}
 \usage{
-discount(object, x_, t_, m_, payment_time = 0.5)
+discount(object, x_, t_, m_, payment_time = 0.5, death_time = NA)
 }
 \arguments{
 \item{object}{object of class ActuarialTable}
