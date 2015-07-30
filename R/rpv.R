@@ -30,12 +30,22 @@ setMethod("rpv_life", signature("Insuree"), function(object, n) {
   tod <- deaths[["death_t"]]
   
   # returns vector of discount factors
-  discount_table <- data.frame(
-    t_cume = cumsum(deaths$t),
-    discount = discount(object, x_ = object@x_, t_ = object@t_, m_ = object@m_)
-  )
+  discount_all <- lapply(tod, function(v) {
+                           min(discount(object, 
+                                    x_ = object@x_, 
+                                    t_ = object@t_, 
+                                    m_ = object@m_, 
+                                    death_time = v))
+                    })
   # find applicable discount amount
-  discount <- sapply(tod, function(x) ifelse(is.na(x), NA, discount_table$discount[discount_table$t_cume == x]))
+  discount <- c()
+  for (j in seq_along(tod)) {
+    discount[j] <- if(is.na(tod[j])) {
+      NA
+    } else {
+      discount_all[[j]][length(discount_all[[j]])] 
+    }
+  }
   # find applicable benefit amount
   tod[tod < object@m_] <- NA
   benefit <- object@benefit_value[findInterval(tod, cumsum(c(object@m_, object@benefit_t)))]
