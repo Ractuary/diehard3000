@@ -17,6 +17,11 @@ simulate the present value of life contingent
 annuity payments for one Insuree
 }
 \examples{
-rpv_annuity(object = Insuree(m_ = .5, benefit = c(1,1, 1, 1)), n = 5)
+rpv_annuity(object = Insuree(x_ = 2.48,
+                             t_ = 3.57,
+                             benefit_t = c(1, 1, 1, 0.57),
+                             benefit_value = c(2, 2, 4, 2),
+                             m_ = 3),
+            n = 5)
 }
 

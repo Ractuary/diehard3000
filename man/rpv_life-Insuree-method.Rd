@@ -13,10 +13,21 @@
 \item{n}{number of observations}
 }
 \description{
-Simulates the present value of a single benefit life insurance payment
+Simulates the present value of the life insurance benefit for
+an object of class \code{Insuree}
 }
 \examples{
-rpv_life(object = Insuree(x_ = 2, t_ = 3, benefit_t = c(1, 1, 1), benefit_value = c(3, 2, 1), m_ = 0.3), n = 5)
-rpv_life(object = Insuree(x_ = 2.48, t_ = 3.57, benefit_t = c(1, 1, 1, 0.57), benefit_value = c(2, 2, 2, 2), m_ = 3), n = 5)
+rpv_life(object = Insuree(x_ = 2,
+                          t_ = 3,
+                          benefit_t = c(1, 1, 1),
+                          benefit_value = c(3, 2, 1),
+                          m_ = 0.3),
+         n = 5)
+rpv_life(object = Insuree(x_ = 2.48,
+                          t_ = 3.57,
+                          benefit_t = c(1, 1, 1, 0.57),
+                          benefit_value = c(2, 2, 4, 2),
+                          m_ = 3),
+         n = 5)
 }
 
