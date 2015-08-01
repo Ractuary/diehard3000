@@ -108,8 +108,20 @@ setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
   benefit_annual <- object@benefit_value[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
   benefit_pro_rata <- c(diff(inters[inters >= object@m_]), NA) * benefit_annual
   
-  # TODO: need inters segmented i for new LifeTable that will be used to calculate discount
-  #discount <- lapply(tod, function(x) discount(object, t_ = )) 
+  # create new LifeTable segmented by inters
+  i_new <- object@i[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
+  x_new <- object@x[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
+  t_new <- object@t[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
+  q_x_new <- object@q_x[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
+  annuity_at <- ActuarialTable(x = x_new,
+                               t = t_new,
+                               q_x = q_x_new)
+  
+  discount <- lapply(tod, function(td) discount(annuity_at, 
+                                               x_ = object@x_,
+                                               t_ = object@t_,
+                                               m_ = object@m_,
+                                               death_time = td)) 
   
   # find applicable benefit amount
   #tod[tod < object@m_] <- NA
