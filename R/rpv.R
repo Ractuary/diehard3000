@@ -112,7 +112,10 @@ setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
   # identify benefit amount in each interval
   benefit_annual <- object@benefit_value[findInterval(inters, benefit_time)]
   benefit_annual <- benefit_annual[-length(benefit_annual)]
+  # TODO: need to adjust this to work for year of death
   benefit_pro_rata <- c(diff(inters[inters >= object@m_])) * benefit_annual
+  # apply benefit amounts only to time survived
+  benefit_annual[inters < tod] <- NA
   
   # create new LifeTable segmented by inters
   inters_x <- object@x_ + inters
@@ -126,24 +129,19 @@ setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
                                q_x = q_x_new,
                                i = i_new)
   
-  discount <- lapply(tod, function(td) discount(annuity_at, 
-                                                x_ = object@x_,
-                                                t_ = object@t_,
-                                                m_ = object@m_,
-                                                death_time = td)) 
-  
-  # find applicable benefit amount
-  tod[tod < object@m_] <- NA
-  # TODO: update this for annuity
-  #benefit <- object@benefit_value[findInterval(tod, cumsum(c(object@m_, object@benefit_t)))]
+  discount <- discount(annuity_at, 
+                       x_ = object@x_,
+                       t_ = object@t_,
+                       m_ = object@m_,
+                       death_time = tod)) 
   
   # set all deaths in term period equal to the applicable benefit value
   # function output
-  #pv = discount * benefit
-  #pv[is.na(pv)] <- 0
-  #list(deaths,
-  #     discount = discount,
-  #     benefit = benefit,
-  #     pv = pv
-  #)
+  # pv = discount * benefit
+  # pv[is.na(pv)] <- 0
+  # list(deaths,
+  #      discount = discount,
+  #      benefit = benefit,
+  #      pv = pv
+  # )
 })
