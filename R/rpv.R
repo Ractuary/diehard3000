@@ -99,32 +99,42 @@ setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
   deaths <- rdeath(object, n = n)
   tod <- deaths[["death_t"]]
   
-  # find all possible death and benefit intervals
+  # cumulative t values for the benefit_t
+  benefit_time <- cumsum(c(object@m_, object@benefit_t))
+  # x value values for the benefit_t
+  benefit_x <- object@x_ + benefit_time
+  
+  # find all possible death and benefit t intervals
   # we need all possible intervals so we can discount each interval for
-  # at the appropriate benefit amount
-  inters <- sort(unique(c(cumsum(deaths$t), cumsum(c(object@m_, object@benefit_t)))))
-  inters <- unique(inters)
+  # at the appropriate time and benefit amount.  First value in this vector will
+  # is the time that policy term begins.
+  inters_t <- sort(unique(c(cumsum(deaths$t), benefit_time)))
   # identify benefit amount in each interval
-  benefit_annual <- object@benefit_value[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
-  benefit_pro_rata <- c(diff(inters[inters >= object@m_]), NA) * benefit_annual
+  benefit_annual <- object@benefit_value[findInterval(inters, benefit_time)]
+  benefit_annual <- benefit_annual[-length(benefit_annual)]
+  benefit_pro_rata <- c(diff(inters[inters >= object@m_])) * benefit_annual
   
   # create new LifeTable segmented by inters
-  i_new <- object@i[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
-  x_new <- object@x[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
-  t_new <- object@t[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
-  q_x_new <- object@q_x[findInterval(inters, cumsum(c(object@m_, object@benefit_t)))]
+  inters_x <- object@x_ + inters
+  inters_x <- inters_x[-length(inters_x)]
+  i_new <- object@i[findInterval(inters_x, object@x)]
+  x_new <- object@x[findInterval(inters_x, object@x)]
+  t_new <- object@t[findInterval(inters_x, object@x)]
+  q_x_new <- object@q_x[findInterval(inters_x, object@x)]
   annuity_at <- ActuarialTable(x = x_new,
                                t = t_new,
-                               q_x = q_x_new)
+                               q_x = q_x_new,
+                               i = i_new)
   
   discount <- lapply(tod, function(td) discount(annuity_at, 
-                                               x_ = object@x_,
-                                               t_ = object@t_,
-                                               m_ = object@m_,
-                                               death_time = td)) 
+                                                x_ = object@x_,
+                                                t_ = object@t_,
+                                                m_ = object@m_,
+                                                death_time = td)) 
   
   # find applicable benefit amount
-  #tod[tod < object@m_] <- NA
+  tod[tod < object@m_] <- NA
+  # TODO: update this for annuity
   #benefit <- object@benefit_value[findInterval(tod, cumsum(c(object@m_, object@benefit_t)))]
   
   # set all deaths in term period equal to the applicable benefit value
