@@ -133,7 +133,7 @@ setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
                        x_ = object@x_,
                        t_ = object@t_,
                        m_ = object@m_,
-                       death_time = tod)) 
+                       death_time = tod)
   
   # set all deaths in term period equal to the applicable benefit value
   # function output
