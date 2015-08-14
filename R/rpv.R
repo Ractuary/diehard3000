@@ -79,8 +79,8 @@ setGeneric("rpv_annuity",
 
 #' rpv_annuity
 #'
-#' simulate the present value of life contingent
-#' annuity payments for one Insuree
+#' simulates the present value of life contingent
+#' annuity payments for one \code{Insuree}
 #' 
 #' @param object object of class Insuree
 #' @param n number of observations

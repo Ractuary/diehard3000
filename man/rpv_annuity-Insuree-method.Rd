@@ -13,8 +13,8 @@
 \item{n}{number of observations}
 }
 \description{
-simulate the present value of life contingent
-annuity payments for one Insuree
+simulates the present value of life contingent
+annuity payments for one \code{Insuree}
 }
 \examples{
 rpv_annuity(object = Insuree(x_ = 2.48,
