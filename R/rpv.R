@@ -109,9 +109,11 @@ setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
   # at the appropriate time and benefit amount.  First value in this vector will
   # is the time that policy term begins.
   inters_t <- sort(unique(c(cumsum(deaths$t), benefit_time)))
+  
   # identify benefit amount in each interval
   benefit_annual <- object@benefit_value[findInterval(inters, benefit_time)]
   benefit_annual <- benefit_annual[-length(benefit_annual)]
+  
   # TODO: need to adjust this to work for year of death
   benefit_pro_rata <- c(diff(inters[inters >= object@m_])) * benefit_annual
   # apply benefit amounts only to time survived
