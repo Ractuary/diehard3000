@@ -8,14 +8,15 @@
 \S4method{rdeath}{Insuree}(object, n)
 }
 \arguments{
-\item{object}{object of class Z_x}
+\item{object}{object of class Insuree}
 
 \item{n}{number of observations}
 }
 \description{
-simulated for \code{Z_x}.  The
+simulated time of death for an object of class \code{Insuree}.  The
 simulation is in accordance with the multinomial distribution described
-by the LifeTable object.
+by the LifeTable object.  Uniform time of death is assumed between x values
+indicated by the LifeTable object.
 }
 \examples{
 rdeath(object = Insuree(m_ = 2), n = 5)
