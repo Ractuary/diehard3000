@@ -126,13 +126,13 @@ setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
   
   # identify annual benefit amount correspinding to each t interval 
   # in the interval_t vector
-  benefit_annual <- object@benefit_value[findInterval(intervals_t, benefit_time)]
+  benefit_annual <- object@benefit_value[findInterval(intervals_t[-1], benefit_time)]
   benefit_annual <- benefit_annual[-length(benefit_annual)]
   
-  # TODO: need to adjust this to work for year of death
-  benefit_pro_rata <- c(diff(intervals_t[intervals_t >= object@m_])) * benefit_annual
-  # apply benefit amounts only to time survived
-  benefit_annual[inters < tod] <- NA
+  
+  benefit_pro_rata <- c(diff(intervals_t[intervals_t > object@m_])) * benefit_annual
+  # apply benefit amounts only to time survived for each simulated life
+  benefit_pro_rata_n <- lapply(tod, function(j) ifelse(is.na(j), NA, benefit_pro_rata[intervals_t < j]))
   
   # create new LifeTable segmented by inters
   inters_x <- object@x_ + intervals_t
