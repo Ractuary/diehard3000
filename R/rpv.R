@@ -132,7 +132,7 @@ setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
   
   benefit_pro_rata <- c(diff(intervals_t[intervals_t > object@m_])) * benefit_annual
   # apply benefit amounts only to time survived for each simulated life
-  benefit_pro_rata_n <- lapply(tod, function(j) ifelse(is.na(j), NA, benefit_pro_rata[intervals_t < j]))
+  benefit_pro_rata_n <- lapply(tod, function(j) if(is.na(j)) {NA} else {benefit_pro_rata[intervals_t < j]})
   
   # create new LifeTable segmented by inters
   inters_x <- object@x_ + intervals_t
