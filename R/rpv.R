@@ -112,32 +112,33 @@ setMethod("rpv_annuity", signature("Insuree"), function(object, n) {
   # find all possible death and benefit t intervals
   # we need all possible intervals so we can discount each interval for
   # the appropriate time and benefit amount.
-  intervals_t <- sort(
-                   unique(
-                     round(
-                       c(
-                         deaths_t,
-                         benefit_time
-                       ),
-                      2
-                     )
-                   )
-                 )
+  #intervals_t <- sort(
+  #                 unique(
+  #                   round(
+  #                     c(
+  #                       deaths_t,
+  #                       benefit_time
+  #                     ),
+  #                    2
+  #                   )
+  #                 )
+  #               )
   
   # identify annual benefit amount correspinding to each t interval 
   # in the interval_t vector
-  benefit_annual <- object@benefit_value[findInterval(intervals_t[-1], benefit_time)]
-  benefit_annual <- benefit_annual[-length(benefit_annual)]
+  #benefit_annual <- object@benefit_value[findInterval(intervals_t[-1], benefit_time)]
+  #benefit_annual <- benefit_annual[-length(benefit_annual)]
   
+  #TODO: need to rethink how benefit is handled for annuities
   
-  benefit_pro_rata <- c(diff(intervals_t[intervals_t > object@m_])) * benefit_annual
+  #benefit_pro_rata <- c(diff(intervals_t[intervals_t > object@m_])) * benefit_annual
   # apply benefit amounts only to time survived for each simulated life
-  benefit_pro_rata_n <- lapply(tod, function(j) if(is.na(j)) {NA} else {benefit_pro_rata[intervals_t < j]})
+  #benefit_pro_rata_n <- lapply(tod, function(j) if(is.na(j)) {NA} else {benefit_pro_rata[intervals_t < j]})
   
   # create new LifeTable segmented by inters
-  inters_x <- object@x_ + intervals_t
-  inters_x <- inters_x[-length(inters_x)]
-  i_new <- object@i[findInterval(inters_x, object@x)]
+  #inters_x <- object@x_ + intervals_t
+  #inters_x <- inters_x[-length(inters_x)]
+  #i_new <- object@i[findInterval(inters_x, object@x)]
   # Probably need to redefine LifeTable object where t is set by default
   #annuity_at <- ActuarialTable(x = inters_x,
   #                             t = t_new,
