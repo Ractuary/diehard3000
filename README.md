@@ -2,20 +2,26 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/merlinoa/insuree.svg?branch=master)](https://travis-ci.org/merlinoa/insuree)
 
+See the [package website](http://merlinoa.github.io/insuree/) for more information. 
+
 # Purpose
 
-1. Create a function for running a Monte Carlo simulation for the present value of death benefits for a group of insurees.  Each insuree can have different life insurance policy terms, age, and benefit amounts.
-
-2. Create a function for running a Monte Carlo simulation for the present value of life contingent annuity payments for a group of insurees. Each insuree can have different policy terms, age, and annuity payment amounts.
-
-The simulation will use the probabilities of death from an actuarial lifetable (such as the one available [here](http://www.ssa.gov/oact/STATS/table4c6.html)) to generate the sample.  A different actuarial table can be used for each insuree.
+This package creates a function for running a Monte Carlo simulation for the present value of death benefits for a group of individuals.  Each individual can have highly customizable policy and mortality characteristics.
 
 # Installation
 
 ```R
 # install package
 devtools::install_github("merlinoa/insuree", build_vignettes = TRUE)
+```
 
-# read the vignette to get started
+# Examples
+
+See the vignette for an example:
+
+```R
+library(insuree) # first install the package
 browseVignettes("insuree")
 ```
+
+[This shinydashboard](http://shiny.ractuary.com:3838/insuree-simulation/) provides an example of the `insuree` package used monitor the reserve for a group of individuals.
