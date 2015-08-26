@@ -10,9 +10,10 @@
 \arguments{
 \item{x}{object of class LifeTable}
 
-\item{i}{x_}
+\item{i}{x_ the first x value to be returned.}
 
-\item{j}{t_}
+\item{j}{the x value at which to end the subsetted \code{LifeTable}.
+This value is usually either m_ or t_.}
 }
 \description{
 LifeTable method for subsetting

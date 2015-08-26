@@ -1,27 +1,30 @@
 #' index
 #' 
-#' finds index positions for all necessary values from the LifeTable
-#' given the x_, t_, and m_.  For this specific function, t_ + m_
-#' should be provided for the t_ agrument because all information
-#' in the m_ period must be preserved.
+#' Returns the index numbers for all values of the LifeTable
+#' applicable given the x_, t_, and m_.  For specific insurees, the
+#' LifeTable object often contains x values that are not needed to 
+#' the insuree's mortality.  The \code{index} function makes it easy
+#' to extract only the data that we need to calculate mortality
+#' probabilities given the characteristics of a specific \code{insuree}
 #' 
 #' The function does not adjust the q_x values for partial years.
 #' It only subsets all values that are relevant to x_, t_, and m_.
 #' See the `[` LifeTable method for partial year q_x values.
 #' 
 #' @param object LifeTable
-#' @param x_
-#' @param t_ t_ + m_
+#' @param x_ the index of the first x value to be returned.
+#' @param m_t_ the index of the last x value to be returned.  This is oftern m_ + t_, m_
+#' or t_ when the x_ argument is set to x_ + t_.
 #' 
 #' @examples 
-#' index(LifeTable(), x_ = 2, t_ = 3)
-#' index(LifeTable(), x_ = 2.4, t_ = 3)
-#' index(LifeTable(), x_ = 2.4, t_ = 0)
-index <- function(object, x_, t_ = 1) {
-  if (t_ == 0) return(c())
+#' index(LifeTable(), x_ = 2, m_t_ = 3)
+#' index(LifeTable(), x_ = 2.4, m_t_ = 3)
+#' index(LifeTable(), x_ = 2.4, m_t_ = 0)
+index <- function(object, x_, m_t_ = 1) {
+  if (m_t_ == 0) return(c())
   
-  if ((x_ %% 1) + t_ >= 1) {
-    index <- which(object@x == floor(x_)):which(object@x == (ceiling(x_ + t_) - 1))
+  if ((x_ %% 1) + m_t_ >= 1) {
+    index <- which(object@x == floor(x_)):which(object@x == (ceiling(x_ + m_t_) - 1))
   } else {
     index <- which(object@x == floor(x_[1]))
   }
@@ -38,8 +41,9 @@ index <- function(object, x_, t_ = 1) {
 #' mortality.
 #' 
 #' @param x object of class LifeTable
-#' @param i x_
-#' @param j t_
+#' @param i x_ the first x value to be returned.
+#' @param j the x value at which to end the subsetted \code{LifeTable}.
+#' This value is usually either m_ or t_.
 #' 
 #' @export
 #' @examples 
@@ -57,7 +61,7 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
             object <- x
             
             # find index of relevant x values
-            index <- index(object, x_ = i, t_ = j)
+            index <- index(object, x_ = i, m_t_ = j)
             
             # identify partials
             partial_x_ <- i %% 1
@@ -151,7 +155,7 @@ discount <- function(object,
                      payment_time = 0.5,
                      death_time = NA) {
   lt <- trim_table(object, x_ = x_, t_ = t_, m_ = m_)
-  i <- c(object@i[index(object, x_ = x_, t_ = m_)], object@i[index(object, x_ = x_ + m_, t_ = t_)])
+  i <- c(object@i[index(object, x_ = x_, m_t_ = m_)], object@i[index(object, x_ = x_ + m_, m_t_ = t_)])
   x_trend <- 1 + i
   t <- lt@t
   t_s <- cumsum(lt@t)

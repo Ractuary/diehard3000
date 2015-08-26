@@ -4,20 +4,23 @@
 \alias{index}
 \title{index}
 \usage{
-index(object, x_, t_ = 1)
+index(object, x_, m_t_ = 1)
 }
 \arguments{
 \item{object}{LifeTable}
 
-\item{x_}{}
+\item{x_}{the index of the first x value to be returned.}
 
-\item{t_}{t_ + m_}
+\item{m_t_}{the index of the last x value to be returned.  This is oftern m_ + t_, m_
+or t_ when the x_ argument is set to x_ + t_.}
 }
 \description{
-finds index positions for all necessary values from the LifeTable
-given the x_, t_, and m_.  For this specific function, t_ + m_
-should be provided for the t_ agrument because all information
-in the m_ period must be preserved.
+Returns the index numbers for all values of the LifeTable
+applicable given the x_, t_, and m_.  For specific insurees, the
+LifeTable object often contains x values that are not needed to
+the insuree's mortality.  The \code{index} function makes it easy
+to extract only the data that we need to calculate mortality
+probabilities given the characteristics of a specific \code{insuree}
 }
 \details{
 The function does not adjust the q_x values for partial years.
@@ -25,8 +28,8 @@ It only subsets all values that are relevant to x_, t_, and m_.
 See the `[` LifeTable method for partial year q_x values.
 }
 \examples{
-index(LifeTable(), x_ = 2, t_ = 3)
-index(LifeTable(), x_ = 2.4, t_ = 3)
-index(LifeTable(), x_ = 2.4, t_ = 0)
+index(LifeTable(), x_ = 2, m_t_ = 3)
+index(LifeTable(), x_ = 2.4, m_t_ = 3)
+index(LifeTable(), x_ = 2.4, m_t_ = 0)
 }
 

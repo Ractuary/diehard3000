@@ -25,7 +25,7 @@ setMethod("p_x", signature("LifeTable"), function(object, t_ = 1, x_ = min(objec
   stopifnot(length(t_) == 1)
   stopifnot(length(x_) == 1)
   # remove all q_x rows less than x argument
-  q_x <- object@q_x[index(object, x_ = x_, t_ = t_)]
+  q_x <- object@q_x[index(object, x_ = x_, m_t_ = t_)]
   
   # calculation for partial q_x[1] if x_ is not an integer
   # assumes uniform mortality over course of year
