@@ -16,6 +16,8 @@
 #' @param m_t_ the index of the last x value to be returned.  This is oftern m_ + t_, m_
 #' or t_ when the x_ argument is set to x_ + t_.
 #' 
+#' @keywords internal
+#' @export
 #' @examples 
 #' index(LifeTable(), x_ = 2, m_t_ = 3)
 #' index(LifeTable(), x_ = 2.4, m_t_ = 3)

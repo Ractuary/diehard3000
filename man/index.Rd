@@ -32,4 +32,5 @@ index(LifeTable(), x_ = 2, m_t_ = 3)
 index(LifeTable(), x_ = 2.4, m_t_ = 3)
 index(LifeTable(), x_ = 2.4, m_t_ = 0)
 }
+\keyword{internal}
 
