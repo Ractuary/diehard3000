@@ -5,14 +5,14 @@
 \alias{p_x,LifeTable-method}
 \title{p_x}
 \usage{
-\S4method{p_x}{LifeTable}(object, t_ = 1, x_ = min(object@x))
+\S4method{p_x}{LifeTable}(object, x_ = min(object@x, t_ = 1))
 }
 \arguments{
 \item{object}{object of class LifeTable}
 
-\item{t_}{t_}
-
 \item{x_}{x_}
+
+\item{t_}{t_}
 }
 \description{
 probability of survival for person at birthday x

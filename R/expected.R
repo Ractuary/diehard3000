@@ -11,7 +11,7 @@
 #' @export
 setGeneric("expected", 
            valueClass = "numeric",
-           function(object, t_ = NULL, m_ = 0, ...) {
+           function(object, x_, t_ = NULL, m_ = 0) {
              standardGeneric("expected")
            }
 )

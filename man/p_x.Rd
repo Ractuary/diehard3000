@@ -4,14 +4,14 @@
 \alias{p_x}
 \title{p_x}
 \usage{
-p_x(object, t_ = 1, ...)
+p_x(object, x_, t_ = 1)
 }
 \arguments{
 \item{object}{object of class LifeTable}
 
-\item{t_}{t_}
-
 \item{x_}{x_}
+
+\item{t_}{t_}
 }
 \description{
 probability of survival for person at birthday \code{x}
