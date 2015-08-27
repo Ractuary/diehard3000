@@ -3,6 +3,11 @@
 #' calculates the actuarial present value of an individual at
 #' birthday \code{x}.
 #' 
+#' @param object object of class LifeTable
+#' @param x_ x_
+#' @param t_ t_
+#' @param m_ m_
+#' 
 #' @export
 setGeneric("expected", 
            valueClass = "numeric",

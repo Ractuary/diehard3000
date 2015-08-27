@@ -20,6 +20,8 @@ payment is to be made.  Should be supplied as a number between
 0 and 1.  0 for the beginning of the interval.  1 for the end of the
 interval, and values between 0 and 1 for times between the beginning
 and the end of the interval.}
+
+\item{death_time}{the time (from x_) of death}
 }
 \description{
 find interest discount rate

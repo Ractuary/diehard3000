@@ -6,6 +6,13 @@
 \usage{
 p_x(object, t_ = 1, ...)
 }
+\arguments{
+\item{object}{object of class LifeTable}
+
+\item{t_}{t_}
+
+\item{x_}{x_}
+}
 \description{
 probability of survival for person at birthday \code{x}
 }

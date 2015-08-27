@@ -2,6 +2,9 @@
 #' 
 #' present value of \code{rdeath} simulation
 #' 
+#' @param object object of class Insuree
+#' @param n number of observations
+#' 
 #' @export
 setGeneric("rpv_life", 
            #valueClass = "numeric",

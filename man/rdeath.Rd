@@ -4,7 +4,7 @@
 \alias{rdeath}
 \title{rdeath}
 \usage{
-rdeath(object, t_ = (max(object@x) - object@x_), n)
+rdeath(object, n)
 }
 \arguments{
 \item{object}{object of class Insuree}

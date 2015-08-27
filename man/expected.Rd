@@ -6,6 +6,15 @@
 \usage{
 expected(object, t_ = NULL, m_ = 0, ...)
 }
+\arguments{
+\item{object}{object of class LifeTable}
+
+\item{t_}{t_}
+
+\item{m_}{m_}
+
+\item{x_}{x_}
+}
 \description{
 calculates the actuarial present value of an individual at
 birthday \code{x}.

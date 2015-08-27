@@ -6,7 +6,12 @@
 \usage{
 check_Insuree(object)
 }
+\arguments{
+\item{object}{object of class \code{Insuree}
+
+function to check validity of Insuree S4 class constructor}
+}
 \description{
-function to check validity of Insuree S4 class constructor
+check_Insuree
 }
 

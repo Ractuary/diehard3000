@@ -14,6 +14,10 @@
 
 \item{j}{the x value at which to end the subsetted \code{LifeTable}.
 This value is usually either m_ or t_.}
+
+\item{...}{not used}
+
+\item{drop}{not used}
 }
 \description{
 LifeTable method for subsetting

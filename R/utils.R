@@ -46,6 +46,8 @@ index <- function(object, x_, m_t_ = 1) {
 #' @param i x_ the first x value to be returned.
 #' @param j the x value at which to end the subsetted \code{LifeTable}.
 #' This value is usually either m_ or t_.
+#' @param ... not used
+#' @param drop not used
 #' 
 #' @export
 #' @examples 
@@ -145,6 +147,7 @@ trim_table <- function(object,
 #' 0 and 1.  0 for the beginning of the interval.  1 for the end of the 
 #' interval, and values between 0 and 1 for times between the beginning
 #' and the end of the interval.
+#' @param death_time the time (from x_) of death
 #' 
 #' @export
 #' @examples

@@ -1,5 +1,7 @@
 #' check_Insuree
 #' 
+#' @param object object of class \code{Insuree}
+#' 
 #' function to check validity of Insuree S4 class constructor
 check_Insuree <- function(object) {
   errors <- character()

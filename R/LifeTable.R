@@ -1,5 +1,7 @@
 #' check_LifeTable
 #' 
+#' @param object object of class \code{Insuree}
+#' 
 #' function to check validity of LifeTable S4 class constructor
 check_LifeTable <- function(object) {
   errors <- character()

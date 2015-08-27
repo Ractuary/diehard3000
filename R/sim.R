@@ -9,7 +9,7 @@
 #' @export
 setGeneric("rdeath", 
            #valueClass = "numeric",
-           function(object, t_ = (max(object@x) - object@x_), n) {
+           function(object, n) {
              standardGeneric("rdeath")
            }
 )

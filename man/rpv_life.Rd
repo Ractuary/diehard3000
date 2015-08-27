@@ -6,6 +6,11 @@
 \usage{
 rpv_life(object, n)
 }
+\arguments{
+\item{object}{object of class Insuree}
+
+\item{n}{number of observations}
+}
 \description{
 present value of \code{rdeath} simulation
 }
