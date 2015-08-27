@@ -8,7 +8,7 @@
 \describe{
 \item{x}{exact age}
 \item{male_qx}{probability a male dies between birthday x and x + 1}
-\item{femal_qx}{probability a female dies between birthday x and x + 1}
+\item{female_qx}{probability a female dies between birthday x and x + 1}
 }}
 \usage{
 qx_data

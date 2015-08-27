@@ -6,6 +6,11 @@
 \usage{
 rdeath(object, t_ = (max(object@x) - object@x_), n)
 }
+\arguments{
+\item{object}{object of class Insuree}
+
+\item{n}{number of observations}
+}
 \description{
 simulates \code{Insuree} time of death in accordance
 with the multinomial distribution provided by the life table.

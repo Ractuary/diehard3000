@@ -1,5 +1,7 @@
 #' check_ActuarialTable
 #' 
+#' @param object object of class ActuarialTable
+#' 
 #' function to check validity of LifeTable S4 class constructor
 check_ActuarialTable <- function(object) {
   errors <- character()

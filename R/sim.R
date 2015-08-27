@@ -3,6 +3,9 @@
 #' simulates \code{Insuree} time of death in accordance
 #' with the multinomial distribution provided by the life table.
 #' 
+#' @param object object of class Insuree
+#' @param n number of observations
+#' 
 #' @export
 setGeneric("rdeath", 
            #valueClass = "numeric",

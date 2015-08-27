@@ -6,7 +6,12 @@
 \usage{
 check_ActuarialTable(object)
 }
+\arguments{
+\item{object}{object of class ActuarialTable
+
+function to check validity of LifeTable S4 class constructor}
+}
 \description{
-function to check validity of LifeTable S4 class constructor
+check_ActuarialTable
 }
 

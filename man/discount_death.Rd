@@ -9,7 +9,7 @@ discount_death(object, death_time = NA)
 \arguments{
 \item{object}{object of class Insuree}
 
-\item{death_time}{}
+\item{death_time}{the time (from x_) of death}
 }
 \description{
 function to discount single death benefit

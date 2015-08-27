@@ -179,7 +179,7 @@ discount <- function(object,
 #' function to discount single death benefit
 #' 
 #' @param object object of class Insuree
-#' @param death_time
+#' @param death_time the time (from x_) of death
 #' 
 #' @export
 #' @examples
@@ -188,7 +188,7 @@ discount_death <- function(object, death_time = NA) {
   out <- discount(object, 
                   x_ = object@x_, 
                   t_ = object@t_, 
-                  m = object@m_,
+                  m_ = object@m_,
                   payment_time = 1, 
                   death_time = death_time)
   out[length(out)]

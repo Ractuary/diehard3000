@@ -24,3 +24,5 @@ Suggests:
     knitr,
     testthat
 VignetteBuilder: knitr
+Depends:
+    R (>= 3.1.2)
