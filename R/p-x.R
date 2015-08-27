@@ -25,7 +25,7 @@ setGeneric("p_x",
 #' @export
 #' @examples
 #' p_x(LifeTable(), x_ = 2.5, t_ = 2) # probability of x = 3 surviving 5 years
-setMethod("p_x", signature("LifeTable"), function(object, x_ = min(object@x, t_ = 1)) {
+setMethod("p_x", signature("LifeTable"), function(object, x_ = min(object@x), t_ = 1) {
   stopifnot(length(t_) == 1)
   stopifnot(length(x_) == 1)
   # remove all q_x rows less than x argument
