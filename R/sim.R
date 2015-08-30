@@ -67,7 +67,6 @@ setMethod("rdeath", signature("Insuree"), function(object, n) {
   
   # return simulation output
   list(Insuree = object,
-       death_table = deaths,
        death_t = death_time,
        probs_death = death_probs,
        t = lt@t,
