@@ -19,7 +19,8 @@
 #' index(my_x, x_ = 2.4, m_t_ = 3)
 #' index(my_x, x_ = 2.4, m_t_ = 0)
 index <- function(x, x_, m_t_ = 1) {
-  stopifnot(m_t_ > 0)
+  stopifnot(m_t_ >= 0)
+  if (m_t_ == 0) return(c())
   upper_cutoff <- x_ + m_t_
   
   if (upper_cutoff %in% x) {
@@ -108,20 +109,17 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
     # partial years at this point
     q_x <- object@q_x[index(object@x, x_ = i, m_t_ = j)]
     
-    # revalculate q_x for partial years    
+    # recalculate q_x for partial years    
     .q_x <- c()
     for (k in seq_along(q_x)) {
       .q_x[k] <- 1 - p_x(object, x_ = .x[k], t_ = .x[k + 1] - .x[k])
     }
     
     # return new LifeTable       
-    if (length(.x) == 0) {
-      # return nothing
-    } else {
-      LifeTable(x = .x,
-                q_x = c(.q_x, NA)
-      )
-    }
+    LifeTable(x = .x,
+              q_x = c(.q_x, NA_real_)
+    )
+    
   }
 )
 
@@ -180,12 +178,11 @@ discount <- function(object,
                      x_, 
                      t_, 
                      m_,
-                     payment_time = 0.5,
                      death_time = NA) {
   lt <- trim_table(object, x_ = x_, t_ = t_, m_ = m_)
-  i <- object@i[index(object@x, x_ = x_, m_t_ = m_ + t_)]
+  i <- object@i[index(object@x, x_ = x_ + m_, m_t_ = t_)]
   x_trend <- 1 + i
-  t <- diff(object@x)
+  t <- diff(lt@x)
   t_s <- cumsum(t)
   # for random uniform death simulation in year of death
   if (!is.na(death_time)) {
@@ -209,13 +206,12 @@ discount <- function(object,
 #' 
 #' @export
 #' @examples
-#' discount_death(Insuree(), death_time = 2.7)
+#' discount_death(Insuree(), death_time = 1.01)
 discount_death <- function(object, death_time = NA) {
   out <- discount(object, 
                   x_ = object@x_, 
                   t_ = object@t_, 
                   m_ = object@m_,
-                  payment_time = 1, 
                   death_time = death_time)
   out[length(out)]
 }
