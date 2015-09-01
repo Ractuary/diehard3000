@@ -66,7 +66,7 @@ check_Insuree <- function(object) {
 #' @rdname Insuree-class
 #' @export Insuree
 Insuree <- setClass("Insuree",
-                contains = "ActuarialTable",
+                contains = "LifeTable",
                 slots = list(x_ = "numeric",
                              t_ = "numeric",
                              m_ = "numeric",
