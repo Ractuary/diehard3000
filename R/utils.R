@@ -157,61 +157,25 @@ trim_table <- function(object,
   }
 }
 
-#' find interest discount rate
-#' 
-#' @param object object of class ActuarialTable
-#' @param x_ exact age at current time
-#' @param t_ term time
-#' @param m_ deferral time
-#' @param payment_time time in x_ to x_ + t interval when the
-#' payment is to be made.  Should be supplied as a number between
-#' 0 and 1.  0 for the beginning of the interval.  1 for the end of the 
-#' interval, and values between 0 and 1 for times between the beginning
-#' and the end of the interval.
-#' @param death_time the time (from x_) of death
-#' 
-#' @export
-#' @examples
-#' discount(object = ActuarialTable(), x_ = 2.5, t_ = 4, m_ = 0.5)
-#' discount(object = ActuarialTable(), x_ = 2.48, t_ = 4.57, m_ = 0)
-discount <- function(object, 
-                     x_, 
-                     t_, 
-                     m_,
-                     death_time = NA) {
-  lt <- trim_table(object, x_ = x_, t_ = t_, m_ = m_)
-  i <- object@i[index(object@x, x_ = x_ + m_, m_t_ = t_)]
-  x_trend <- 1 + i
-  t <- diff(lt@x)
-  t_s <- cumsum(t)
-  # for random uniform death simulation in year of death
-  if (!is.na(death_time)) {
-    t_s <- t_s[t_s < death_time]
-    t <- t[seq_along(t_s)]
-    t <- c(t, death_time - t_s[length(t_s)])
-    t_s <- c(t_s, death_time)
-    x_trend <- x_trend[seq_along(t)]
-  }
-  # for payment time
-  discount_periods <- t_s - (1 - payment_time) * t
-  (1 / x_trend)^(discount_periods)
-}
 
-#' discount_death
+#' discount
 #'
-#' function to discount single death benefit
+#' function to discount single benefit
 #' 
-#' @param object object of class Insuree
+#' @param interest vector of annual interest rates
 #' @param death_time the time (from x_) of death
 #' 
 #' @export
 #' @examples
-#' discount_death(Insuree(), death_time = 1.01)
-discount_death <- function(object, death_time = NA) {
-  out <- discount(object, 
-                  x_ = object@x_, 
-                  t_ = object@t_, 
-                  m_ = object@m_,
-                  death_time = death_time)
-  out[length(out)]
+#' discount_death(0.4, death_time = 1.01)
+discount <- function(interest, death_time = NA) {
+  if (is.na(death_time)) return(NA_real_)
+  
+  if (length(interest) <- death_time) {
+    interest <- rep(interest, length.out = ceiling(death_time))
+  }
+  
+  trend <- 1 + interst[1:ceiling(death_time)]
+  trend[length(trend)] <- trend[length(trend)] ^ (death_time %% 1)
+  cumprod(trend)
 }

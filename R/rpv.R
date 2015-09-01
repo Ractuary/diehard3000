@@ -22,6 +22,9 @@ setGeneric("rpv_life",
 #' 
 #' @param object object of class Insuree
 #' @param n number of observations
+#' @param interest vector of annual interest rates.  Can use the \code{CIR()}
+#' funtion to simulate interest rates in accordance with the Cox Ingersoll Ross
+#' process.
 #' 
 #' @export
 #' @examples
@@ -37,21 +40,15 @@ setGeneric("rpv_life",
 #'                           benefit_value = c(2, 2, 4, 2), 
 #'                           m_ = 3), 
 #'          n = 5)
-setMethod("rpv_life", signature("Insuree"), function(object, n) {
+setMethod("rpv_life", signature("Insuree"), function(object, n, interest) {
   
   # simulate deaths
   deaths <- rdeath(object, n = n)
   tod <- deaths[["death_t"]]
   
   # find applicable discount amount
-  discount <- c()
-  for (j in seq_along(tod)) {
-    if(is.na(tod[j])) {
-      discount[j] <- NA
-    } else {
-      discount[j] <- discount_death(object, death_time = tod[j]) 
-    }
-  }
+  .discount <- lappt(tod, function(k) discount(interest, death_time = k))
+  
   # find applicable benefit amount
   tod[tod < object@m_] <- NA
   benefit <- object@benefit_value[findInterval(tod, cumsum(c(object@m_, object@benefit_t)))]
