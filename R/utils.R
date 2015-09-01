@@ -1,17 +1,12 @@
 #' index
 #' 
-#' Returns the index numbers for all values of the LifeTable
-#' applicable given the x_, t_, and m_.  For specific insurees, the
-#' LifeTable object often contains x values that are not needed to 
-#' the insuree's mortality.  The \code{index} function makes it easy
-#' to extract only the data that we need to calculate mortality
-#' probabilities given the characteristics of a specific \code{insuree}
+#' Returns the index numbers for all values in an ascending
+#' vector between the floor of the x_ argument and the ceiling
+#' of the x + m_t_ arguments.  This is a utility function often
+#' used for extracting the q_x values that are applicable to
+#' a subset of a LifeTable object.
 #' 
-#' The function does not adjust the q_x values for partial years.
-#' It only subsets all values that are relevant to x_, t_, and m_.
-#' See the `[` LifeTable method for partial year q_x values.
-#' 
-#' @param object LifeTable
+#' @param x vector of ascending numerics
 #' @param x_ the index of the first x value to be returned.
 #' @param m_t_ the index of the last x value to be returned.  This is oftern m_ + t_, m_
 #' or t_ when the x_ argument is set to x_ + t_.
@@ -19,26 +14,69 @@
 #' @keywords internal
 #' @export
 #' @examples 
-#' index(LifeTable(), x_ = 2, m_t_ = 3)
-#' index(LifeTable(), x_ = 2.4, m_t_ = 3)
-#' index(LifeTable(), x_ = 2.4, m_t_ = 0)
-index <- function(object, x_, m_t_ = 1) {
-  if (m_t_ == 0) return(c())
+#' my_x <- 0:9
+#' index(my_x, x_ = 2, m_t_ = 3)
+#' index(my_x, x_ = 2.4, m_t_ = 3)
+#' index(my_x, x_ = 2.4, m_t_ = 0)
+index <- function(x, x_, m_t_ = 1) {
+  stopifnot(m_t_ > 0)
+  upper_cutoff <- x_ + m_t_
   
-  if ((x_ %% 1) + m_t_ >= 1) {
-    index <- which(object@x == floor(x_)):which(object@x == (ceiling(x_ + m_t_) - 1))
+  if (upper_cutoff %in% x) {
+    findInterval(x_, x):(findInterval(upper_cutoff, x) - 1)
   } else {
-    index <- which(object@x == floor(x_[1]))
+    findInterval(x_, x):findInterval(upper_cutoff, x)
   }
-  index
+}
+
+#' index_x
+#' 
+#' Returns the x values for an actuarial table
+#' 
+#' @param x vector of ascending numerics
+#' @param x_ the index of the first x value to be returned.
+#' @param m_t_ the index of the last x value to be returned.  This is oftern m_ + t_, m_
+#' or t_ when the x_ argument is set to x_ + t_.
+#' 
+#' @keywords internal
+#' @export
+#' @examples 
+#' my_x <- 0:9
+#' index_x(my_x, x_ = 2, m_t_ = 3)
+#' index_x(my_x, x_ = 2.4, m_t_ = 3)
+#' index_x(my_x, x_ = 2.4, m_t_ = 0)
+index_x <- function(x, x_, m_t_ = 1) {
+  .index <- index(x = x, x_ = x_, m_t_ = m_t_)
+  # return index for x values
+  c(.index, .index[length(.index)] + 1)
+}
+
+#' new_x
+#' 
+#' create new x values by specifying new age x_ and
+#' interval m_t_
+#' 
+#' @param x
+#' @param x_
+#' @param m_t_
+#' 
+#' @export
+#' 
+#' @examples 
+#' new_x(x = 0:5, x_ = 2.3, m_t_ = 1.8)
+new_x <- function(x, x_, m_t_) {
+  .x <- x[index_x(x = x, x_ = x_, m_t_ = m_t_)]
+  .x[1] <- x_
+  .x[length(.x)] <- x_ + m_t_
+  .x
 }
 
 #' "["
 #' 
 #' LifeTable method for subsetting
 #' 
-#' The function resturns all `x` and `t` values that are applicable
-#' to the supplied `x_` and `t_` for the individual.  The `q_x` slot is
+#' The function returns all `x` values that are applicable
+#' to the supplied `x_` and `t_`.  The `q_x` slot is
 #' adjusted for partial years where applicable based on uniform force of
 #' mortality.
 #' 
@@ -59,55 +97,32 @@ index <- function(object, x_, m_t_ = 1) {
 #' test[2.4, 3.1]
 #' test[2.2, 0.1]
 setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
-          function(x, i, j, ..., drop=TRUE)
-          { 
-            stopifnot(identical(length(i), length(j), 1))
-            object <- x
+  function(x, i, j, ..., drop=TRUE) { 
+    stopifnot(identical(length(i), length(j), 1))
+    object <- x
             
-            # find index of relevant x values
-            index <- index(object, x_ = i, m_t_ = j)
-            
-            # identify partials
-            partial_x_ <- i %% 1
-            partial_t_ <- (i + j) %% 1
-            # find table
-            # should work for partial years
-            x <- object@x[index]
-            t <- object@t[index]
-            q_x <- object@q_x[index]
-            if (j == 0) {
-              LifeTable(x = vector(mode="numeric", length=0),
-                        t = vector(mode="numeric", length=0),
-                        q_x = vector(mode="numeric", length=0)
-              )
-            } else {
-            # if i and j represent integer times
-              if (partial_x_ == 0 && partial_t_ == 0) {  
-                LifeTable(x = x,
-                          t = t,
-                          q_x = q_x
-                          )
-              } else {
-                # find first t value
-                t_1 <- c(min(1 - (i %% 1), j))
-                # if LifeTable ends on an integer value
-                if (partial_t_ == 0) {
-                  LifeTable(x = c(i, x[-1]),
-                            t = c(t_1, t[-1]),
-                            q_x = c(1 - p_x(object, x_ = i, t_ = t_1), q_x[-1])
-                  )
-                # if LifeTable ands on a partial year  
-                } else {
-                  t[length(t)] <- partial_t_
-                  q_x[length(q_x)] <- 1 - p_x(object, x_ = floor(i + j), t_ = partial_t_)
-                  LifeTable(x = c(i, x[-1]),
-                            t = c(t_1, t[-1]),
-                            q_x = c(1 - p_x(object, x_ = i, t_ = t_1), q_x[-1])
-                  )
-                }
-              }  
-            }  
-          }
+    # find proper x values
+    .x <- new_x(object@x, x_ = i, m_t_ = j)
+    # find q_x values
+    # note: the full year q_x value will be returned for
+    # partial years at this point
+    q_x <- object@q_x[index(object@x, x_ = i, m_t_ = j)]
+    
+    # revalculate q_x for partial years    
+    .q_x <- c()
+    for (k in seq_along(q_x)) {
+      .q_x[k] <- 1 - p_x(object, x_ = .x[k], t_ = .x[k + 1] - .x[k])
+    }
+    
+    # return new LifeTable       
+    if (length(.x) == 0) {
+      # return nothing
+    } else {
+      LifeTable(x = .x,
+                q_x = c(.q_x, NA)
+      )
+    }
+  }
 )
 
 
@@ -124,16 +139,24 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
 #' @export
 #' @examples
 #' trim_table(LifeTable(), x_ = 2, t_ = 3, m_ = 1)
+#' trim_table(object, x_ = 2.47, t_ = 4.57, m_ = 0)
 trim_table <- function(object, 
                        x_ = object@x[1], 
                        t_ = NULL, 
                        m_ = 0) {
-  trim_m_ <- object[x_, m_]
+  
   trim_t_ <- object[x_ + m_, t_]
-  LifeTable(x = c(trim_m_@x, trim_t_@x),
-            t = c(trim_m_@t, trim_t_@t),
-            q_x = c(trim_m_@q_x, trim_t_@q_x)
-  )
+  if (m_ > 0) {
+    trim_m_ <- object[x_, m_]
+    len <- length(trim_m_@x)
+    trim_m_@x <- trim_m_@x[-len]
+    trim_m_@q_x <- trim_m_@q_x[-len]
+    LifeTable(x = c(trim_m_@x, trim_t_@x),
+              q_x = c(trim_m_@q_x, trim_t_@q_x)
+    )
+  } else {
+    trim_t_
+  }
 }
 
 #' find interest discount rate
@@ -160,10 +183,10 @@ discount <- function(object,
                      payment_time = 0.5,
                      death_time = NA) {
   lt <- trim_table(object, x_ = x_, t_ = t_, m_ = m_)
-  i <- c(object@i[index(object, x_ = x_, m_t_ = m_)], object@i[index(object, x_ = x_ + m_, m_t_ = t_)])
+  i <- object@i[index(object@x, x_ = x_, m_t_ = m_ + t_)]
   x_trend <- 1 + i
-  t <- lt@t
-  t_s <- cumsum(lt@t)
+  t <- diff(object@x)
+  t_s <- cumsum(t)
   # for random uniform death simulation in year of death
   if (!is.na(death_time)) {
     t_s <- t_s[t_s < death_time]

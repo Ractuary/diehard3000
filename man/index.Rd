@@ -4,10 +4,10 @@
 \alias{index}
 \title{index}
 \usage{
-index(object, x_, m_t_ = 1)
+index(x, x_, m_t_ = 1)
 }
 \arguments{
-\item{object}{LifeTable}
+\item{x}{vector of ascending numerics}
 
 \item{x_}{the index of the first x value to be returned.}
 
@@ -15,22 +15,17 @@ index(object, x_, m_t_ = 1)
 or t_ when the x_ argument is set to x_ + t_.}
 }
 \description{
-Returns the index numbers for all values of the LifeTable
-applicable given the x_, t_, and m_.  For specific insurees, the
-LifeTable object often contains x values that are not needed to
-the insuree's mortality.  The \code{index} function makes it easy
-to extract only the data that we need to calculate mortality
-probabilities given the characteristics of a specific \code{insuree}
-}
-\details{
-The function does not adjust the q_x values for partial years.
-It only subsets all values that are relevant to x_, t_, and m_.
-See the `[` LifeTable method for partial year q_x values.
+Returns the index numbers for all values in an ascending
+vector between the floor of the x_ argument and the ceiling
+of the x + m_t_ arguments.  This is a utility function often
+used for extracting the q_x values that are applicable to
+a subset of a LifeTable object.
 }
 \examples{
-index(LifeTable(), x_ = 2, m_t_ = 3)
-index(LifeTable(), x_ = 2.4, m_t_ = 3)
-index(LifeTable(), x_ = 2.4, m_t_ = 0)
+my_x <- 0:9
+index(my_x, x_ = 2, m_t_ = 3)
+index(my_x, x_ = 2.4, m_t_ = 3)
+index(my_x, x_ = 2.4, m_t_ = 0)
 }
 \keyword{internal}
 

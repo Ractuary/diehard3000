@@ -51,7 +51,8 @@ setMethod("rdeath", signature("Insuree"), function(object, n) {
   ## uniform distribution to simulate the time of death during the t.  This
   ## allows us to simulate the exact time of death.
   # Determine length of t in which individual died
-  death_t_length <- apply(deaths, 2, function(l) ifelse(sum(l) > 0, object@t[l > 0], NA))
+  t <- diff(object@x)
+  death_t_length <- apply(deaths, 2, function(l) ifelse(sum(l) > 0, t[l > 0], NA))
   # Run random uniform simulation over t of death
   death_t_time <- lapply(death_t_length, function(y) ifelse(is.na(y), NA, runif(n = 1, min = 0, max = y)))
   death_t_time <- unlist(death_t_time)
@@ -59,16 +60,14 @@ setMethod("rdeath", signature("Insuree"), function(object, n) {
   # we now have the time of death within the death interval
   # now we will find the total time leading up to that interval and add
   # that to the time lived during the interval (which we just calculated above)
-  t_s <- cumsum(lt@t)
+  t_s <- lt@x - min(lt@x)
   full_periods_lived <- apply(deaths, 2, function(l) {
-    ifelse(sum(l) > 0, t_s[which(l > 0) - 1], NA)
+    ifelse(sum(l) > 0, t_s[which(l > 0)], NA)
   })
   death_time <- full_periods_lived + death_t_time
   
   # return simulation output
   list(Insuree = object,
        death_t = death_time,
-       probs_death = death_probs,
-       t = lt@t,
-       x = lt@x)
+       probs_death = death_probs)
 })

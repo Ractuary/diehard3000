@@ -29,7 +29,7 @@ check_ActuarialTable <- function(object) {
 ActuarialTable <- setClass("ActuarialTable",
   contains = "LifeTable",
   slots = list(i = "numeric"),
-  prototype = prototype(i = rep(0.04, 10)),
+  prototype = prototype(i = c(rep(0.04, 10), NA)),
   validity = check_ActuarialTable
 )
 

@@ -13,11 +13,10 @@ An S4 class to represent a life table
 \describe{
 \item{\code{x}}{a length n ascending numeric vector}
 
-\item{\code{t}}{a length n numeric vecotr indicating the t_ value
-for each x appropriate that corresponds with the q_x element in
-the table.  Important for last element and for deferral insurance.}
-
 \item{\code{q_x}}{a length n numeric vector for probability of death at
-each element of x}
+each element of x.  The final q_x should be set to NA.  This is
+done to remove ambiguity associated with not having the length of
+the last x value on most actuarial tables having a specified
+duration.}
 }}
 

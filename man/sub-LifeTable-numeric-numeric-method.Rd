@@ -23,8 +23,8 @@ This value is usually either m_ or t_.}
 LifeTable method for subsetting
 }
 \details{
-The function resturns all `x` and `t` values that are applicable
-to the supplied `x_` and `t_` for the individual.  The `q_x` slot is
+The function returns all `x` values that are applicable
+to the supplied `x_` and `t_`.  The `q_x` slot is
 adjusted for partial years where applicable based on uniform force of
 mortality.
 }

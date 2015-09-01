@@ -42,16 +42,16 @@ rate <- 0.04
 n <- 1000
 
 # create male life table from qx_data (provided with the package)
-qx_male <- insuree::LifeTable(x = qx_data$x, 
-                              t = rep(1, times = length(qx_data$x)),
-                              q_x = qx_data$male_qx)
+qx_male <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1), 
+                              q_x = c(qx_data$male_qx, NA)
+                              )
 qx_male <- insuree::ActuarialTable(i = rep(rate, times = length(qx_male@x)), 
                                    qx_male)
 
 # create female life table from qx_data (provided with the package)
-qx_female <- insuree::LifeTable(x = qx_data$x,
-                                t = rep(1, times = length(qx_data$x)),
-                                q_x = qx_data$female_qx)
+qx_female <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1),
+                                q_x = c(qx_data$female_qx, NA)
+                                )
 qx_female <- insuree::ActuarialTable(i = rep(rate, times = length(qx_female@x)), 
                                      qx_female)
 ```
