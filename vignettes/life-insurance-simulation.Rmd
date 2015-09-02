@@ -11,7 +11,7 @@ vignette: >
 
 We provide whole life insurance.  
 
-How much money do we need to set aside today to have a certain probability that we can payout the entire life insurance  benefit to all insurees?
+How much money do we need to set aside today so we can payout the entire life insurance benefit to all of our insurees?
 
 ```{r load_stuff}
 library(insuree)
@@ -33,38 +33,40 @@ knitr::kable(policies)
 
 As you can see, we have male and female insurees of varying ages.  They also have varying death benefits.
 
-We are going to create an object of class `insuree::Insuree` to represent each one of our insurees.  Each of these `insuree::Insuree` objects is defined by an actual life table.  We will use the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).  I named this life table `qx_table` and it comes with the package.
+We are going to create an object of class `insuree::Insuree` to represent each one of our insurees.  The future probability of death for each of these `insuree::Insuree` objects is defined by an actuarial life table.  We are using the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).  I named this life table `qx_table` and it comes with the package.
+
+The following code shows how to deine a `LifeTable` object:
 
 ```{r life_tables}
-# select interest rate
-rate <- 0.04
-# select number of times to run simulation
-n <- 1000
-
 # create male life table from qx_data (provided with the package)
 qx_male <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1), 
                               q_x = c(qx_data$male_qx, NA)
                               )
-qx_male <- insuree::ActuarialTable(i = rep(rate, times = length(qx_male@x)), 
-                                   qx_male)
 
 # create female life table from qx_data (provided with the package)
 qx_female <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1),
                                 q_x = c(qx_data$female_qx, NA)
                                 )
-qx_female <- insuree::ActuarialTable(i = rep(rate, times = length(qx_female@x)), 
-                                     qx_female)
 ```
-
-We simulate each individual's death in accordance with the multinomial distribution paramaterized by the probabilties from either the male or female qx table.  We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent and identically distributed.  We discount the death benefit, assuming a `r rate * 100` % interest rate, for the number of years the insuree survives.  All death benefits are paid at the end of the year of death.
 
 First lets assign each insuree to a `insuree::Insuree` object.
 
 ```{r}
-# use lifetable package to define each policy as a Insuree object
+# set discount rate
+rate <- 0.04
+
+# select number of times to run simulation
+n <- 1000
+
+# I am finding the max age of the life tables so I can 
+# make examples using the Insuree object inwhich the
+# Insuree's life insurance policy lasts until the end of the
+# life table.  Any age greater than the Insuree's current age
+# could be used in place of max_m and max_f as defined below
 max_m <- max(qx_male@x)
 max_f <- max(qx_female@x)
 
+# use package to define each policy as an Insuree object
 hold <- list()
 for (j in 1:nrow(policies)) {
   hold[[j]] <- if (policies$gender[j] == "male") {
@@ -83,12 +85,14 @@ for (j in 1:nrow(policies)) {
 }
 ```
 
+We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent and identically distributed.  We discount the death benefit, assuming a `r rate * 100` % interest rate, for the number of years the insuree survives.  All death benefits are paid at the end of the year of death.
+
 Now that we have assigned each individual to a `insuree::Insuree` object we can run the simulation.  The present value of an `insuree::Insuree` object can be simulated with the `insuree:rpv` method. 
 
 ```{r, result = "asis"}
 # run simulation on each insuree
 # we are only interested in the present value of the simulation here
-out <- lapply(hold, function(k) insuree::rpv_life(k, n = n)$pv)
+out <- lapply(hold, function(k) insuree::rpv_life(k, n = n, interest = rate)$pv)
 out <- matrix(unlist(out), ncol = n, byrow = TRUE)
 total <- apply(out, 2, sum)
 quantiles <- quantile(total, seq(0.70, 0.95, by = 0.05))
