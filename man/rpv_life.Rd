@@ -4,12 +4,14 @@
 \alias{rpv_life}
 \title{rpv_life}
 \usage{
-rpv_life(object, n)
+rpv_life(object, n, interest)
 }
 \arguments{
 \item{object}{object of class Insuree}
 
 \item{n}{number of observations}
+
+\item{interest}{vector of annual interest rates}
 }
 \description{
 present value of \code{rdeath} simulation

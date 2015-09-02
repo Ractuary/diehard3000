@@ -54,7 +54,7 @@ check_Insuree <- function(object) {
 #' 
 #' An individual with some kind of life contingent insurance
 #' 
-#' @include ActuarialTable.R
+#' @include LifeTable.R
 #' @slot x_ x value for individual
 #' @slot t_ t value for individual
 #' @slot m_ m value for individual

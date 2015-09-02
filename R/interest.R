@@ -8,6 +8,7 @@
 #' to the long term mean b
 #' @param s volatility of the interest rate process
 #' 
+#' @export
 #' @examples 
 #' rcir(n = 10, r = 0.01, b = 0.04, a = 1, s = 0.05)
 rcir <- function(n, r, b, a, s) {  

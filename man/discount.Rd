@@ -2,32 +2,20 @@
 % Please edit documentation in R/utils.R
 \name{discount}
 \alias{discount}
-\title{find interest discount rate}
+\title{discount}
 \usage{
-discount(object, x_, t_, m_, payment_time = 0.5, death_time = NA)
+discount(interest, death_time = NA)
 }
 \arguments{
-\item{object}{object of class ActuarialTable}
-
-\item{x_}{exact age at current time}
-
-\item{t_}{term time}
-
-\item{m_}{deferral time}
-
-\item{payment_time}{time in x_ to x_ + t interval when the
-payment is to be made.  Should be supplied as a number between
-0 and 1.  0 for the beginning of the interval.  1 for the end of the
-interval, and values between 0 and 1 for times between the beginning
-and the end of the interval.}
+\item{interest}{vector of annual interest rates}
 
 \item{death_time}{the time (from x_) of death}
 }
 \description{
-find interest discount rate
+function to discount single benefit
 }
 \examples{
-discount(object = ActuarialTable(), x_ = 2.5, t_ = 4, m_ = 0.5)
-discount(object = ActuarialTable(), x_ = 2.48, t_ = 4.57, m_ = 0)
+discount(0.04, death_time = 1.01)
+discount(0.04, death_time = 0.8)
 }
 

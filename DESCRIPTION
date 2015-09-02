@@ -11,14 +11,14 @@ License: GPL-2
 LazyData: true
 Collate:
     'LifeTable.R'
-    'ActuarialTable.R'
     'Insuree.R'
     'data.R'
     'expected.R'
     'insuree-package.R'
+    'interest.R'
     'p-x.R'
+    'rdeath.R'
     'rpv.R'
-    'sim.R'
     'utils.R'
 Suggests:
     knitr,
