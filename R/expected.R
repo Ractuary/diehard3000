@@ -44,9 +44,10 @@ setMethod("expected", signature("LifeTable"), function(object,
   
   # trim the LifeTable
   trim <- object[x_ + m_, t_]
-  
+  death_probs <- tp_x8q_x(trim)
   ## calculate life expectancy
-  sum(trim@t * cumprod(1 - trim@q_x)) + # individual survives the interval
-    sum(trim@t * 0.5 * tp_x8q_x(trim)[-length(tp_x8q_x(trim))]) # individual dies during interval, death
+  t <- diff(trim@x)
+  sum(t * cumprod(1 - trim@q_x[-length(trim@q_x)])) + # individual survives the interval
+    sum(t * 0.5 * death_probs[-length(death_probs)]) # individual dies during interval, death
                                  # is assumed to be at midpoint of interval
 })
