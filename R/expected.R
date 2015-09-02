@@ -1,27 +1,26 @@
-#' expected
+#' mean_life
 #' 
-#' calculates the actuarial present value of an individual at
-#' birthday \code{x}.
+#' calculates the mean amount of time the \code{object} argument is expected
+#' to live
 #' 
-#' @param object object of class LifeTable
-#' @param x_ x_
-#' @param t_ t_
-#' @param m_ m_
+#' @param object
+#' @param ...
 #' 
 #' @export
-setGeneric("expected", 
+setGeneric("mean_life", 
            valueClass = "numeric",
-           function(object, x_, t_ = NULL, m_ = 0) {
-             standardGeneric("expected")
+           function(object, ...) {
+             standardGeneric("mean_life")
            }
 )
 
  
 
-#' expected
+#' mean_life
 #' 
-#' expected time lived during term period where term period
-#' is defined as the period between x_ + m_ and t_.
+#' The expected time lived provided an object of class \code{LifeTable}
+#' in the \code{object} argument.  Expected time lived only includes times
+#' between x_ + m_ and t_.
 #' 
 #' @param object object of class LifeTable
 #' @param x_ x_
@@ -30,10 +29,10 @@ setGeneric("expected",
 #' 
 #' @export
 #' @examples
-#' expected(LifeTable(), x_ = 2, t_ = 3, m_ = 0)
-#' expected(LifeTable(), x_ = 2, t_ = 3, m_ = 1)
-#' expected(LifeTable(), x_ = 2.5, t_ = 3, m_ = 1)
-setMethod("expected", signature("LifeTable"), function(object, 
+#' mean_life(LifeTable(), x_ = 2, t_ = 3, m_ = 0)
+#' mean_life(LifeTable(), x_ = 2, t_ = 3, m_ = 1)
+#' mean_life(LifeTable(), x_ = 2.5, t_ = 3, m_ = 1)
+setMethod("mean_life", signature("LifeTable"), function(object, 
                                                        x_ = object@x[1], 
                                                        t_ = NULL, 
                                                        m_ = 0) {
@@ -50,4 +49,25 @@ setMethod("expected", signature("LifeTable"), function(object,
   sum(t * cumprod(1 - trim@q_x[-length(trim@q_x)])) + # individual survives the interval
     sum(t * 0.5 * death_probs[-length(death_probs)]) # individual dies during interval, death
                                  # is assumed to be at midpoint of interval
+})
+
+
+#' mean_life
+#' 
+#' The expected time lived provided an object of class \code{Insuree}
+#' in the \code{object} argument.  Expected time lived only includes times
+#' between x_ + m_ and t_.
+#' 
+#' @param object object of class \code{Insuree}
+#' @param x_ x_
+#' @param t_ t_
+#' @param m_ m_
+#' 
+#' @export
+#' @examples
+#' mean_life(Insuree())
+#' mean_life(Insuree(x_ = 2.5, t_ = 3, m_ = 1))
+setMethod("mean_life", signature("Insuree"), function(object) {
+  lt <- LifeTable(x = object@x, q_x = object@q_x)
+  mean_life(object = lt, x_ = object@x_, t_ = object@t_, m_ = object@m_)
 })
