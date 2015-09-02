@@ -137,7 +137,7 @@ setMethod("[", c("LifeTable", "numeric", "numeric", "ANY"),
 #' @export
 #' @examples
 #' trim_table(LifeTable(), x_ = 2, t_ = 3, m_ = 1)
-#' trim_table(object, x_ = 2.47, t_ = 4.57, m_ = 0)
+#' trim_table(LifeTable(), x_ = 2.47, t_ = 4.57, m_ = 0)
 trim_table <- function(object, 
                        x_ = object@x[1], 
                        t_ = NULL, 
