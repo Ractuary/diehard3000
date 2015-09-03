@@ -50,7 +50,7 @@ setMethod("rpv_life", signature("Insuree"), function(object, n, interest) {
   tod <- deaths[["death_t"]]
   
   # find applicable discount amount
-  .discount <- lapply(tod, function(k) discount(interest, death_time = k))
+  .discount <- lapply(tod, function(k) discount(interest, benefit_time = k))
   .discount <- unlist(.discount)
   
   # find applicable benefit amount
@@ -61,9 +61,11 @@ setMethod("rpv_life", signature("Insuree"), function(object, n, interest) {
   # function output
   pv = .discount * benefit
   pv[is.na(pv)] <- 0
-  list(deaths,
-       discount = .discount,
-       benefit = benefit,
-       pv = pv
-  )
+  out <- list(deaths,
+              discount = .discount,
+              benefit = benefit,
+              pv = pv
+         )
+  class(out) <- "rpv_life"
+  out
 })

@@ -156,27 +156,3 @@ trim_table <- function(object,
     trim_t_
   }
 }
-
-
-#' discount
-#'
-#' function to discount single benefit
-#' 
-#' @param interest vector of annual interest rates
-#' @param death_time the time (from x_) of death
-#' 
-#' @export
-#' @examples
-#' discount(0.04, death_time = 1.01)
-#' discount(0.04, death_time = 0.8)
-discount <- function(interest, death_time = NA) {
-  if (is.na(death_time)) return(NA_real_)
-  
-  if (length(interest) <= death_time) {
-    interest <- rep(interest, length.out = ceiling(death_time))
-  }
-  
-  trend <- 1 + interest[1:ceiling(death_time)]
-  trend[length(trend)] <- trend[length(trend)] ^ (death_time %% 1)
-  1 / prod(trend)
-}

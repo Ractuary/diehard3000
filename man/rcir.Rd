@@ -22,6 +22,7 @@ to the long term mean b}
 Stochastic Cox Ingersol Ross Process
 }
 \examples{
+rcir(n = 10, r = 0.01, b = 0.04, a = 0.5, s = 0.07)
 rcir(n = 10, r = 0.01, b = 0.04, a = 1, s = 0.05)
 }
 
