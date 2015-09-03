@@ -10,7 +10,7 @@
 setGeneric("rpv", 
            #valueClass = "numeric",
            function(object, n, interest) {
-             standardGeneric("rpv_life")
+             standardGeneric("rpv")
            }
 )
 
@@ -67,5 +67,33 @@ setMethod("rpv", signature("Insuree"), function(object, n, interest) {
               pv = pv
          )
   class(out) <- "rpv_Insuree"
+  out
+})
+
+
+#' rpv
+#' 
+#' Simulates the present value of the life insurance benefit for
+#' each \code{Insuree} in the a \code{Pool} object.
+#' 
+#' @param object object of class Insuree
+#' @param n number of observations
+#' @param interest vector of annual interest rates.  Can use the \code{CIR()}
+#' funtion to simulate interest rates in accordance with the Cox Ingersoll Ross
+#' process.
+#' 
+#' @export
+#' @examples
+#' rpv(object = Pool(),
+#'     n = 5,
+#'     interest = 0.04)
+#' rpv(object = Pool(),
+#'     n = 5, 
+#'     interest = rcir(n = 10, r = 0.01, b = 0.04, a = 1, s = 0.05))
+setMethod("rpv", signature("Pool"), function(object, n, interest) {
+  
+  # run rpv() simulation for each Insuree object
+  out <- lapply(object@insurees, rpv, n = n, interest = interest)
+  class(out) <- "rpv_Pool"
   out
 })
