@@ -21,7 +21,7 @@ hist.rpv_Insuree <- function(object, ...) {
     scale_x_continuous(labels = dollar) +
     xlab("Present Value of Death Benefit") +
     ylab("# of Observations") +
-    ggtitle(paste0("rpv_life() Histogram"))
+    ggtitle(paste0("rpv() Histogram"))
 }
 
 #' plot.rpv_Insuree
@@ -48,7 +48,7 @@ plot.rpv_Insuree <- function(object, ...) {
     scale_x_continuous(labels = dollar) +
     xlab("Present Value of Death Benefit") +
     ylab("F(x)") +
-    ggtitle("rpv_life() Empirical Cumulative Distribution")
+    ggtitle("rpv() Empirical Cumulative Distribution")
 }
 
 #' hist.rpv_Pool
@@ -69,9 +69,9 @@ plot.rpv_Insuree <- function(object, ...) {
 #'             interest = 0.04)
 #' hist(test)
 hist.rpv_Pool <- function(object, ...) {
-  data <- summary.rpv_Pool(object)
+  data <- summary(object)
   losses <- apply(data, 1, sum)
-  losses <- as.data.frame(pv = losses)
+  losses <- data.frame(pv = losses)
   ggplot2::ggplot(losses, aes(x = pv)) +
     geom_histogram(fill = "white", colour = "black") +
     scale_x_continuous(labels = dollar) +
@@ -98,11 +98,11 @@ hist.rpv_Pool <- function(object, ...) {
 #'             n = 500,
 #'             interest = 0.04)
 #' plot(test)
-plot.rpv_Insuree <- function(object, ...) {
-  data <- summary.rpv_Pool(object)
+plot.rpv_Pool <- function(object, ...) {
+  data <- summary(object)
   losses <- apply(data, 1, sum)
-  losses <- as.data.frame(pv = losses)
-  ggplot2::ggplot(data.frame(pv = object$pv), aes(x = pv)) +
+  losses <- data.frame(pv = losses)
+  ggplot2::ggplot(losses, aes(x = pv)) +
     stat_ecdf() +
     scale_x_continuous(labels = dollar) +
     xlab("Present Value of Death Benefits") +

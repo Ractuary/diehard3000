@@ -3,6 +3,7 @@
 S3method(hist,rpv_Insuree)
 S3method(hist,rpv_Pool)
 S3method(plot,rpv_Insuree)
+S3method(plot,rpv_Pool)
 S3method(summary,rpv_Insuree)
 S3method(summary,rpv_Pool)
 export(Insuree)
