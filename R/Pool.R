@@ -6,7 +6,7 @@
 check_Pool <- function(object) {
   errors <- character()
   all_insuree_class <- unlist(lapply(object@insurees, inherits, "Insuree"))
-  if (all(all_insuree_class)) { 
+  if (!all(all_insuree_class)) { 
     errors <- c(errors, "All list elements supplied to Pool() must be
                 of class Insuree")
   }
@@ -16,7 +16,6 @@ check_Pool <- function(object) {
     errors
   }
 }
-
 
 
 #' Pool
