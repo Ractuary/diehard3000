@@ -3,8 +3,8 @@
 #' calculates the mean amount of time the \code{object} argument is expected
 #' to live
 #' 
-#' @param object
-#' @param ...
+#' @param object object of one of several insuree package classes
+#' @param ... addtitional parameters
 #' 
 #' @export
 setGeneric("mean_life", 
@@ -59,9 +59,6 @@ setMethod("mean_life", signature("LifeTable"), function(object,
 #' between x_ + m_ and t_.
 #' 
 #' @param object object of class \code{Insuree}
-#' @param x_ x_
-#' @param t_ t_
-#' @param m_ m_
 #' 
 #' @export
 #' @examples

@@ -7,11 +7,12 @@
 new_x(x, x_, m_t_)
 }
 \arguments{
-\item{x}{}
+\item{x}{vector of ascending numerics}
 
-\item{x_}{}
+\item{x_}{the first x value to be returned.}
 
-\item{m_t_}{}
+\item{m_t_}{the last x value to be returned.  This is oftern m_ + t_, m_
+or t_.}
 }
 \description{
 create new x values by specifying new age x_ and

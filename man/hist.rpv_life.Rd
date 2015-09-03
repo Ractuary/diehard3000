@@ -4,10 +4,12 @@
 \alias{hist.rpv_life}
 \title{hist.rpv_life}
 \usage{
-\method{hist}{rpv_life}(object)
+\method{hist}{rpv_life}(object, ...)
 }
 \arguments{
 \item{object}{rpv_life object}
+
+\item{...}{other arguments}
 }
 \description{
 plot a histogram of the present value from a rpv_life() simulation

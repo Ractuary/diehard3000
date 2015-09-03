@@ -3,6 +3,7 @@
 #' summary of rpv_life() simulation
 #' 
 #' @param object rpv_life object
+#' @param ... other arguments
 #' 
 #' @export
 #' @examples
@@ -10,6 +11,6 @@
 #'                  n = 500,
 #'                  interest = 0.04)
 #' summary(test)
-summary.rpv_life <- function(object) {
+summary.rpv_life <- function(object, ...) {
   object
 }

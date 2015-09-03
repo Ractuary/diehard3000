@@ -4,10 +4,12 @@
 \alias{plot.rpv_life}
 \title{plot.rpv_life}
 \usage{
-\method{plot}{rpv_life}(object)
+\method{plot}{rpv_life}(object, ...)
 }
 \arguments{
 \item{object}{rpv_life object}
+
+\item{...}{other arguments}
 }
 \description{
 plot the empirical cumulative distribution of

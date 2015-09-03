@@ -4,10 +4,12 @@
 \alias{summary.rpv_life}
 \title{summary.rpv_life}
 \usage{
-\method{summary}{rpv_life}(object)
+\method{summary}{rpv_life}(object, ...)
 }
 \arguments{
 \item{object}{rpv_life object}
+
+\item{...}{other arguments}
 }
 \description{
 summary of rpv_life() simulation

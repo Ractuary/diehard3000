@@ -9,12 +9,6 @@
 }
 \arguments{
 \item{object}{object of class \code{Insuree}}
-
-\item{x_}{x_}
-
-\item{t_}{t_}
-
-\item{m_}{m_}
 }
 \description{
 The expected time lived provided an object of class \code{Insuree}

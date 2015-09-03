@@ -35,8 +35,8 @@ cir <- function(r, b, a, s) {
 #' 
 #' @export
 #' @examples
-#' discount(0.04, death_time = 1.01)
-#' discount(0.04, death_time = 0.8)
+#' discount(0.04, benefit_time = 1.01)
+#' discount(0.04, benefit_time = 0.8)
 discount <- function(interest, benefit_time = NA) {
   if (is.na(benefit_time)) return(NA_real_)
   

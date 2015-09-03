@@ -7,9 +7,9 @@
 mean_life(object, ...)
 }
 \arguments{
-\item{object}{}
+\item{object}{object of one of several insuree package classes}
 
-\item{...}{}
+\item{...}{addtitional parameters}
 }
 \description{
 calculates the mean amount of time the \code{object} argument is expected

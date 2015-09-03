@@ -12,7 +12,7 @@ index_x(x, x_, m_t_ = 1)
 \item{x_}{the index of the first x value to be returned.}
 
 \item{m_t_}{the index of the last x value to be returned.  This is oftern m_ + t_, m_
-or t_ when the x_ argument is set to x_ + t_.}
+or t_.}
 }
 \description{
 Returns the x values for an actuarial table

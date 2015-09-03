@@ -37,7 +37,7 @@ index <- function(x, x_, m_t_ = 1) {
 #' @param x vector of ascending numerics
 #' @param x_ the index of the first x value to be returned.
 #' @param m_t_ the index of the last x value to be returned.  This is oftern m_ + t_, m_
-#' or t_ when the x_ argument is set to x_ + t_.
+#' or t_.
 #' 
 #' @keywords internal
 #' @export
@@ -57,9 +57,10 @@ index_x <- function(x, x_, m_t_ = 1) {
 #' create new x values by specifying new age x_ and
 #' interval m_t_
 #' 
-#' @param x
-#' @param x_
-#' @param m_t_
+#' @param x vector of ascending numerics
+#' @param x_ the first x value to be returned.
+#' @param m_t_ the last x value to be returned.  This is oftern m_ + t_, m_
+#' or t_.
 #' 
 #' @export
 #' 

@@ -3,6 +3,10 @@
 #' plot a histogram of the present value from a rpv_life() simulation
 #' 
 #' @param object rpv_life object
+#' @param ... other arguments
+#' 
+#' @import ggplot2
+#' @import scales
 #' 
 #' @export
 #' @examples
@@ -10,7 +14,7 @@
 #'                  n = 500,
 #'                  interest = 0.04)
 #' hist(test)
-hist.rpv_life <- function(object) {
+hist.rpv_life <- function(object, ...) {
   ggplot2::ggplot(data.frame(pv = object$pv), aes(x = pv)) +
     geom_histogram(fill = "white", colour = "black") +
     scale_x_continuous(labels = dollar) +
@@ -26,6 +30,10 @@ hist.rpv_life <- function(object) {
 #' simulation
 #' 
 #' @param object rpv_life object
+#' @param ... other arguments
+#' 
+#' @import ggplot2
+#' @import scales
 #' 
 #' @export
 #' @examples
@@ -33,7 +41,7 @@ hist.rpv_life <- function(object) {
 #'                  n = 500,
 #'                  interest = 0.04)
 #' plot(test)
-plot.rpv_life <- function(object) {
+plot.rpv_life <- function(object, ...) {
   ggplot2::ggplot(data.frame(pv = object$pv), aes(x = pv)) +
     stat_ecdf() +
     scale_x_continuous(labels = dollar) +

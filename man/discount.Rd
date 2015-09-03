@@ -15,7 +15,7 @@ discount(interest, benefit_time = NA)
 discount single benefit to present value
 }
 \examples{
-discount(0.04, death_time = 1.01)
-discount(0.04, death_time = 0.8)
+discount(0.04, benefit_time = 1.01)
+discount(0.04, benefit_time = 0.8)
 }
 
