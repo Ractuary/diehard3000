@@ -5,9 +5,15 @@
 \title{plot.rpv_Insuree}
 \usage{
 \method{plot}{rpv_Insuree}(object, ...)
+
+\method{plot}{rpv_Insuree}(object, ...)
 }
 \arguments{
-\item{object}{rpv_life object}
+\item{object}{rpv_Insuree object}
+
+\item{...}{other arguments}
+
+\item{object}{rpv_Pool object}
 
 \item{...}{other arguments}
 }
@@ -15,9 +21,17 @@
 plot the empirical cumulative distribution of
 the present value of death benefits from a rpv_life()
 simulation
+
+plot the empirical cumulative distribution of
+the present value of death benefits from a rpv()
+simulation of the \code{Pool} class.
 }
 \examples{
 test <- rpv(object = Insuree(),
+            n = 500,
+            interest = 0.04)
+plot(test)
+test <- rpv(object = Pool(),
             n = 500,
             interest = 0.04)
 plot(test)
