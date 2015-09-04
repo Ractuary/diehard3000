@@ -20,7 +20,7 @@ library(knitr) # for tables
 options(scipen=999) # turn off scientific notation
 ```
 
-Let's create some life insurance policies to insure.
+Let's create some life insurance policies.
 
 ```{r create_policies, results = "asis"}
 policies <- data.frame(id = c("A001", "A002", "A003", "A004", "A005", "A006"),
@@ -52,12 +52,6 @@ qx_female <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1),
 First lets assign each insuree to a `insuree::Insuree` object.
 
 ```{r}
-# set discount rate
-rate <- 0.04
-
-# select number of times to run simulation
-n <- 1000
-
 # I am finding the max age of the life tables so I can 
 # make examples using the Insuree object inwhich the
 # Insuree's life insurance policy lasts until the end of the
@@ -85,7 +79,17 @@ for (j in 1:nrow(policies)) {
 }
 ```
 
-Each element in our `hold` list above is an object of class `Insuree`.  We can simulate the future life and present value of the benefits for any of these `Insuree` objects individually like so
+To run the simulation and discount to present value we need to decide how many simulations we want to run and our discount rate.
+
+```{r}
+# select number of times to run simulation
+n <- 1000
+
+# set discount rate
+rate <- 0.04
+```
+
+Each element in our `hold` object is an object of class `Insuree`.  We can simulate the future life and present value of the benefits for any of these `Insuree` objects individually like so
 
 ```{r, results = "asis"}
 quants <- seq(0.70, 0.95, by = 0.05)
@@ -97,7 +101,7 @@ sim_mean <- mean(total)
 
 # make it look decent for printing
 out <- data.frame("Risk Level" = c("mean", names(quantiles)),
-                 "Value" = format(c(sim_mean, quantiles), big.mark = ","))
+                 "Value" = format(round(c(sim_mean, quantiles), 0), big.mark = ","))
 knitr::kable(out, row.names = FALSE)
 ```
 
@@ -108,9 +112,9 @@ plot(single)
 hist(single)
 ```
 
-Simulating one life insurance policy is not that interesting.  The real power of the `insuree` package is to group a several policies together and simulate them as one group.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
+Simulating one life insurance policy is not that interesting.  The real power of the `insuree` package is to the policiies together for the simulation.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
 
-We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent and identically distributed.  We discount the death benefit, assuming a `r rate * 100` % interest rate, for the number of years the insuree survives.
+We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent.  We discount the death benefit, assuming a `r rate * 100`% annual interest rate.
 
 ```{r, result = "asis"}
 # create object of class "Pool"
