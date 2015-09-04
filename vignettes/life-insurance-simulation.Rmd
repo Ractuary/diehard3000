@@ -66,7 +66,7 @@ n <- 1000
 max_m <- max(qx_male@x)
 max_f <- max(qx_female@x)
 
-# use package to define each policy as an Insuree object
+# define each policy as an Insuree object
 hold <- list()
 for (j in 1:nrow(policies)) {
   hold[[j]] <- if (policies$gender[j] == "male") {
@@ -85,16 +85,40 @@ for (j in 1:nrow(policies)) {
 }
 ```
 
-We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent and identically distributed.  We discount the death benefit, assuming a `r rate * 100` % interest rate, for the number of years the insuree survives.  All death benefits are paid at the end of the year of death.
+Each element in our `hold` list above is an object of class `Insuree`.  We can simulate the future life and present value of the benefits for any of these `Insuree` objects individually like so
 
-Now that we have assigned each individual to a `insuree::Insuree` object we can run the simulation.  The present value of an `insuree::Insuree` object can be simulated with the `insuree:rpv` method. 
+```{r, results = "asis"}
+quants <- seq(0.70, 0.95, by = 0.05)
+# simulate individual Insuree
+single <- rpv(hold[[1]], n = n, interest = rate)
+total <- single$pv
+quantiles <- quantile(total, quants)
+sim_mean <- mean(total)
+
+# make it look decent for printing
+out <- data.frame("Risk Level" = c("mean", names(quantiles)),
+                 "Value" = format(c(sim_mean, quantiles), big.mark = ","))
+knitr::kable(out, row.names = FALSE)
+```
+
+The package also comes with some built in plot options for `rpv()` on class `Insuree`.
+
+```{r, fig.width = 7}
+plot(single)
+hist(single)
+```
+
+Simulating one life insurance policy is not that interesting.  The real power of the `insuree` package is to group a several policies together and simulate them as one group.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
+
+We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent and identically distributed.  We discount the death benefit, assuming a `r rate * 100` % interest rate, for the number of years the insuree survives.
 
 ```{r, result = "asis"}
+# create object of class "Pool"
+pool <- Pool(insurees = hold)
 # run simulation on each insuree
 # we are only interested in the present value of the simulation here
-out <- lapply(hold, function(k) insuree::rpv_life(k, n = n, interest = rate)$pv)
-out <- matrix(unlist(out), ncol = n, byrow = TRUE)
-total <- apply(out, 2, sum)
+pooled_rpv <- insuree::rpv(pool, n = n, interest = rate)
+total <- apply(summary(pooled_rpv), 1, sum)
 quantiles <- quantile(total, seq(0.70, 0.95, by = 0.05))
 sim_mean <- mean(total)
 
@@ -104,4 +128,9 @@ out <- data.frame("Risk Level" = c("mean", names(quantiles)),
 knitr::kable(out, row.names = FALSE)
 ```
 
-For additional information on how the simulation is run please see the `insuree::rdeath` function.
+and we can make similar plots to those for the single `Insuree` object:
+
+```{r, fig.width = 7}
+plot(pooled_rpv)
+hist(pooled_rpv)
+```
