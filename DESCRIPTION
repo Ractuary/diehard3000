@@ -1,7 +1,7 @@
 Package: insuree
 Type: Package
 Title: Simulate life contingent insurance policies using actuarial life tables
-Version: 0.0.1
+Version: 0.0.2
 Date: 2015-05-05
 Authors@R: person("Andy", "Merlino", email = "merlinoa88@gmail.com", role =
     c("aut", "cre"))
