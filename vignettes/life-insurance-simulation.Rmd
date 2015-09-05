@@ -35,7 +35,7 @@ As you can see, we have male and female insurees of varying ages.  They also hav
 
 We are going to create an object of class `insuree::Insuree` to represent each one of our insurees.  The future probability of death for each of these `insuree::Insuree` objects is defined by an actuarial life table.  We are using the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).  I named this life table `qx_table` and it comes with the package.
 
-The following code shows how to deine a `LifeTable` object:
+Here we define the `LifeTable` objects:
 
 ```{r life_tables}
 # create male life table from qx_data (provided with the package)
@@ -49,14 +49,13 @@ qx_female <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1),
                                 )
 ```
 
-First lets assign each insuree to a `insuree::Insuree` object.
+Now that we have male and female life tables lets assign each insuree to a `insuree::Insuree` object.  The `Insuree` object identifies the `LifeTable`, age, and
+other policy characterisics appropriate to the individul policy.
 
 ```{r}
 # I am finding the max age of the life tables so I can 
-# make examples using the Insuree object inwhich the
-# Insuree's life insurance policy lasts until the end of the
-# life table.  Any age greater than the Insuree's current age
-# could be used in place of max_m and max_f as defined below
+# make examples inwhich the Insuree's life insurance policy 
+# lasts until the end of the life table.
 max_m <- max(qx_male@x)
 max_f <- max(qx_female@x)
 
@@ -112,7 +111,7 @@ plot(single)
 hist(single)
 ```
 
-Simulating one life insurance policy is not that interesting.  The real power of the `insuree` package is to the policiies together for the simulation.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
+Simulating one life insurance policy is not that interesting.  The real power of the `insuree` package is grouping the policiies together for the simulation.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
 
 We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent.  We discount the death benefit, assuming a `r rate * 100`% annual interest rate.
 
