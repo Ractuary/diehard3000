@@ -28,7 +28,10 @@ policies <- data.frame(id = c("A001", "A002", "A003", "A004", "A005", "A006"),
                        age = c(40, 51, 70, 45, 65, 35),
                        death_benefit = c(200000, 500000, 100000, 500000, 1000000, 2000000))
 
-knitr::kable(policies)
+# format and print table
+out <- policies
+out$death_benefit <- format(out$death_benefit, big.mark = ",")
+knitr::kable(out, align = c("l", "l", "r", "r"))
 ```
 
 As you can see, we have male and female insurees of varying ages.  They also have varying death benefits.
