@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-We provide whole life insurance.  
+We provide life insurance.  
 
 How much money do we need to set aside today so we can payout the entire life insurance benefit to all of our insurees?
 
@@ -53,7 +53,7 @@ qx_female <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1),
 ```
 
 Now that we have male and female life tables lets assign each insuree to a `insuree::Insuree` object.  The `Insuree` object identifies the `LifeTable`, age, and
-other policy characterisics appropriate to the individul policy.
+other policy characteristics appropriate to the individul policy.
 
 ```{r}
 # I am finding the max age of the life tables so I can 
@@ -114,7 +114,7 @@ plot(single)
 hist(single)
 ```
 
-Simulating one life insurance policy is not that interesting.  The real power of the `insuree` package is grouping the policiies together for the simulation.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
+Simulating one life insurance policy is not that interesting.  The real power of the `insuree` package come when we group the policies together.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
 
 We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent.  We discount the death benefit, assuming a `r rate * 100`% annual interest rate.
 
