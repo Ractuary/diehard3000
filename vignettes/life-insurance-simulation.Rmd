@@ -104,7 +104,7 @@ sim_mean <- mean(total)
 # make it look decent for printing
 out <- data.frame("Risk Level" = c("mean", names(quantiles)),
                  "Value" = format(round(c(sim_mean, quantiles), 0), big.mark = ","))
-knitr::kable(out, row.names = FALSE)
+knitr::kable(out, row.names = FALSE, align = c("l", "r"))
 ```
 
 The package also comes with some built in plot options for `rpv()` on class `Insuree`.
@@ -131,7 +131,7 @@ sim_mean <- mean(total)
 # make it look decent for printing
 out <- data.frame("Risk Level" = c("mean", names(quantiles)),
                  "Value" = format(c(sim_mean, quantiles), big.mark = ","))
-knitr::kable(out, row.names = FALSE)
+knitr::kable(out, row.names = FALSE, align = c("l", "r"))
 ```
 
 and we can make similar plots to those for the single `Insuree` object:
