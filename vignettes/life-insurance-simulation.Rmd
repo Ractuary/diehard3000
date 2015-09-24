@@ -11,7 +11,9 @@ vignette: >
 
 We provide life insurance.  
 
-How much money do we need to set aside today so we can payout the entire life insurance benefit to all of our insurees?
+How much money do we need to set aside today so we will have enough money to cover the entire life insurance benefit for all of our policies?  
+
+Note: The `insuree` package refers to each individual person's policy as an "insuree".
 
 ```{r load_stuff}
 library(insuree)
@@ -34,11 +36,13 @@ out$death_benefit <- format(out$death_benefit, big.mark = ",")
 knitr::kable(out, align = c("l", "l", "r", "r"))
 ```
 
-As you can see, we have male and female insurees of varying ages.  They also have varying death benefits.
+Each row in the above table represents an individual insuree.  If all of these individuals die this very second our liability will be `r format(sum(policies$death_benefit), big.mark = ",")`.  The probability of these `r nrow(policies)` people dying instantaneously is low, and since we can invest and grow our money over time we don't need to keep `r format(sum(policies$death_benefit), big.mark = ",")` in reserve to have a high probability of fullfilling our liabilities.  The `insuee` package can simulate the time until death for the individuals and thus come up with probabilities for how much money (calculated at present value) we (as the insurer) are actually on the hook for.
 
-We are going to create an object of class `insuree::Insuree` to represent each one of our insurees.  The future probability of death for each of these `insuree::Insuree` objects is defined by an actuarial life table.  We are using the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).  I named this life table `qx_table` and it comes with the package.
+Back to the policies: As you can see, we have male and female insurees of varying ages.  They also have varying death benefits.
 
-Here we define the `LifeTable` objects:
+We are going to create an object of class `insuree::Insuree` to represent each one of our insurees.  The future probability of death for each of these `insuree::Insuree` objects is defined by an actuarial life table.  The `insuree` package can use any life table you want, but here we are using the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).
+
+Before the life tables can be used we need to define them as `LifeTable` objects:
 
 ```{r life_tables}
 # create male life table from qx_data (provided with the package)
@@ -52,8 +56,8 @@ qx_female <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1),
                                 )
 ```
 
-Now that we have male and female life tables lets assign each insuree to a `insuree::Insuree` object.  The `Insuree` object identifies the `LifeTable`, age, and
-other policy characteristics appropriate to the individul policy.
+Now that we have male and female life tables lets assign each insuree to an `insuree::Insuree` object.  The `Insuree` object identifies the `LifeTable`, age, and
+other policy characteristics appropriate to the individul policy.  Once the `Insuree` object is defined we can run the simulations.
 
 ```{r}
 # I am finding the max age of the life tables so I can 
@@ -94,7 +98,7 @@ rate <- 0.04
 Each element in our `hold` object is an object of class `Insuree`.  We can simulate the future life and present value of the benefits for any of these `Insuree` objects individually like so
 
 ```{r, results = "asis"}
-quants <- seq(0.70, 0.95, by = 0.05)
+quants <- c(seq(0.70, 0.95, by = 0.05), 0.99)
 # simulate individual Insuree
 single <- rpv(hold[[1]], n = n, interest = rate)
 total <- single$pv
@@ -107,6 +111,8 @@ out <- data.frame("Risk Level" = c("mean", names(quantiles)),
 knitr::kable(out, row.names = FALSE, align = c("l", "r"))
 ```
 
+The above table shows our simulations of the first row/insuree in our table of policies.  The values column in the table shows our risk/confidence level for the present value of the death benefit payment.  The above table should appear reasonable for a `r policies$gender[1]` American `r policies$gender[1]` with a `r policies$beath_benefit[1]`.
+
 The package also comes with some built in plot options for `rpv()` on class `Insuree`.
 
 ```{r, fig.width = 7}
@@ -116,7 +122,7 @@ hist(single)
 
 Simulating one life insurance policy is not that interesting.  The real power of the `insuree` package come when we group the policies together.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
 
-We run `r n` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent.  We discount the death benefit, assuming a `r rate * 100`% annual interest rate.
+We run `r format(n, big.mark = ",")` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent.  We discount the death benefit, assuming a `r rate * 100`% annual interest rate.
 
 ```{r, result = "asis"}
 # create object of class "Pool"
