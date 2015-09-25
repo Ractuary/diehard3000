@@ -85,20 +85,21 @@ for (j in 1:nrow(policies)) {
 }
 ```
 
-To run the simulation and discount to present value we need to decide how many simulations we want to run and our discount rate.
+Each element in our `hold` object is an object of class `Insuree`.  We can simulate the future life and present value of the benefits for any of these `Insuree` objects individually like so
 
 ```{r}
-# select number of times to run simulation
-n <- 1000
+# select number of times to simulate the individual's future life
+n <- 100000
 
 # set discount rate
 rate <- 0.04
 ```
 
-Each element in our `hold` object is an object of class `Insuree`.  We can simulate the future life and present value of the benefits for any of these `Insuree` objects individually like so
+To run the simulation and discount to present value we need to decide how many simulations we want to run and our discount rate.
 
 ```{r, results = "asis"}
-quants <- c(seq(0.70, 0.95, by = 0.05), 0.99)
+set.seed(12345)
+quants <- c(seq(0.70, 0.95, by = 0.05), 0.99, 0.999, 0.9999)
 # simulate individual Insuree
 single <- rpv(hold[[1]], n = n, interest = rate)
 total <- single$pv
@@ -111,7 +112,7 @@ out <- data.frame("Risk Level" = c("mean", names(quantiles)),
 knitr::kable(out, row.names = FALSE, align = c("l", "r"))
 ```
 
-The above table shows our simulations of the first row/insuree in our table of policies.  The values column in the table shows our risk/confidence level for the present value of the death benefit payment.  The above table should appear reasonable for a `r policies$gender[1]` American `r policies$gender[1]` with a `r policies$beath_benefit[1]`.
+The above table shows our simulations of the first row/insuree in our table of policies.  The "Value" column in the above table shows our risk/confidence level for the present value of the death benefit payment.  The above table should appear reasonable for a `r policies$age[1]` year old American `r policies$gender[1]` with a `r format(policies$death_benefit[1], big.mark = ",")` life insurance policy.
 
 The package also comes with some built in plot options for `rpv()` on class `Insuree`.
 
@@ -131,7 +132,7 @@ pool <- Pool(insurees = hold)
 # we are only interested in the present value of the simulation here
 pooled_rpv <- insuree::rpv(pool, n = n, interest = rate)
 total <- apply(summary(pooled_rpv), 1, sum)
-quantiles <- quantile(total, seq(0.70, 0.95, by = 0.05))
+quantiles <- quantile(total, c(seq(0.70, 0.95, by = 0.05), 0.99, 0.999, 0.9999))
 sim_mean <- mean(total)
 
 # make it look decent for printing
