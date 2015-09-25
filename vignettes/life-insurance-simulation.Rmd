@@ -91,7 +91,7 @@ First we need to decide how many simulations we want to run and our discount rat
 
 ```{r}
 # select number of times to simulate the individual's future life
-n <- 100000
+n <- 10000
 
 # set discount rate
 rate <- 0.04
