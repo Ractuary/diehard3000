@@ -115,7 +115,7 @@ The above table shows our simulations of the first row/insuree in our table of p
 
 The package also comes with some built in plot options for `rpv()` on class `Insuree`.
 
-```{r, fig.width = 7}
+```{r, fig.width = 7, message = FALSE}
 plot(single)
 hist(single)
 ```
@@ -142,7 +142,7 @@ knitr::kable(out, row.names = FALSE, align = c("l", "r"))
 
 and we can make similar plots to those for the single `Insuree` object:
 
-```{r, fig.width = 7}
+```{r, fig.width = 7, message = FALSE}
 plot(pooled_rpv)
 hist(pooled_rpv)
 ```
