@@ -85,7 +85,9 @@ for (j in 1:nrow(policies)) {
 }
 ```
 
-Each element in our `hold` object is an object of class `Insuree`.  We can simulate the future life and present value of the benefits for any of these `Insuree` objects individually like so
+Each element in our `hold` object is an object of class `Insuree`.  We can simulate the future life and present value of the benefits for any of these `Insuree` objects individually like so:
+
+First we need to decide how many simulations we want to run and our discount rate.
 
 ```{r}
 # select number of times to simulate the individual's future life
@@ -95,7 +97,7 @@ n <- 100000
 rate <- 0.04
 ```
 
-To run the simulation and discount to present value we need to decide how many simulations we want to run and our discount rate.
+now for the simulation:
 
 ```{r, results = "asis"}
 set.seed(12345)
