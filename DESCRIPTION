@@ -13,6 +13,7 @@ Collate:
     'LifeTable.R'
     'Insuree.R'
     'Pool.R'
+    'benefit.R'
     'data.R'
     'expected.R'
     'insuree-package.R'

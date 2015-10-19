@@ -18,7 +18,7 @@ setGeneric("mean_life",
 
 #' mean_life
 #' 
-#' The expected time lived provided an object of class \code{LifeTable}
+#' The expected time lived of an object of class \code{LifeTable}
 #' in the \code{object} argument.  Expected time lived only includes times
 #' between x_ + m_ and t_.
 #' 
