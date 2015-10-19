@@ -15,6 +15,7 @@ Collate:
     'Pool.R'
     'benefit.R'
     'data.R'
+    'discount.R'
     'expected.R'
     'insuree-package.R'
     'interest.R'

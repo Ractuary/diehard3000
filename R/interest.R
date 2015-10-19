@@ -25,30 +25,3 @@ cir <- function(r, b, a, s) {
   stopifnot(r >= 0) # CIR walk does not support negative interest rates
   max(r + a*(b - r) + s * sqrt(r) * rnorm(1, 0, 1), 0)
 }
-
-#' discount
-#'
-#' discount single benefit to present value
-#' 
-#' @param interest vector of annual interest rates
-#' @param benefit_time the time (from x_) of death
-#' 
-#' @export
-#' @examples
-#' discount(0.04, benefit_time = 1.01)
-#' discount(0.04, benefit_time = 0.8)
-discount <- function(interest, benefit_time = NA) {
-  if (is.na(benefit_time)) return(NA_real_)
-  
-  # repeat interest vector until it has length == ceiling(benefit_time)
-  # if the interest vector is not long enough
-  if (length(interest) <= benefit_time) {
-    interest <- rep(interest, length.out = ceiling(benefit_time))
-  }
-  
-  # find applicable trend factors
-  trend <- 1 + interest[1:ceiling(benefit_time)]
-  trend[length(trend)] <- trend[length(trend)] ^ (benefit_time %% 1)
-  # calculate trend for given benefit time
-  1 / prod(trend)
-}
