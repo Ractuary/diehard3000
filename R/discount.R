@@ -37,6 +37,12 @@ setMethod("discount", signature(benefit = "BenefitDeath",
     interest <- rep(interest@rate, length.out = ceiling(benefit$t))
   }
   
+  top_discount <- sum(discount@t)
+  top_interest <- sum(interest@t)
+            
+  discount@t <- discount@t[discount@t < tod]          
+  interest@t <- interest@t[interest@t < tod]
+  
   # find applicable trend factors
   trend <- 1 + interest@rate[1:ceiling(t)]
   discount_time <- interest@t[1:ceiling(t)]

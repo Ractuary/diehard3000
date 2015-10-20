@@ -12,6 +12,7 @@ LazyData: true
 Collate:
     'LifeTable.R'
     'Insuree.R'
+    'Interest.R'
     'Pool.R'
     'benefit.R'
     'data.R'
