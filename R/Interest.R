@@ -3,7 +3,7 @@
 #' @param object object of class \code{Interest}
 #' 
 #' function to check validity of DeathBenefit S4 class constructor
-check_BenefitDeath <- function(object) {
+check_Interest <- function(object) {
   errors <- character()
   if (!identical(length(object@t), 
                  length(object@rate),
@@ -24,8 +24,7 @@ check_BenefitDeath <- function(object) {
 
 #' Interest
 #' 
-#' This is to be used with the \code{Insuree} class to discount and
-#' object from the \code{benefit} class to present value
+#' intrest rate class for discounting benefits
 #' 
 #' @slot t time over which the annualized intereste rate is applicable
 #' @slot rate annualized interest rate
@@ -33,10 +32,10 @@ check_BenefitDeath <- function(object) {
 #' @name Interest-class
 #' @rdname Interest-class
 #' @export Interest
-BenefitDeath <- setClass("Interest",
-                         slots = list(t = "numeric",
-                                      value = "numeric"),
-                         prototype = prototype(t = c(1, 1, 1),
-                                               value = c(.04, .05, .03)),
-                         validity = check_BenefitDeath
+Interest <- setClass("Interest",
+                     slots = list(t = "numeric",
+                                  rate = "numeric"),
+                     prototype = prototype(t = c(1, 1, 1),
+                                           rate = c(.04, .05, .03)),
+                     validity = check_Interest
 )
