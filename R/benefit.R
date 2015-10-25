@@ -6,9 +6,8 @@
 check_BenefitDeath <- function(object) {
   errors <- character()
   if (!identical(length(object@t), 
-                 length(object@value),
-                 1L)) { 
-    errors <- c(errors, "Error! DeathBenefit t and value must all be of length 1")
+                 length(object@value))) { 
+  errors <- c(errors, "Error! DeathBenefit t and value must have same length")
   }
   
   if (any(object@t) < 0) {
@@ -41,25 +40,6 @@ BenefitDeath <- setClass("BenefitDeath",
                     validity = check_BenefitDeath
 )
 
-#' check_BenefitAnnuity
-#' 
-#' @param object object of class \code{BenefitAnnuity}
-#' 
-#' function to check validity of DeathBenefit S4 class constructor
-check_BenefitAnnuity <- function(object) {
-  errors <- character()
-  if (!identical(length(object@t), 
-                 length(object@value),
-                 1L)) { 
-    errors <- c(errors, "Error! t and value must all be of length 1")
-  }
-  
-  if (identical(length(errors), 0)) {
-    TRUE
-  } else {
-    errors
-  }
-}
 
 #' BenefitAnnuity
 #' 
@@ -77,5 +57,5 @@ BenefitAnnuity <- setClass("BenefitAnnuity",
                                       value = "numeric"),
                          prototype = prototype(t = c(1, 1, 1),
                                                value = c(5, 4, 8)),
-                         validity = check_BenefitAnnuity
+                         validity = check_BenefitDeath
 )
