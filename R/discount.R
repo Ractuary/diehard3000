@@ -7,8 +7,8 @@
 #' 
 #' @export
 setGeneric("discount", 
-           #valueClass = "numeric",
-           function(object, tod) {
+           valueClass = "numeric",
+           function(object, ...) {
              standardGeneric("discount")
            }
 )
@@ -17,33 +17,33 @@ setGeneric("discount",
 #' 
 #' Finds the discount applicable to a future time of death
 #' 
-#' @param interest object of class \code{Interest}
-#' @param tod time of death
+#' @param object object of class \code{Interest}
+#' @param benefit_t time of benefit payment
 #' 
 #' @export
 #' @examples
-#' discount(interest = Interest(), tod = 2.1)
-setMethod("discount", signature(interest = "Interest"), 
-          function(interest, tod) {
-            if (is.na(tod)) return(NA_real_)
-            if (is.null(interest)) return(1)
+#' discount(Interest(), benefit_t = 2.1)
+setMethod("discount", signature("Interest"), 
+          function(object, benefit_t) {
+            if (is.na(benefit_t)) return(NA_real_)
+            if (is.null(object)) return(1)
             
             # finds all t values from current age
-            tx <- cumsum(interest@t)
+            tx <- cumsum(object@t)
             
             # return the t length of all interest intervals over which the individual
             # survived
-            t <- interest@t[tx < tod]
+            t <- object@t[tx < benefit_t]
             
             # return the length t length of the interest interval in which the
             # individual died
-            tod_beg_interval <- max(tx[tx < tod])
-            tod_interval <- tod - tod_beg_interval
-            time <- c(t, tod_interval)
+            beg_interval <- max(tx[tx < benefit_t])
+            benefit_interval <- benefit_t - beg_interval
+            time <- c(t, benefit_interval)
             
             # remove rate after death
             tx <- c(0, tx[-length(tx)])
-            rate <- interest@rate[tx < tod]
+            rate <- object@rate[tx < benefit_t]
             
             # find applicable trend factors
             trend <- (1 + rate) ^ (time)
@@ -71,25 +71,15 @@ setMethod("discount", signature(interest = "Interest"),
 setMethod("discount", signature(benefit = "BenefitDeath", 
                                 interest = "Interest"), 
           function(benefit, interest, tod) {
-  if (is.na(tod)) return(NA_real_)
-  if (is.null(interest)) return(1)
+## TODO: figure out how to properly implement multiple dispatch  
+  trend <- discount(interest, 
+                    benefit_t = tod)
   
-  top_discount <- sum(discount@t)
-  top_interest <- sum(interest@t)
-            
-  #discount@t <- discount@t[discount@t < tod]          
-  #interest@t <- interest@t[interest@t < tod]
+  # find applicable death benefit at time of death (tod)
+  tx <- c(0, cumsum(benefit@t))
+  benefit_value <- benefit@value[findInterval(tod, t)]
   
-  # find applicable trend factors
-  trend <- 1 + interest@rate[1:ceiling(t)]
-  discount_time <- interest@t[1:ceiling(t)]
-  discount_time[length(discount_time)] <- benefit@t %% 1
-  
-  # find fractional length of period in which death occured
-  trend[length(trend)] <- trend[length(trend)] ^ (benefit@t %% 1)
-  
-  # calculate trend for given benefit time
-  1 / prod(trend)
+  benefit_value * trend
 })
 
 ##' discount
