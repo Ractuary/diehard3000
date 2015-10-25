@@ -11,7 +11,7 @@ check_Interest <- function(object) {
     errors <- c(errors, "Error! DeathBenefit t and value must all be of length 1")
   }
   
-  if (any(object@t) < 0) {
+  if (any(object@t < 0)) {
     errors <- c(errors, "t values can not be less than 0")
   }
   
