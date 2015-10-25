@@ -13,35 +13,72 @@ setGeneric("discount",
            }
 )
 
-
+#' discount
+#' 
+#' Finds the discount applicable to a future time of death
+#' 
+#' @param interest object of class \code{Interest}
+#' @param tod time of death
+#' 
+#' @export
+#' @examples
+#' discount(interest = Interest(), tod = 2.1)
+setMethod("discount", signature(interest = "Interest"), 
+          function(interest, tod) {
+            if (is.na(tod)) return(NA_real_)
+            if (is.null(interest)) return(1)
+            
+            # finds all t values from current age
+            tx <- cumsum(interest@t)
+            
+            # return the t length of all interest intervals over which the individual
+            # survived
+            t <- interest@t[tx < tod]
+            
+            # return the length t length of the interest interval in which the
+            # individual died
+            tod_beg_interval <- max(tx[tx < tod])
+            tod_interval <- tod - tod_beg_interval
+            time <- c(t, tod_interval)
+            
+            # remove rate after death
+            tx <- c(0, tx[-length(tx)])
+            rate <- interest@rate[tx < tod]
+            
+            # find applicable trend factors
+            trend <- (1 + rate) ^ (time)
+            
+            # calculate trend for given benefit time
+            1 / prod(trend)
+          })
 
 #' discount
 #' 
 #' Discounts a \code{DeathBenefit} object
 #' 
-#' @param object object of class DeathBenefit
+#' @param benefit object of class \code{DeathBenefit}
+#' @param interest object of class \code{Interest}
 #' @param tod time of death
 #' 
 #' @export
 #' @examples
-#' discount(object = BenefitDeath(), tod = 2)
-#' discount(object = BenefitDeath(), tod = 10) 
+#' discount(benefit = BenefitDeath(), interest = Interest(), tod = 2)
+#' discount(benefit = BenefitDeath(t = 10,
+#'                                 value = 1000), 
+#'          interest = Interest(t = rep(1, times = 10),
+#'                              rate = rep(c(0.03, 0.04), times = 5)), 
+#'          tod = 8) 
 setMethod("discount", signature(benefit = "BenefitDeath", 
                                 interest = "Interest"), 
           function(benefit, interest, tod) {
   if (is.na(tod)) return(NA_real_)
-  
-  # repeat interest vector until it has length == ceiling(benefit_time)
-  # if the interest vector is not long enough
-  if (length(interest) <= benefit_time) {
-    interest <- rep(interest@rate, length.out = ceiling(benefit$t))
-  }
+  if (is.null(interest)) return(1)
   
   top_discount <- sum(discount@t)
   top_interest <- sum(interest@t)
             
-  discount@t <- discount@t[discount@t < tod]          
-  interest@t <- interest@t[interest@t < tod]
+  #discount@t <- discount@t[discount@t < tod]          
+  #interest@t <- interest@t[interest@t < tod]
   
   # find applicable trend factors
   trend <- 1 + interest@rate[1:ceiling(t)]
