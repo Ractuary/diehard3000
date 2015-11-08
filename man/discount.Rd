@@ -4,12 +4,14 @@
 \alias{discount}
 \title{discount}
 \usage{
-discount(object, tod)
+discount(interest, benefit, ...)
 }
 \arguments{
-\item{object}{discount objects defining the benefit payment values and times}
+\item{interest}{object of class \code{Interest}}
 
-\item{tod}{time of death}
+\item{benefit}{object of class \code{Benefit}}
+
+\item{benefit_t}{time benefit is paid}
 }
 \description{
 discounts a life contingent benefit

@@ -11,15 +11,6 @@ check_Insuree <- function(object) {
                 1L)) { 
     errors <- c(errors, "Error! x_, t_, and m_ must all be of length 1")
   }
-  # benefit
-  # there must be a benefit value for each x in which the term insurance
-  # is active.
-  if (sum(object@benefit_t) != object@t_) {
-    errors <- c(errors, "Error! benefit must have benefit values over entire t_")
-  }
-  if (!identical(length(object@benefit_t), length(object@benefit_value))) {
-    errors <- c(errors, "Error! benefit_t and benefit_value must be of same length")
-  }
   
   # validate x_
   if (object@x_ <= min(object@x) || object@x_ >= (max(object@x) + 1)) {
@@ -55,27 +46,27 @@ check_Insuree <- function(object) {
 #' An individual with some kind of life contingent insurance
 #' 
 #' @include LifeTable.R
+#' @include Interest.R
+#' @include Benefit.R
 #' @slot x_ x value for individual
 #' @slot t_ t value for individual
 #' @slot m_ m value for individual
-#' @slot benefit life contingent benefits.  e.g. For ordinary life insurance
-#' payable at the end of the year of death, the benefit would be a single payment.
-#' For annuity benefits it could be a variable stream of payments.
 #' 
 #' @name Insuree-class
 #' @rdname Insuree-class
 #' @export Insuree
+#' 
+#' @examples 
+#' Insuree()
 Insuree <- setClass("Insuree",
-                contains = "LifeTable",
+                contains = c("LifeTable", "Interest", "Benefit"),
                 slots = list(x_ = "numeric",
                              t_ = "numeric",
-                             m_ = "numeric",
-                             benefit_t = "numeric",
-                             benefit_value = "numeric"),
+                             m_ = "numeric"
+                             ),
                 prototype = prototype(x_ = 2,
                                       t_ = 3,
-                                      m_ = 0,
-                                      benefit_t = c(1, 1, 1),
-                                      benefit_value = c(5, 4, 8)),
+                                      m_ = 0
+                                      ),
                 validity = check_Insuree
 )

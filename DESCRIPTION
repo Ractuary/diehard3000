@@ -10,11 +10,11 @@ Description: Simulate life contingent insurance policies using actuarial life
 License: GPL-2
 LazyData: true
 Collate:
+    'Benefit.R'
     'LifeTable.R'
-    'Insuree.R'
     'Interest.R'
+    'Insuree.R'
     'Pool.R'
-    'benefit.R'
     'data.R'
     'discount.R'
     'expected.R'

@@ -16,9 +16,8 @@ An individual with some kind of life contingent insurance
 \item{\code{t_}}{t value for individual}
 
 \item{\code{m_}}{m value for individual}
-
-\item{\code{benefit}}{life contingent benefits.  e.g. For ordinary life insurance
-payable at the end of the year of death, the benefit would be a single payment.
-For annuity benefits it could be a variable stream of payments.}
 }}
+\examples{
+Insuree()
+}
 
