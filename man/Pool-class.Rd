@@ -6,11 +6,11 @@
 \alias{Pool-class}
 \title{Pool}
 \description{
-S4 class for a group of \code{Insuree} objects
+S4 class for a group of \code{Life} objects
 }
 \section{Slots}{
 
 \describe{
-\item{\code{insurees}}{list of objects of class \code{Insuree}}
+\item{\code{insurees}}{list of objects of class \code{Life}}
 }}
 

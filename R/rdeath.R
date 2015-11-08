@@ -18,20 +18,20 @@ setGeneric("rdeath",
 
 #' rdeath
 #' 
-#' simulated time of death for an object of class \code{Insuree}.  The
+#' simulated time of death for an object of class \code{Life}.  The
 #' simulation is in accordance with the multinomial distribution described
 #' by the LifeTable object.  Uniform time of death is assumed between x values
 #' indicated by the LifeTable object.
 #' 
-#' @param object object of class Insuree
+#' @param object object of class Life
 #' @param n number of observations
 #' 
 #' @export
 #' @examples
-#' rdeath(object = Insuree(m_ = 2), n = 5)
-#' rdeath(object = Insuree(x_ = 2.4, t_ = 3, m_ = 0.5, benefit_t = c(1, 1, 1), benefit_value = c(3, 5, 7)), n = 5)
-#' rdeath(object = Insuree(x_ = 3, m_ = 0.2, t_ = 3, benefit_t = c(1, 1, 1), benefit_value = c(2, 4, 5)), n = 5)
-setMethod("rdeath", signature("Insuree"), function(object, n) {
+#' # rdeath(object = Life(m_ = 2), n = 5) # TODO: update examples for new benefit methods
+#' # rdeath(object = Life(x_ = 2.4, t_ = 3, m_ = 0.5, benefit_t = c(1, 1, 1), benefit_value = c(3, 5, 7)), n = 5)
+#' # rdeath(object = Life(x_ = 3, m_ = 0.2, t_ = 3, benefit_t = c(1, 1, 1), benefit_value = c(2, 4, 5)), n = 5)
+setMethod("rdeath", signature("Life"), function(object, n) {
   # find the probability of death in each x for a person age x_
   lt <- trim_table(object, x_ = object@x_, t_ = object@t_, m_ = object@m_)
   death_probs <- tp_x8q_x(lt)

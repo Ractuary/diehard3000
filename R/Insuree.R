@@ -58,7 +58,7 @@ check_Life <- function(object) {
 #' 
 #' @examples 
 #' Life()
-Life <- setClass("Insuree",
+Life <- setClass("Life",
                 contains = c("LifeTable", "Interest", "Benefit"),
                 slots = list(x_ = "numeric",
                              t_ = "numeric",
@@ -68,5 +68,5 @@ Life <- setClass("Insuree",
                                       t_ = 3,
                                       m_ = 0
                                       ),
-                validity = check_Insuree
+                validity = check_Life
 )

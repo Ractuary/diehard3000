@@ -1,12 +1,11 @@
-Package: insuree
+Package: diehard3000
 Type: Package
-Title: Simulate life contingent insurance policies using actuarial life tables
+Title: Simulate survival contingent benefits using actuarial life tables
 Version: 0.0.2
 Date: 2015-05-05
 Authors@R: person("Andy", "Merlino", email = "merlinoa88@gmail.com", role =
     c("aut", "cre"))
-Description: Simulate life contingent insurance policies using actuarial life
-    tables
+Description: Simulate survival contingent benefits using actuarial life tables
 License: GPL-2
 LazyData: true
 Collate:

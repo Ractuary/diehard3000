@@ -8,17 +8,17 @@
 \S4method{rpv}{Pool}(object, n, interest)
 }
 \arguments{
-\item{object}{object of class Insuree}
+\item{object}{object of class \code{Life}}
 
 \item{n}{number of observations}
 
-\item{interest}{vector of annual interest rates.  Can use the \code{CIR()}
+\item{interest}{vector of annual interest rates.  e.g. you can use the \code{CIR()}
 funtion to simulate interest rates in accordance with the Cox Ingersoll Ross
 process.}
 }
 \description{
 Simulates the present value of the life insurance benefit for
-each \code{Insuree} in the a \code{Pool} object.
+each \code{Life} in the \code{Pool} object.
 }
 \examples{
 rpv(object = Pool(),

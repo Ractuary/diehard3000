@@ -54,17 +54,17 @@ setMethod("mean_life", signature("LifeTable"), function(object,
 
 #' mean_life
 #' 
-#' The expected time lived provided an object of class \code{Insuree}
+#' The expected time lived provided an object of class \code{Life}
 #' in the \code{object} argument.  Expected time lived only includes times
 #' between x_ + m_ and t_.
 #' 
-#' @param object object of class \code{Insuree}
+#' @param object object of class \code{Life}
 #' 
 #' @export
 #' @examples
 #' mean_life(Insuree())
 #' mean_life(Insuree(x_ = 2.5, t_ = 3, m_ = 1))
-setMethod("mean_life", signature("Insuree"), function(object) {
+setMethod("mean_life", signature("Life"), function(object) {
   lt <- LifeTable(x = object@x, q_x = object@q_x)
   mean_life(object = lt, x_ = object@x_, t_ = object@t_, m_ = object@m_)
 })
