@@ -12,7 +12,7 @@ This package offers a framework for running simulations on survival contingent b
 
 ```R
 # install package
-devtools::install_github("merlinoa/insuree", build_vignettes = TRUE)
+devtools::install_github("merlinoa/diehard3000", build_vignettes = TRUE)
 ```
 
 # Examples
@@ -20,8 +20,8 @@ devtools::install_github("merlinoa/insuree", build_vignettes = TRUE)
 See the vignette:
 
 ```R
-library(insuree) # first install the package
-browseVignettes("insuree")
+library(diehard3000) # the package must already be installed using the above instructions
+browseVignettes("diehard3000")
 ```
 
 [This shinydashboard](http://shiny.ractuary.com:3838/insuree-simulation/) provides an example of the `insuree` package used monitor the reserve for a group of individuals.
