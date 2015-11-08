@@ -1,9 +1,9 @@
-#' check_Insuree
+#' check_Life
 #' 
-#' @param object object of class \code{Insuree}
+#' @param object object of class \code{Life}
 #' 
 #' function to check validity of Insuree S4 class constructor
-check_Insuree <- function(object) {
+check_Life <- function(object) {
   errors <- character()
   if (!identical(length(object@x_), 
                 length(object@t_),
@@ -41,7 +41,7 @@ check_Insuree <- function(object) {
 }
 
 
-#' Insuree
+#' Life
 #' 
 #' An individual with some kind of life contingent insurance
 #' 
@@ -52,13 +52,13 @@ check_Insuree <- function(object) {
 #' @slot t_ t value for individual
 #' @slot m_ m value for individual
 #' 
-#' @name Insuree-class
-#' @rdname Insuree-class
-#' @export Insuree
+#' @name Life-class
+#' @rdname Life-class
+#' @export Life
 #' 
 #' @examples 
-#' Insuree()
-Insuree <- setClass("Insuree",
+#' Life()
+Life <- setClass("Insuree",
                 contains = c("LifeTable", "Interest", "Benefit"),
                 slots = list(x_ = "numeric",
                              t_ = "numeric",

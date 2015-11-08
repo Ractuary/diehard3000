@@ -29,21 +29,15 @@ setGeneric("rpv",
 #' 
 #' @export
 #' @examples
-#' rpv(object = Insuree(x_ = 2, 
-#'                      t_ = 3, 
-#'                      benefit_t = c(1, 1, 1), 
-#'                      benefit_value = c(3, 2, 1), 
-#'                      m_ = 0.3), 
-#'     n = 5,
-#'     interest = 0.04)
-#' rpv(object = Insuree(x_ = 2.48, 
-#'                      t_ = 3.57, 
-#'                      benefit_t = c(1, 1, 1, 0.57), 
-#'                      benefit_value = c(2, 2, 4, 2), 
-#'                      m_ = 3), 
-#'     n = 5, 
-#'     interest = rcir(n = 10, r = 0.01, b = 0.04, a = 1, s = 0.05))
-setMethod("rpv", signature("Insuree"), function(object, n, interest) {
+#' rpv(object = Life(x_ = 2, 
+#'                   t_ = 3,
+#'                   m_ = 0.3), 
+#'                   n = 5)
+#' rpv(object = Life(x_ = 2.48, 
+#'                   t_ = 3.57,
+#'                   m_ = 3,
+#'                   n = 5)
+setMethod("rpv", signature("Life"), function(object, n, interest) {
   
   # simulate deaths
   deaths <- rdeath(object, n = n)
@@ -74,11 +68,11 @@ setMethod("rpv", signature("Insuree"), function(object, n, interest) {
 #' rpv
 #' 
 #' Simulates the present value of the life insurance benefit for
-#' each \code{Insuree} in the a \code{Pool} object.
+#' each \code{Life} in the \code{Pool} object.
 #' 
-#' @param object object of class Insuree
+#' @param object object of class \code{Life}
 #' @param n number of observations
-#' @param interest vector of annual interest rates.  Can use the \code{CIR()}
+#' @param interest vector of annual interest rates.  e.g. you can use the \code{CIR()}
 #' funtion to simulate interest rates in accordance with the Cox Ingersoll Ross
 #' process.
 #' 
