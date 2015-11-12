@@ -10,9 +10,9 @@ License: GPL-2
 LazyData: true
 Collate:
     'Benefit.R'
-    'LifeTable.R'
     'Interest.R'
-    'Insuree.R'
+    'LifeTable.R'
+    'Life.R'
     'Pool.R'
     'data.R'
     'discount.R'
