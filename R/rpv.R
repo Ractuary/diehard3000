@@ -34,31 +34,49 @@ setGeneric("rpv",
 #'                   m_ = 3,
 #'                   benefit = list(BenefitDeath(t = c(3, 3), value = c(0, 5)))), 
 #'     n = 5,
-#'     interest = Interest(t = 1:10, rate = rep(0.04, 10)))
+#'     interest = Interest(t = 10, rate = 0.04))
+#'     
+#' rpv(object = Life(x_ = 2.48, 
+#'                   t_ = 3,
+#'                   m_ = 0,
+#'                   benefit = list(BenefitAnnuity(t = c(1, 1, 1), value = c(3, 2, 2)))), 
+#'     n = 5,
+#'     interest = Interest(t = 10, rate = 0.04))
+#'     
+#' rpv(object = Life(x_ = 2.48, 
+#'                   t_ = 3,
+#'                   m_ = 0,
+#'                   benefit = list(BenefitAnnuity(t = c(0, 1, 1), value = c(-2, -2, -2)),
+#'                                  BenefitDeath(t = 3, value = 10)
+#'                                  )
+#'                   ), 
+#'     n = 5,
+#'     interest = Interest(t = 10, rate = 0.04))   
 setMethod("rpv", signature("Life"), function(object, n, interest) {
   
   # simulate deaths
   deaths <- rdeath(object, n = n)
   tod <- deaths[["death_t"]]
   
-  # find applicable discount amount
-  pv <- lapply(tod, function(k) {
-                       discount(interest = interest, 
-                                benefit = object@benefit[[1]], tod = k)
-                    }
-               )
-  pv <- unlist(pv)
+  # find applicable benefits discounted to present value
+  pv <- vector("list", length = length(tod))
+  for (i in seq_along(pv)) {
+    pv[[i]] <- vector("numeric", length = length(object@benefit))
+    for (j in seq_along(pv[[i]])) { 
+      pv[[i]][j] <- discount(interest = interest, 
+                                        benefit = object@benefit[[j]], 
+                                        tod = tod[i])
+                        
+    }
+    pv[[i]] <- sum(pv[[i]])
+  }
   
-  # find applicable benefit amount
-  #tod[tod < object@m_] <- NA
-  #benefit <- object@benefit_value[findInterval(tod, cumsum(c(object@m_, object@benefit_t)))]
+  pv <- unlist(pv)
 
   # set all deaths in term period equal to the applicable benefit value
   # function output
-  #pv = .discount * benefit
-  pv[is.na(pv)] <- 0
+  #pv[is.na(pv)] <- 0 # move this to BenefitDeath discount method
   out <- list(deaths,
-              #benefit = benefit,
               pv = pv
          )
   class(out) <- "rpv_Life"

@@ -19,5 +19,9 @@ discount a \code{BenefitAnnuity} object
 }
 \examples{
 discount(Interest(), BenefitAnnuity(), tod = 2.1)
+discount(Interest(), BenefitAnnuity(), tod = NA)
+discount(Interest(), BenefitAnnuity(), tod = 10)
+discount(Interest(), BenefitAnnuity(t = c(1, 1, 1), value = c(3, 2, 2)), tod = 3)
+discount(Interest(), BenefitAnnuity(t = c(1, 1, 1), value = c(3, 2, 2)), tod = 0.5)
 }
 

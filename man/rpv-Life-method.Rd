@@ -26,6 +26,23 @@ rpv(object = Life(x_ = 2.48,
                   m_ = 3,
                   benefit = list(BenefitDeath(t = c(3, 3), value = c(0, 5)))),
     n = 5,
-    interest = Interest(t = 1:10, rate = rep(0.04, 10)))
+    interest = Interest(t = 10, rate = 0.04))
+
+rpv(object = Life(x_ = 2.48,
+                  t_ = 3,
+                  m_ = 0,
+                  benefit = list(BenefitAnnuity(t = c(1, 1, 1), value = c(3, 2, 2)))),
+    n = 5,
+    interest = Interest(t = 10, rate = 0.04))
+
+rpv(object = Life(x_ = 2.48,
+                  t_ = 3,
+                  m_ = 0,
+                  benefit = list(BenefitAnnuity(t = c(0, 1, 1), value = c(-2, -2, -2)),
+                                 BenefitDeath(t = 3, value = 10)
+                                 )
+                  ),
+    n = 5,
+    interest = Interest(t = 10, rate = 0.04))
 }
 

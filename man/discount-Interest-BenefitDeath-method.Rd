@@ -19,6 +19,7 @@ Discounts a \code{DeathBenefit} object
 }
 \examples{
 discount(benefit = BenefitDeath(), interest = Interest(), tod = 2)
+discount(benefit = BenefitDeath(), interest = Interest(), tod = NA)
 discount(benefit = BenefitDeath(t = 10,
                                 value = 1000),
          interest = Interest(t = rep(1, times = 10),
