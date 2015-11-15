@@ -1,6 +1,6 @@
 # diehard3000
 
-[![Travis-CI Build Status](https://travis-ci.org/merlinoa/insuree.svg?branch=master)](https://travis-ci.org/merlinoa/insuree)
+[![Travis-CI Build Status](https://travis-ci.org/merlinoa/insuree.svg?branch=master)](https://travis-ci.org/merlinoa/diehard3000)
 
 See the [package website](http://merlinoa.github.io/insuree/) for more information. 
 
@@ -24,4 +24,4 @@ library(diehard3000) # the package must already be installed using the above ins
 browseVignettes("diehard3000")
 ```
 
-[This shinydashboard](http://shiny.ractuary.com:3838/insuree-simulation/) provides an example of the `insuree` package used monitor the reserve for a group of individuals.
+[This shinydashboard](http://shiny.ractuary.com:3838/insuree-simulation/) provides an example of the `diehard3000` package used monitor the reserve for a group of individuals.
