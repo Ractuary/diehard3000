@@ -1,8 +1,8 @@
 Package: diehard3000
 Type: Package
-Title: Simulate survival contingent benefits using actuarial life tables
+Title: Simulate Survival Contingent Benefits using Actuarial Life Tables
 Version: 0.0.2
-Date: 2015-05-05
+Date: 2015-11-15
 Authors@R: person("Andy", "Merlino", email = "merlinoa88@gmail.com", role =
     c("aut", "cre"))
 Description: Simulate survival contingent benefits using actuarial life tables
