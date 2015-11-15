@@ -1,6 +1,6 @@
 # diehard3000
 
-[![Travis-CI Build Status](https://travis-ci.org/merlinoa/insuree.svg?branch=master)](https://travis-ci.org/merlinoa/diehard3000)
+[![Travis-CI Build Status](https://travis-ci.org/merlinoa/diehard3000.svg?branch=master)](https://travis-ci.org/merlinoa/diehard3000)
 
 See the [package website](http://merlinoa.github.io/insuree/) for more information. 
 
