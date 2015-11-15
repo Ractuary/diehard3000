@@ -109,22 +109,26 @@ setMethod("discount", signature(interest = "Interest",
 #' @export
 #' @examples
 #' discount(Interest(), BenefitAnnuity(), tod = 2.1)
+#' discount(Interest(), BenefitAnnuity(), tod = NA)
 setMethod("discount", signature(interest = "Interest",
                                 benefit = "BenefitAnnuity"), 
           function(interest, benefit, tod) {
-            
+          
             # find time to annuity payment for all survived annuity payments
-            
+            # find applicable benefits and discount
             tx <- cumsum(benefit@t)
-            benefit_index <- tx[tx < tod] 
+            if (is.na(tod)) {
+              benefit_index <- tx
+              benefit_value <- benefit@value
+            } else {
+              benefit_index <- tx[tx <= tod] 
+              benefit_value <- benefit@value[tx < tod]
+            }
             
             trend <- sapply(benefit_index,
                             function(x) discount(interest, benefit_t = x)
                             )
   
-            # find applicable benefits and discount
-            benefit_value <- benefit@value[tx < tod]
-  
-            benefit_value * trend
+            sum(benefit_value * trend)
             }
         )
