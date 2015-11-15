@@ -18,7 +18,7 @@ Collate:
     'discount.R'
     'expected.R'
     'insuree-package.R'
-    'interest.R'
+    'interest-walks.R'
     'p-x.R'
     'plot.R'
     'rdeath.R'

@@ -62,9 +62,9 @@ setMethod("mean_life", signature("LifeTable"), function(object,
 #' 
 #' @export
 #' @examples
-#' mean_life(Insuree())
-#' mean_life(Insuree(x_ = 2.5, t_ = 3, m_ = 1))
+#' mean_life(Life())
+#' mean_life(Life(x_ = 2.5, t_ = 3, m_ = 1))
 setMethod("mean_life", signature("Life"), function(object) {
-  lt <- LifeTable(x = object@x, q_x = object@q_x)
+  lt <- LifeTable(x = object@life_table@x, q_x = object@life_table@q_x)
   mean_life(object = lt, x_ = object@x_, t_ = object@t_, m_ = object@m_)
 })

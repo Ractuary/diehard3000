@@ -16,7 +16,7 @@ in the \code{object} argument.  Expected time lived only includes times
 between x_ + m_ and t_.
 }
 \examples{
-mean_life(Insuree())
-mean_life(Insuree(x_ = 2.5, t_ = 3, m_ = 1))
+mean_life(Life())
+mean_life(Life(x_ = 2.5, t_ = 3, m_ = 1))
 }
 
