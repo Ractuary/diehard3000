@@ -49,6 +49,7 @@ setMethod("p_x", signature("LifeTable"), function(object, x_ = min(object@x), t_
   prod(1 - .q_x)
 })
 
+
 #' tp_x8q_x
 #' 
 #' returns the probability of death in each x for a percon age x_.  This function

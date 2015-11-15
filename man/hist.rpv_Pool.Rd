@@ -18,7 +18,7 @@ plot a histogram of the present value from a rpv() simulation of the
 \examples{
 test <- rpv(object = Pool(),
             n = 500,
-            interest = 0.04)
+            interest = Interest(t = 10, rate = 0.04))
 hist(test)
 }
 

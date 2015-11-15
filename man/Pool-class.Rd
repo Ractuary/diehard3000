@@ -11,6 +11,6 @@ S4 class for a group of \code{Life} objects
 \section{Slots}{
 
 \describe{
-\item{\code{insurees}}{list of objects of class \code{Life}}
+\item{\code{lives}}{list of objects of class \code{Life}}
 }}
 

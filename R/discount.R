@@ -9,7 +9,7 @@
 #' @export
 setGeneric("discount", 
            valueClass = "numeric",
-           function(interest, 
+           function(interest,
                     benefit,
                     ...
                     ) {
@@ -31,9 +31,11 @@ setGeneric("discount",
 #' discount(Interest(), benefit_t = 0.5)
 #' 
 #' i <- Interest(t = rep(1, times = 5), rate = c(0.03, 0.06, 0.05, 0.07, 0.08))
+#' discount(i, benefit_t = 1.1)
+#' discount(Interest(t = 100, rate = 0.04), benefit_t = 1.1)
 setMethod("discount", signature("Interest"), 
-          function(interest, benefit = NULL, benefit_t) {
-            if (is.na(benefit_t)) return(NA_real_)
+          function(interest, benefit = NA, benefit_t) {
+            if (is.na(benefit_t)) return(NA_real_) # individua did not receive benefit
             if (is.null(interest)) return(1)
             
             # finds all t values from current age

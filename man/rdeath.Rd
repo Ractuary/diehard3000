@@ -7,12 +7,12 @@
 rdeath(object, n)
 }
 \arguments{
-\item{object}{object of class Insuree}
+\item{object}{object of class \code{Life}}
 
 \item{n}{number of observations}
 }
 \description{
-simulates \code{Insuree} time of death in accordance
-with the multinomial distribution provided by the life table.
+simulates \code{Life} time of death in accordance
+with the multinomial distribution provided by the \code{LifeTable} object.
 }
 

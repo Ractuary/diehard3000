@@ -5,7 +5,7 @@
 \alias{discount,Interest,ANY-method}
 \title{discount}
 \usage{
-\S4method{discount}{Interest,ANY}(interest, benefit = NULL, benefit_t)
+\S4method{discount}{Interest,ANY}(interest, benefit = NA, benefit_t)
 }
 \arguments{
 \item{interest}{object of class \code{Interest}}
@@ -21,5 +21,7 @@ discount(Interest(), benefit_t = 1.5)
 discount(Interest(), benefit_t = 0.5)
 
 i <- Interest(t = rep(1, times = 5), rate = c(0.03, 0.06, 0.05, 0.07, 0.08))
+discount(i, benefit_t = 1.1)
+discount(Interest(t = 100, rate = 0.04), benefit_t = 1.1)
 }
 

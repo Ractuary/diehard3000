@@ -1,17 +1,3 @@
-#' Benefit
-#' 
-#' virtual class inherited by all types of benefits. (e.g. BenefitDeath and
-#' BenefitAnnuity inherit the Benefit class)
-#' 
-#' 
-#' @name Benefit-class
-#' @rdname Benefit-class
-#' @export Benefit
-Benefit <- setClass("Benefit",
-                    slots = list(type = "character")
-)
-
-
 #' check_BenefitDeath
 #' 
 #' @param object object of class \code{BenefitDeath}
@@ -24,7 +10,7 @@ check_BenefitDeath <- function(object) {
   errors <- c(errors, "Error! DeathBenefit t and value must have same length")
   }
   
-  if (any(object@t) < 0) {
+  if (any(object@t < 0)) {
     errors <- c(errors, "t values can not be less than 0")
   }
   
@@ -47,7 +33,6 @@ check_BenefitDeath <- function(object) {
 #' @rdname BenefitDeath-class
 #' @export BenefitDeath
 BenefitDeath <- setClass("BenefitDeath",
-                     contains = "Benefit",
                      slots = list(t = "numeric",
                                   value = "numeric"),
                      prototype = prototype(t = c(1, 1, 1),
@@ -55,13 +40,7 @@ BenefitDeath <- setClass("BenefitDeath",
                                            ),
                      validity = check_BenefitDeath
  )
-#benefit_death <- function(t = c(1, 1, 1), 
-#                          value = c(5, 4, 8)) {
-#  hold <- list("t" = t, 
-#               "value" = value)
-#  class(hold) <- c("death", "benefit")
-#  hold
-#} 
+
 
 #' BenefitAnnuity
 #' 

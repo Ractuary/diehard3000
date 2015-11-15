@@ -8,7 +8,7 @@
 \S4method{rpv}{Pool}(object, n, interest)
 }
 \arguments{
-\item{object}{object of class \code{Life}}
+\item{object}{object of class \code{Pool}}
 
 \item{n}{number of observations}
 
@@ -23,9 +23,10 @@ each \code{Life} in the \code{Pool} object.
 \examples{
 rpv(object = Pool(),
     n = 5,
-    interest = 0.04)
+    interest = Interest(t = 10, rate = 0.04))
 rpv(object = Pool(),
     n = 5,
-    interest = rcir(n = 10, r = 0.01, b = 0.04, a = 1, s = 0.05))
+    interest = Interest(t = 1:10, rate = rcir(n = 10, r = 0.01, b = 0.04, a = 1, s = 0.05))
+    )
 }
 

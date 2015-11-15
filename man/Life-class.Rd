@@ -8,6 +8,9 @@
 \description{
 An individual with some kind of life contingent insurance
 }
+\details{
+#
+}
 \section{Slots}{
 
 \describe{
@@ -16,6 +19,10 @@ An individual with some kind of life contingent insurance
 \item{\code{t_}}{t value for individual}
 
 \item{\code{m_}}{m value for individual}
+
+\item{\code{lifetable}}{onject of class \code{LifeTable}}
+
+\item{\code{benefit}}{a list of objects of class \code{Benefit}}
 }}
 \examples{
 Life()

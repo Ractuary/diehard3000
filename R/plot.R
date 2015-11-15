@@ -1,9 +1,9 @@
-#' hist.rpv_Insuree
+#' hist.rpv_Life
 #' 
 #' plot a histogram of the present value from a rpv() simulation of the
-#' \code{Insuree} class.
+#' \code{Life} class.
 #' 
-#' @param object rpv_Insuree object
+#' @param object object of class \code{rpv_Insuree}
 #' @param ... other arguments
 #' 
 #' @import ggplot2
@@ -11,11 +11,11 @@
 #' 
 #' @export
 #' @examples
-#' test <- rpv(object = Insuree(), 
+#' test <- rpv(object = Life(benefit = list(BenefitDeath())), 
 #'             n = 500,
-#'             interest = 0.04)
+#'             interest = Interest(t = 20, rate = 0.04))
 #' hist(test)
-hist.rpv_Insuree <- function(object, ...) {
+hist.rpv_Life <- function(object, ...) {
   ggplot2::ggplot(data.frame(pv = object$pv), aes(x = pv)) +
     geom_histogram(fill = "white", colour = "black") +
     scale_x_continuous(labels = dollar) +
@@ -24,13 +24,13 @@ hist.rpv_Insuree <- function(object, ...) {
     ggtitle(paste0("rpv() Histogram"))
 }
 
-#' plot.rpv_Insuree
+#' plot.rpv_Life
 #' 
 #' plot the empirical cumulative distribution of 
-#' the present value of death benefits from a rpv_life() 
+#' the present value of death benefits from a rpv() 
 #' simulation
 #' 
-#' @param object rpv_Insuree object
+#' @param object object of class rpv_Life
 #' @param ... other arguments
 #' 
 #' @import ggplot2
@@ -38,11 +38,11 @@ hist.rpv_Insuree <- function(object, ...) {
 #' 
 #' @export
 #' @examples
-#' test <- rpv(object = Insuree(), 
+#' test <- rpv(object = Life(benefit = list(BenefitDeath())), 
 #'             n = 500,
-#'             interest = 0.04)
+#'             interest = Interest(t = 5, rate = 0.04))
 #' plot(test)
-plot.rpv_Insuree <- function(object, ...) {
+plot.rpv_Life <- function(object, ...) {
   ggplot2::ggplot(data.frame(pv = object$pv), aes(x = pv)) +
     stat_ecdf() +
     scale_x_continuous(labels = dollar) +
@@ -66,7 +66,7 @@ plot.rpv_Insuree <- function(object, ...) {
 #' @examples
 #' test <- rpv(object = Pool(), 
 #'             n = 500,
-#'             interest = 0.04)
+#'             interest = Interest(t = 10, rate = 0.04))
 #' hist(test)
 hist.rpv_Pool <- function(object, ...) {
   data <- summary(object)
@@ -96,7 +96,7 @@ hist.rpv_Pool <- function(object, ...) {
 #' @examples
 #' test <- rpv(object = Pool(), 
 #'             n = 500,
-#'             interest = 0.04)
+#'             interest = Interest(t = 5, rate = 0.04))
 #' plot(test)
 plot.rpv_Pool <- function(object, ...) {
   data <- summary(object)

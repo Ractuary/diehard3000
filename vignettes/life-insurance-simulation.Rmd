@@ -16,7 +16,7 @@ How much money do we need to set aside today so we will have enough money to cov
 Note: The `insuree` package refers to each individual person's policy as an "insuree".
 
 ```{r load_stuff}
-library(insuree)
+library(diehard3000)
 library(knitr) # for tables
 
 options(scipen=999) # turn off scientific notation
@@ -46,18 +46,18 @@ Before the life tables can be used we need to define them as `LifeTable` objects
 
 ```{r life_tables}
 # create male life table from qx_data (provided with the package)
-qx_male <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1), 
+qx_male <- diehard3000::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1), 
                               q_x = c(qx_data$male_qx, NA)
                               )
 
 # create female life table from qx_data (provided with the package)
-qx_female <- insuree::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1),
+qx_female <- diehard3000::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1),
                                 q_x = c(qx_data$female_qx, NA)
                                 )
 ```
 
-Now that we have male and female life tables lets assign each insuree to an `insuree::Insuree` object.  The `Insuree` object identifies the `LifeTable`, age, and
-other policy characteristics appropriate to the individul policy.  Once the `Insuree` object is defined we can run the simulations.
+Now that we have male and female life tables lets assign each insuree to an `diehard3000::Life` object.  The `Life` object identifies the `Life`, age, and
+other policy characteristics appropriate to the individul policy.  Once the `Life` object is defined we can run the simulations.
 
 ```{r}
 # I am finding the max age of the life tables so I can 
@@ -70,22 +70,22 @@ max_f <- max(qx_female@x)
 hold <- list()
 for (j in 1:nrow(policies)) {
   hold[[j]] <- if (policies$gender[j] == "male") {
-    insuree::Insuree(x_ = policies$age[j], 
+    diehard3000::Life(x_ = policies$age[j], 
                      t_ = max_m - policies$age[j],
-                     benefit_t = max_m - policies$age[j],
-                     benefit_value = policies$death_benefit[j],
-                     qx_male)
+                     benefit = list(BenefitDeath(t = max_m - policies$age[j],
+                                                 value = policies$death_benefit[j])),
+                     life_table = qx_male)
   } else {
-    insuree::Insuree(x_ = policies$age[j],
+    diehard3000::Life(x_ = policies$age[j],
                      t_ = max_f - policies$age[j],
-                     benefit_t = max_f - policies$age[j], 
-                     benefit_value = policies$death_benefit[j],
-                     qx_female)
+                     benefit = list(BenefitDeath(t = max_f - policies$age[j],
+                                                 value = policies$death_benefit[j])), 
+                     life_table = qx_female)
   }
 }
 ```
 
-Each element in our `hold` object is an object of class `Insuree`.  We can simulate the future life and present value of the benefits for any of these `Insuree` objects individually like so:
+Each element in our `hold` list is an object of class `Life`.  We can simulate the future life and present value of the benefits for any of these `Life` objects individually like so:
 
 First we need to decide how many simulations we want to run and our discount rate.
 
@@ -94,7 +94,7 @@ First we need to decide how many simulations we want to run and our discount rat
 n <- 10000
 
 # set discount rate
-rate <- 0.04
+interest <- Interest(t = 100, rate = 0.04)
 ```
 
 now for the simulation:
@@ -103,7 +103,7 @@ now for the simulation:
 set.seed(12345)
 quants <- c(seq(0.70, 0.95, by = 0.05), 0.99, 0.999, 0.9999)
 # simulate individual Insuree
-single <- rpv(hold[[1]], n = n, interest = rate)
+single <- rpv(hold[[1]], n = n, interest = interest)
 total <- single$pv
 quantiles <- quantile(total, quants)
 sim_mean <- mean(total)
@@ -123,16 +123,16 @@ plot(single)
 hist(single)
 ```
 
-Simulating one life insurance policy is not that interesting.  The real power of the `insuree` package come when we group the policies together.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
+Simulating one life insurance policy is not that interesting.  The real power of the `diehard3000` package comes when we group the policies together.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
 
-We run `r format(n, big.mark = ",")` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent.  We discount the death benefit, assuming a `r rate * 100`% annual interest rate.
+We run `r format(n, big.mark = ",")` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent.  We discount the death benefit, assuming a `r interest@rate[1] * 100`% annual interest rate.
 
 ```{r, result = "asis"}
 # create object of class "Pool"
-pool <- Pool(insurees = hold)
+pool <- Pool(lives = hold)
 # run simulation on each insuree
 # we are only interested in the present value of the simulation here
-pooled_rpv <- insuree::rpv(pool, n = n, interest = rate)
+pooled_rpv <- diehard3000::rpv(pool, n = n, interest = interest)
 total <- apply(summary(pooled_rpv), 1, sum)
 quantiles <- quantile(total, c(seq(0.70, 0.95, by = 0.05), 0.99, 0.999, 0.9999))
 sim_mean <- mean(total)
@@ -143,7 +143,7 @@ out <- data.frame("Risk Level" = c("mean", names(quantiles)),
 knitr::kable(out, row.names = FALSE, align = c("l", "r"))
 ```
 
-and we can make similar plots to those for the single `Insuree` object:
+and we can make similar plots to those for the single `Life` object:
 
 ```{r, fig.width = 7, message = FALSE}
 plot(pooled_rpv)

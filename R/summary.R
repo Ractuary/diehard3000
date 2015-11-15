@@ -1,17 +1,17 @@
-#' summary.rpv_Insuree
+#' summary.rpv_Life
 #' 
-#' summary of rpv() simulation of class \code{Insuree}
+#' summary of rpv() simulation of class \code{Life}
 #' 
-#' @param object \code{rpv_Insuree} object
+#' @param object \code{rpv_Life} object
 #' @param ... other arguments
 #' 
 #' @export
 #' @examples
-#' test <- rpv(object = Insuree(), 
+#' test <- rpv(object = Life(benefit = list(BenefitDeath())), 
 #'             n = 500,
-#'             interest = 0.04)
+#'             interest = Interest(t = 10, rate = 0.04))
 #' summary(test)
-summary.rpv_Insuree <- function(object, ...) {
+summary.rpv_Life <- function(object, ...) {
   object
 }
 
@@ -26,7 +26,7 @@ summary.rpv_Insuree <- function(object, ...) {
 #' @examples
 #' test <- rpv(object = Pool(), 
 #'             n = 500,
-#'             interest = 0.04)
+#'             interest = Interest(t = 10, rate = 0.04))
 #' summary(test)
 summary.rpv_Pool <- function(object, ...) {
   pv <- lapply(object, function(x) x$pv)

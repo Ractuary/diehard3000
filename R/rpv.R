@@ -29,14 +29,12 @@ setGeneric("rpv",
 #' 
 #' @export
 #' @examples
-#' rpv(object = Life(x_ = 2, 
-#'                   t_ = 3,
-#'                   m_ = 0.3), 
-#'                   n = 5)
 #' rpv(object = Life(x_ = 2.48, 
-#'                   t_ = 3.57,
+#'                   t_ = 3,
 #'                   m_ = 3,
-#'                   n = 5)
+#'                   benefit = list(BenefitDeath(t = c(3, 3), value = c(0, 5)))), 
+#'     n = 5,
+#'     interest = Interest(t = 1:10, rate = rep(0.04, 10)))
 setMethod("rpv", signature("Life"), function(object, n, interest) {
   
   # simulate deaths
@@ -44,23 +42,26 @@ setMethod("rpv", signature("Life"), function(object, n, interest) {
   tod <- deaths[["death_t"]]
   
   # find applicable discount amount
-  .discount <- lapply(tod, function(k) discount(interest, benefit_time = k))
-  .discount <- unlist(.discount)
+  pv <- lapply(tod, function(k) {
+                       discount(interest = interest, 
+                                benefit = object@benefit[[1]], tod = k)
+                    }
+               )
+  pv <- unlist(pv)
   
   # find applicable benefit amount
-  tod[tod < object@m_] <- NA
-  benefit <- object@benefit_value[findInterval(tod, cumsum(c(object@m_, object@benefit_t)))]
+  #tod[tod < object@m_] <- NA
+  #benefit <- object@benefit_value[findInterval(tod, cumsum(c(object@m_, object@benefit_t)))]
 
   # set all deaths in term period equal to the applicable benefit value
   # function output
-  pv = .discount * benefit
+  #pv = .discount * benefit
   pv[is.na(pv)] <- 0
   out <- list(deaths,
-              discount = .discount,
-              benefit = benefit,
+              #benefit = benefit,
               pv = pv
          )
-  class(out) <- "rpv_Insuree"
+  class(out) <- "rpv_Life"
   out
 })
 
@@ -70,7 +71,7 @@ setMethod("rpv", signature("Life"), function(object, n, interest) {
 #' Simulates the present value of the life insurance benefit for
 #' each \code{Life} in the \code{Pool} object.
 #' 
-#' @param object object of class \code{Life}
+#' @param object object of class \code{Pool}
 #' @param n number of observations
 #' @param interest vector of annual interest rates.  e.g. you can use the \code{CIR()}
 #' funtion to simulate interest rates in accordance with the Cox Ingersoll Ross
@@ -80,14 +81,15 @@ setMethod("rpv", signature("Life"), function(object, n, interest) {
 #' @examples
 #' rpv(object = Pool(),
 #'     n = 5,
-#'     interest = 0.04)
+#'     interest = Interest(t = 10, rate = 0.04))
 #' rpv(object = Pool(),
 #'     n = 5, 
-#'     interest = rcir(n = 10, r = 0.01, b = 0.04, a = 1, s = 0.05))
+#'     interest = Interest(t = 1:10, rate = rcir(n = 10, r = 0.01, b = 0.04, a = 1, s = 0.05))
+#'     )
 setMethod("rpv", signature("Pool"), function(object, n, interest) {
   
   # run rpv() simulation for each Insuree object
-  out <- lapply(object@insurees, rpv, n = n, interest = interest)
+  out <- lapply(object@lives, rpv, n = n, interest = interest)
   class(out) <- "rpv_Pool"
   out
 })

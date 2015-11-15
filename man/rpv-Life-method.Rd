@@ -21,13 +21,11 @@ Simulates the present value of the life insurance benefit for
 an object of class \code{Insuree}
 }
 \examples{
-rpv(object = Life(x_ = 2,
-                  t_ = 3,
-                  m_ = 0.3),
-                  n = 5)
 rpv(object = Life(x_ = 2.48,
-                  t_ = 3.57,
+                  t_ = 3,
                   m_ = 3,
-                  n = 5)
+                  benefit = list(BenefitDeath(t = c(3, 3), value = c(0, 5)))),
+    n = 5,
+    interest = Interest(t = 1:10, rate = rep(0.04, 10)))
 }
 

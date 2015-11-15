@@ -19,8 +19,7 @@ by the LifeTable object.  Uniform time of death is assumed between x values
 indicated by the LifeTable object.
 }
 \examples{
-# rdeath(object = Life(m_ = 2), n = 5) # TODO: update examples for new benefit methods
-# rdeath(object = Life(x_ = 2.4, t_ = 3, m_ = 0.5, benefit_t = c(1, 1, 1), benefit_value = c(3, 5, 7)), n = 5)
-# rdeath(object = Life(x_ = 3, m_ = 0.2, t_ = 3, benefit_t = c(1, 1, 1), benefit_value = c(2, 4, 5)), n = 5)
+rdeath(object = Life(m_ = 2), n = 5)
+rdeath(object = Life(x_ = 2.4, t_ = 3, m_ = 0.5, benefit = list(BenefitDeath())), n = 5)
 }
 
