@@ -78,16 +78,17 @@ setMethod("discount", signature("Interest"),
 #' @export
 #' @examples
 #' discount(benefit = BenefitDeath(), interest = Interest(), tod = 2)
+#' discount(benefit = BenefitDeath(), interest = Interest(), tod = NA)
 #' discount(benefit = BenefitDeath(t = 10,
 #'                                 value = 1000), 
 #'          interest = Interest(t = rep(1, times = 10),
 #'                              rate = rep(c(0.03, 0.04), times = 5)), 
-#'          tod = 8) 
+#'          tod = 8)
 setMethod("discount", signature(interest = "Interest",
                                 benefit = "BenefitDeath" 
                                 ), 
           function(interest, benefit, tod) {
-
+  if (is.na(tod)) return(0) # Life survives
   trend <- discount(interest, 
                     benefit_t = tod)
   
@@ -110,10 +111,14 @@ setMethod("discount", signature(interest = "Interest",
 #' @examples
 #' discount(Interest(), BenefitAnnuity(), tod = 2.1)
 #' discount(Interest(), BenefitAnnuity(), tod = NA)
+#' discount(Interest(), BenefitAnnuity(), tod = 10)
+#' discount(Interest(), BenefitAnnuity(t = c(1, 1, 1), value = c(3, 2, 2)), tod = 3)
+#' discount(Interest(), BenefitAnnuity(t = c(1, 1, 1), value = c(3, 2, 2)), tod = 0.5)
 setMethod("discount", signature(interest = "Interest",
                                 benefit = "BenefitAnnuity"), 
           function(interest, benefit, tod) {
-          
+            if (tod < benefit@t[1] && !is.na(tod)) return(0) 
+            
             # find time to annuity payment for all survived annuity payments
             # find applicable benefits and discount
             tx <- cumsum(benefit@t)
@@ -122,7 +127,7 @@ setMethod("discount", signature(interest = "Interest",
               benefit_value <- benefit@value
             } else {
               benefit_index <- tx[tx <= tod] 
-              benefit_value <- benefit@value[tx < tod]
+              benefit_value <- benefit@value[tx <= tod]
             }
             
             trend <- sapply(benefit_index,
