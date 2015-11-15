@@ -8,7 +8,6 @@
 #' 
 #' @import ggplot2
 #' @import scales
-#' @import methods
 #' 
 #' @export
 #' @examples
@@ -36,7 +35,6 @@ hist.rpv_Life <- function(object, ...) {
 #' 
 #' @import ggplot2
 #' @import scales
-#' @import methods
 #' 
 #' @export
 #' @examples
@@ -63,7 +61,6 @@ plot.rpv_Life <- function(object, ...) {
 #' 
 #' @import ggplot2
 #' @import scales
-#' @import methods
 #' 
 #' @export
 #' @examples
@@ -91,7 +88,6 @@ hist.rpv_Pool <- function(object, ...) {
 #' 
 #' @param object rpv_Pool object
 #' @param ... other arguments
-#' @import methods
 #' 
 #' @import ggplot2
 #' @import scales
