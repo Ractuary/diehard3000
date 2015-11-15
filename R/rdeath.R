@@ -29,7 +29,11 @@ setGeneric("rdeath",
 #' @export
 #' @examples
 #' rdeath(object = Life(m_ = 2), n = 5)
+#' rdeath(object = Life(), n = 1000)
 #' rdeath(object = Life(x_ = 2.4, t_ = 3, m_ = 0.5, benefit = list(BenefitDeath())), n = 5)
+#' max(rdeath(Life(x_ = 2.4, 
+#'                   t_ = 3,
+#'                   m_ = 0), n = 1000)$death_t, na.rm = TRUE)
 setMethod("rdeath", signature("Life"), function(object, n) {
   # find the probability of death in each x for a person age x_
   lt <- trim_table(object@life_table, x_ = object@x_, t_ = object@t_, m_ = object@m_)
@@ -50,7 +54,7 @@ setMethod("rdeath", signature("Life"), function(object, n) {
   ## uniform distribution to simulate the time of death during the t.  This
   ## allows us to simulate the exact time of death.
   # Determine length of t in which individual died
-  t <- diff(object@life_table@x)
+  t <- diff(lt@x)
   death_t_length <- apply(deaths, 2, function(l) ifelse(sum(l) > 0, t[l > 0], NA))
   # Run random uniform simulation over t of death
   death_t_time <- lapply(death_t_length, function(y) ifelse(is.na(y), NA, runif(n = 1, min = 0, max = y)))
