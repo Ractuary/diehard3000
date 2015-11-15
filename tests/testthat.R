@@ -1,4 +1,4 @@
 library(testthat)
-library(insuree)
+library(diehard3000)
 
 test_check("insuree")
