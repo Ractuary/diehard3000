@@ -34,3 +34,4 @@ Depends:
 Imports:
     ggplot2,
     scales
+RoxygenNote: 5.0.1
