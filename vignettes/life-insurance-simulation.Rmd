@@ -11,9 +11,7 @@ vignette: >
 
 We provide life insurance.  
 
-How much money do we need to set aside today so we will have enough money to cover the entire life insurance benefit for all of our policies?  
-
-Note: The `insuree` package refers to each individual person's policy as an "insuree".
+How much money do we need in reserve to cover the life insurance benefit for all of our policies?
 
 ```{r load_stuff}
 library(diehard3000)
@@ -22,7 +20,7 @@ library(knitr) # for tables
 options(scipen=999) # turn off scientific notation
 ```
 
-Let's create some life insurance policies.
+# Create Example Policies
 
 ```{r create_policies, results = "asis"}
 policies <- data.frame(id = c("A001", "A002", "A003", "A004", "A005", "A006"),
@@ -36,11 +34,11 @@ out$death_benefit <- format(out$death_benefit, big.mark = ",")
 knitr::kable(out, align = c("l", "l", "r", "r"))
 ```
 
-Each row in the above table represents an individual insuree.  If all of these individuals die this very second our liability will be `r format(sum(policies$death_benefit), big.mark = ",")`.  The probability of these `r nrow(policies)` people dying instantaneously is low, and since we can invest and grow our money over time we don't need to keep `r format(sum(policies$death_benefit), big.mark = ",")` in reserve to have a high probability of fullfilling our liabilities.  The `insuee` package can simulate the time until death for the individuals and thus come up with probabilities for how much money (calculated at present value) we (as the insurer) are actually on the hook for.
+Each row in the above table represents a policy for a single individual.  If all of these individuals die this very second our liability will be `r format(sum(policies$death_benefit), big.mark = ",")`.  The probability of these `r nrow(policies)` people dying instantaneously is low, and since we can invest and grow our money over time we don't need to keep `r format(sum(policies$death_benefit), big.mark = ",")` in reserve to have a high probability of having sufficient reserves to fullfill our liabilities.  The `diehard3000` package can simulate the time until death for the individuals and thus come up with probabilities for how much money (calculated at present value) we (as the insurer) need in reserves.
 
-Back to the policies: As you can see, we have male and female insurees of varying ages.  They also have varying death benefits.
+Back to the policies: As you can see, we have male and female individuals of varying ages.  They also have varying death benefits.
 
-We are going to create an object of class `insuree::Insuree` to represent each one of our insurees.  The future probability of death for each of these `insuree::Insuree` objects is defined by an actuarial life table.  The `insuree` package can use any life table you want, but here we are using the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).
+We are going to create an object of class `diehard3000::Life` to represent each one of these individuals.  The future probability of death for each of these individuals is defined by an actuarial life table.  The `diehard3000` package can use any life table you want, but here we are using the official 2010 US social security life table as provided on the [Official Social Security Website](http://www.ssa.gov/oact/STATS/table4c6.html).
 
 Before the life tables can be used we need to define them as `LifeTable` objects:
 
@@ -56,8 +54,7 @@ qx_female <- diehard3000::LifeTable(x = c(qx_data$x, max(qx_data$x) + 1),
                                 )
 ```
 
-Now that we have male and female life tables lets assign each insuree to an `diehard3000::Life` object.  The `Life` object identifies the `Life`, age, and
-other policy characteristics appropriate to the individul policy.  Once the `Life` object is defined we can run the simulations.
+Now that we have male and female life tables lets assign each individual to a `diehard3000::Life` object.  The `Life` object identifies the gender, age, and other policy characteristics appropriate to the individul policy.  Once the `Life` object is defined we can run the simulations.
 
 ```{r}
 # I am finding the max age of the life tables so I can 
@@ -85,7 +82,11 @@ for (j in 1:nrow(policies)) {
 }
 ```
 
-Each element in our `hold` list is an object of class `Life`.  We can simulate the future life and present value of the benefits for any of these `Life` objects individually like so:
+Each element in our `hold` list is an object of class `Life`.  
+
+# Simulate a Single Policy
+
+We can simulate the future life and present value of the benefits for any of these `Life` objects individually like so:
 
 First we need to decide how many simulations we want to run and our discount rate.
 
@@ -114,16 +115,18 @@ out <- data.frame("Risk Level" = c("mean", names(quantiles)),
 knitr::kable(out, row.names = FALSE, align = c("l", "r"))
 ```
 
-The above table shows our simulations of the first row/insuree in our table of policies.  The "Value" column in the above table shows our risk/confidence level for the present value of the death benefit payment.  The above table should appear reasonable for a `r policies$age[1]` year old American `r policies$gender[1]` with a `r format(policies$death_benefit[1], big.mark = ",")` life insurance policy.
+The above table shows our simulations of the first row/policy in our table of policies.  The "Value" column in the above table shows our risk/confidence level for the present value of the death benefit payment.  The above table should appear reasonable for a `r policies$age[1]` year old American `r policies$gender[1]` with a `r format(policies$death_benefit[1], big.mark = ",")` life insurance policy.
 
-The package also comes with some built in plot options for `rpv()` on class `Insuree`.
+The package also comes with some built in plot options for `rpv()` on class `Life`.
 
 ```{r, fig.width = 7, message = FALSE}
 plot(single)
 hist(single)
 ```
 
-Simulating one life insurance policy is not that interesting.  The real power of the `diehard3000` package comes when we group the policies together.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would otherwise be very difficult to calculate.
+# Simulate Multiple Policies
+
+Simulating one life insurance policy is not that interesting.  The real power of the `diehard3000` package comes when we group the policies together.  By simulating the group we can come up with confidence levels for the present value of future benefit payments that would be very difficult to calculate from first principles.
 
 We run `r format(n, big.mark = ",")` observations of each individual's future life expectancy.  We assume each individual future life expectancy is independent.  We discount the death benefit, assuming a `r interest@rate[1] * 100`% annual interest rate.
 
@@ -143,9 +146,11 @@ out <- data.frame("Risk Level" = c("mean", names(quantiles)),
 knitr::kable(out, row.names = FALSE, align = c("l", "r"))
 ```
 
-and we can make similar plots to those for the single `Life` object:
+We can make also make plots for the pooled policies:
 
 ```{r, fig.width = 7, message = FALSE}
 plot(pooled_rpv)
 hist(pooled_rpv)
 ```
+
+As expected the 99.9% confidence level for the pooled policies is significantly less than the sum of the undiscounted death benefits. By selling multiple independent policies we have diversified our risk.
