@@ -22,4 +22,4 @@ library(diehard3000) # the package must already be installed using the above ins
 browseVignettes("diehard3000")
 ```
 
-[This shinydashboard](http://shiny.ractuary.com:3838/insuree-simulation/) provides an example of the `diehard3000` package used monitor the reserve for a group of individuals.
+[This shinydashboard](http://shiny.ractuary.com:3838/insuree-simulation/) provides an example of the `diehard3000` package used to monitor the reserve for a group of individuals.
