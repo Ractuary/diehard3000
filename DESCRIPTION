@@ -27,7 +27,8 @@ Collate:
     'utils.R'
 Suggests:
     knitr,
-    testthat
+    testthat,
+    rmarkdown
 VignetteBuilder: knitr
 Depends:
     R (>= 3.1.2)
