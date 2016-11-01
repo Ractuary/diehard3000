@@ -13,7 +13,7 @@ check_Life <- function(object) {
   }
   
   # validate x_
-  if (object@x_ <= min(object@life_table@x) || object@x_ >= (max(object@life_table@x) + 1)) {
+  if (object@x_ < min(object@life_table@x) || object@x_ >= (max(object@life_table@x) + 1)) {
     errors <- c(errors, "Error! x_ must be in range of x on ActuarialTable")
   }
   
